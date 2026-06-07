@@ -137,6 +137,8 @@ By accepting this agreement, you confirm that you have reviewed and accepted all
     printQRCode: "🖨️ QR ኮድ አሳዩ",
     shareQRCode: "📱 QR ሊንክ ያጋሩ",
     qrCodeDownloaded: "QR ኮድ በተሳካ ሁኔታ ተዘርዝሯል!",
+    closeChat: "✕ ቻትቦት ዝጋ",
+    bookingComplete: "ለ Shime Events ለመረጡ ምስጋና! ዝግጅትዎ ተጠናቅቋል። 🎉",
   }
 };
 
@@ -1786,6 +1788,14 @@ Your signature/acceptance serves as binding agreement to this contract.`;
             <div className="bg-slate-900 p-4 rounded-lg text-white text-xs whitespace-pre-line border-l-4 border-yellow-500">
               {getBilingualText("sendInstructions")}
             </div>
+
+            <button
+              onClick={resetBooking}
+              className="w-full px-4 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition transform hover:scale-105 text-lg"
+              aria-label="Close chatbot"
+            >
+              {t("closeChat")}
+            </button>
           </div>
         );
 
