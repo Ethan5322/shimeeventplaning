@@ -7,37 +7,37 @@ const translations = {
     welcome: "Welcome to Shime Events & Planning",
     welcomeSubtitle: "Your Trusted Partner for Unforgettable Celebrations",
     selectLanguage: "Select your preferred language:",
-    askNationality: "What is your nationality?",
+    askNationality: "What is your nationality? (Please select from the list)",
     askResidency: "Which country do you currently reside in?",
-    askPhone: "What is your phone number? (Format: +country code + number)",
+    askPhone: "What is your phone number? (Example: +251911234567)",
     invalidPhone: "❌ Invalid phone number. Please use format: +251911234567",
     phoneCountryMismatch: "⚠️ Your phone number country code doesn't match your residence country.",
     askEmail: "What is your email address?",
     invalidEmail: "❌ Invalid email. Please enter a valid email address.",
     askIdType: "Please enter your ID or Passport number:",
     invalidId: "❌ Invalid ID/Passport. Please try again.",
-    askFullName: "What is your full name?",
+    askFullName: "What is your full name? (First and last name)",
     invalidName: "❌ Please enter a valid full name (first and last name).",
-    askPassword: "Create a security PIN (6+ digits):",
-    askPhoneContact: "What is your contact phone number?",
+    askPassword: "Create a security PIN (6 or more digits):",
     askContactMethod: "How would you prefer to be contacted?",
     askEventType: "What type of event are you planning?",
-    askEventCountry: "In which country will the event be held?",
+    askEventCountry: "In which country will the event be held? (Please select from the list)",
     eventCountryMismatch: "⚠️ Note: Your event is in a different country than your residence.",
     askEventCity: "In which city will the event take place?",
-    askDate: "When will your event take place?",
+    askDate: "When will your event take place? (Select a future date)",
     dateBooked: "⚠️ This date is unavailable. Please select another date.",
-    askTime: "What time would you prefer?",
+    askTime: "What time would you prefer for your event?",
     timeBooked: "⚠️ This time slot is unavailable. Please select another time.",
-    askLocation: "What is the venue location/address?",
+    askLocation: "What is the venue location or address?",
+    depositNotice: "A 50% deposit is required to secure your booking.",
     noticeTitle: "Booking Confirmation & Payment",
-    noticeBody: "To secure your booking, please submit payment:\n\n🏦 CBE WALLET\nAccount: 1000XXXXXXXX\nName: Shime Events & Planning",
+    noticeBody: "To secure your booking, please submit a 50% deposit payment:\n\n🏦 CBE WALLET\nAccount: 1000XXXXXXXX\nName: Shime Events & Planning",
     termsTitle: "TERMS & CONDITIONS",
-    termsText: `1. A non-refundable deposit is required to secure your booking.
+    termsText: `1. A 50% non-refundable deposit is required to secure your booking.
 2. Full payment is due 14 days before the event.
 3. Cancellations within 7 days of the event forfeit 50% of total payment.
 4. Shime Events & Planning reserves the right to substitute vendors of equal quality.
-5. The client is responsible for accurate information provided during booking.
+5. The client is responsible for providing accurate information during booking.
 6. Any changes to date, venue, or guest count must be requested in writing.
 7. Force majeure clauses apply for events outside our control.
 8. All disputes are subject to Ethiopian jurisdiction.
@@ -64,36 +64,37 @@ By signing this agreement, you confirm that you have read and accepted all terms
     copy: "Copy",
     copied: "Copied!",
     startOver: "Start Over",
+    selectPackage: "Which package would you like to book?",
   },
   am: {
     welcome: "በ Shime Events & Planning ደህና መጡ",
     welcomeSubtitle: "ለተረጋገጥ አጠቃሉ ዝግጅት ታሪካዊ አጋዥ",
     selectLanguage: "ተመራጭ ቋንቋዎን ይምረጡ:",
-    askNationality: "ተዋለድነትዎ ምንድን ነው?",
-    askResidency: "በአሁኑ ጊዜ በ የት ሀገር ነው የሚኖሩት?",
-    askPhone: "ስልክ ቁጥርዎ ምንድን ነው?",
+    askNationality: "ተዋለድነትዎ ምንድን ነው? (ከዝርዝር ውስጥ ይምረጡ)",
+    askResidency: "በአሁኑ ጊዜ በየ ሀገር ነው የሚኖሩት?",
+    askPhone: "ስልክ ቁጥርዎ ምንድን ነው? (ምሳሌ: +251911234567)",
     invalidPhone: "❌ ተገቢ ያልሆነ ስልክ ቁጥር።",
-    phoneCountryMismatch: "⚠️ ስልክ ቁጥርዎ ከደረሰበት ሀገር ጋር አይዛመድም።",
+    phoneCountryMismatch: "⚠️ ስልክ ቁጥርዎ ከመኖሪያ ሀገር ጋር አይዛመድም።",
     askEmail: "ኢሜይሉ ምንድን ነው?",
     invalidEmail: "❌ ተገቢ ያልሆነ ኢሜይል።",
     askIdType: "ID ወይም ፓስፖርት ቁጥርዎን ያስገቡ:",
     invalidId: "❌ ተገቢ ያልሆነ ID/ፓስፖርት።",
-    askFullName: "ሙሉ ስምዎ ምንድን ነው?",
+    askFullName: "ሙሉ ስምዎ ምንድን ነው? (ስም እና የቤት ስም)",
     invalidName: "❌ ትክክለኛ ሙሉ ስም ያስገቡ።",
-    askPassword: "보안 ፒን ይፍጠሩ (6+ አሃዞች):",
-    askPhoneContact: "Contact ስልክ ቁጥር ምንድን ነው?",
+    askPassword: "보안 ፒን ይፍጠሩ (6 ወይም ከዚህ በላይ አሃዞች):",
     askContactMethod: "እንዴት ለአንተ ተገናኝ ማድረግ ትመርጥ?",
     askEventType: "ምን ዓይነት ዝግጅት ነው?",
-    askEventCountry: "ዝግጅቱ በ የት ሀገር ይሆናል?",
+    askEventCountry: "ዝግጅቱ በየ ሀገር ይሆናል? (ከዝርዝር ውስጥ ይምረጡ)",
     eventCountryMismatch: "⚠️ ማስታወሻ: ዝግጅትዎ ከመኖሪያ ሀገር በተለየ ሀገር ነው።",
-    askEventCity: "ዝግጅቱ በ የት ከተማ ይሆናል?",
-    askDate: "ዝግጅትዎ መቼ ይሆናል?",
+    askEventCity: "ዝግጅቱ በየ ከተማ ይሆናል?",
+    askDate: "ዝግጅትዎ መቼ ይሆናል? (ወደፊት ቀን ይምረጡ)",
     dateBooked: "⚠️ ይህ ቀን ተገኝነት የለውም።",
     askTime: "ምን ሰዓት ይመርጣሉ?",
     timeBooked: "⚠️ ይህ ሰዓት ተገኝነት የለውም።",
     askLocation: "ቦታ/አድራሻ ምንድን ነው?",
+    depositNotice: "ዝግጅትዎን ለማረጋገጥ 50% ዝቅ ብለህ ክፍያ ያስፈልጋል።",
     noticeTitle: "ዝግጅት ማረጋገጥ እና ክፍያ",
-    noticeBody: "ዝግጅትዎን ለማረጋገጥ ክፍያ ያስገቡ:\n\n🏦 CBE WALLET\nHesaab: 1000XXXXXXXX\nSemie: Shime Events & Planning",
+    noticeBody: "ዝግጅትዎን ለማረጋገጥ 50% ዝቅ ብለህ ክፍያ ያስገቡ:\n\n🏦 CBE WALLET\nHesaab: 1000XXXXXXXX\nSemie: Shime Events & Planning",
     termsTitle: "ውል ስምምነት",
     acceptTerms: "✅ ውሎችን ተቀብያለሁ",
     shareWhatsapp: "📲 በ WhatsApp ላክ",
@@ -116,6 +117,7 @@ By signing this agreement, you confirm that you have read and accepted all terms
     copy: "ቅዴ",
     copied: "ተቅዳ!",
     startOver: "ድጋሚ ጀምር",
+    selectPackage: "ምን ዓይነት ፓኬጅ ይመርጣሉ?",
   }
 };
 
@@ -658,25 +660,8 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         }
         if (isValid) {
           addUserMessage("••••••");
-          setBookingData({ ...bookingData, verificationPin: value });
+          setBookingData({ ...bookingData, verificationPin: value, contactPhone: value });
           setStep(8);
-          addAgentMessage(getBilingualText("askPhoneContact"));
-          showToast(t("success"), "success", 2000);
-        } else {
-          showToast(errorMsg, "error");
-          setError(errorMsg);
-        }
-        return;
-
-      case 8:
-        if (!validatePhone(value)) {
-          isValid = false;
-          errorMsg = getBilingualText("invalidPhone");
-        }
-        if (isValid) {
-          addUserMessage(value);
-          setBookingData({ ...bookingData, contactPhone: value });
-          setStep(9);
           addAgentMessage(getBilingualText("askContactMethod"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -685,34 +670,34 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         }
         return;
 
-      case 9:
+      case 8:
         addUserMessage(value);
         setBookingData({ ...bookingData, contactMethod: value });
-        setStep(10);
+        setStep(9);
         addAgentMessage(getBilingualText("askEventType"));
         showToast(t("success"), "success", 2000);
         return;
 
-      case 10:
+      case 9:
         addUserMessage(value);
         setBookingData({ ...bookingData, eventType: value });
-        setStep(11);
+        setStep(10);
         addAgentMessage(getBilingualText("selectPackage"));
         showToast(t("success"), "success", 2000);
         return;
 
-      case 11:
+      case 10:
         addUserMessage(`📦 ${value}`);
         setBookingData({ ...bookingData, plan: value });
-        setStep(12);
+        setStep(11);
         addAgentMessage(getBilingualText("askEventCountry"));
         showToast(t("success"), "success", 2000);
         return;
 
-      case 12:
+      case 11:
         if (!value || value.length < 2) {
           isValid = false;
-          errorMsg = "Please enter a valid country";
+          errorMsg = "Please select a country from the list";
         }
         if (isValid) {
           addUserMessage(value);
@@ -722,7 +707,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
             addAgentMessage(getBilingualText("eventCountryMismatch"));
           }
 
-          setStep(13);
+          setStep(12);
           addAgentMessage(getBilingualText("askEventCity"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -731,7 +716,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         }
         return;
 
-      case 13:
+      case 12:
         if (!value || value.length < 2) {
           isValid = false;
           errorMsg = "Please enter a valid city";
@@ -739,7 +724,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, eventCity: value });
-          setStep(14);
+          setStep(13);
           addAgentMessage(getBilingualText("askDate"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -748,7 +733,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         }
         return;
 
-      case 14:
+      case 13:
         if (!isDateInFuture(value)) {
           isValid = false;
           errorMsg = "Please select a future date";
@@ -759,7 +744,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, eventDate: value });
-          setStep(15);
+          setStep(14);
           addAgentMessage(getBilingualText("askTime"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -768,7 +753,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         }
         return;
 
-      case 15:
+      case 14:
         if (isDateBooked(bookingData.eventDate, value)) {
           isValid = false;
           errorMsg = getBilingualText("timeBooked");
@@ -776,7 +761,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, eventTime: value });
-          setStep(16);
+          setStep(15);
           addAgentMessage(getBilingualText("askLocation"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -785,7 +770,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         }
         return;
 
-      case 16:
+      case 15:
         if (!value || value.length < 3) {
           isValid = false;
           errorMsg = "Please enter a valid venue";
@@ -793,7 +778,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, eventLocation: value });
-          setStep(17);
+          setStep(16);
           addAgentMessage(getBilingualText("noticeTitle"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -816,7 +801,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
   };
 
   const goBack = () => {
-    if (step > 0 && step < 17) {
+    if (step > 0 && step < 16) {
       setStep(step - 1);
       setError("");
       showToast("Going back...", "info", 1000);
@@ -862,7 +847,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
   }, []);
 
   useEffect(() => {
-    if (step === 18 && !bookingRefNum) {
+    if (step === 17 && !bookingRefNum) {
       const refNum = `SE-${Date.now()}`;
       setBookingRefNum(refNum);
       generateQRCode(refNum);
@@ -874,7 +859,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
   }, [messages]);
 
   const getProgressPercentage = () => {
-    return Math.min((step / 18) * 100, 100);
+    return Math.min((step / 17) * 100, 100);
   };
 
   const renderStep = () => {
@@ -899,6 +884,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           </div>
         );
 
+      case 1:
       case 2:
       case 12:
         return (
@@ -988,7 +974,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           </div>
         );
 
-      case 11:
+      case 10:
         return (
           <div className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -997,11 +983,11 @@ By electronically signing below, I confirm acceptance of this booking agreement.
                   key={pkg.id}
                   onClick={() => handlePackageSelect(pkg.name)}
                   className="p-6 bg-gradient-to-br from-slate-700 to-slate-800 border-2 border-yellow-500 hover:border-yellow-400 rounded-xl hover:bg-gradient-to-br hover:from-yellow-700 hover:to-yellow-800 transition text-left transform hover:scale-105 shadow-lg"
-                  aria-label={`Select ${pkg.name} package for ETB ${pkg.price.toLocaleString()}`}
+                  aria-label={`Select ${pkg.name} package - 50% deposit required`}
                 >
                   <div className="text-3xl mb-2">{pkg.icon}</div>
                   <div className="font-bold text-lg text-white">{pkg.name}</div>
-                  <div className="text-yellow-300 font-semibold mt-2">ETB {pkg.price.toLocaleString()}</div>
+                  <div className="text-yellow-300 font-semibold mt-2">50% {language === 'en' ? 'Deposit Required' : 'ዝቅ ብለህ ክፍያ'}</div>
                 </button>
               ))}
             </div>
@@ -1015,7 +1001,34 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           </div>
         );
 
-      case 17:
+      case 11:
+        return (
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+              {COUNTRIES.map((country) => (
+                <button
+                  key={country}
+                  onClick={() => handleNext(country)}
+                  className="p-3 bg-gradient-to-br from-slate-700 to-slate-800 border border-yellow-500 hover:border-yellow-400 rounded-lg hover:bg-gradient-to-br hover:from-yellow-700 hover:to-yellow-800 transition text-sm font-semibold text-white"
+                  aria-label={`Select ${country} for event`}
+                >
+                  {country}
+                </button>
+              ))}
+            </div>
+            {step > 0 && (
+              <button
+                onClick={goBack}
+                className="w-full px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition text-sm font-semibold"
+                aria-label="Go back to previous question"
+              >
+                {t("back")}
+              </button>
+            )}
+          </div>
+        );
+
+      case 16:
         return (
           <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-yellow-500 rounded-xl p-6 space-y-4 shadow-2xl">
             <div className="bg-slate-900 p-4 rounded-lg text-white text-sm whitespace-pre-line mb-4 border-l-4 border-yellow-500">
@@ -1064,7 +1077,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           </div>
         );
 
-      case 18:
+      case 17:
         const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
         return (
           <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-yellow-500 rounded-xl p-6 space-y-4 shadow-2xl">
@@ -1246,10 +1259,10 @@ By electronically signing below, I confirm acceptance of this booking agreement.
             <p className="text-white text-sm opacity-90 tracking-wide">Professional Event Planning & Coordination</p>
           </div>
 
-          {step > 0 && step < 18 && (
+          {step > 0 && step < 17 && (
             <div className="space-y-2 animate-fadeIn">
               <div className="flex justify-between items-center text-xs text-yellow-400 mb-2 font-semibold">
-                <span>{t("stepOf")} {step}/17</span>
+                <span>{t("stepOf")} {step}/16</span>
                 <span>{Math.round(getProgressPercentage())}%</span>
               </div>
               <div className="h-2 bg-slate-700 rounded-full overflow-hidden border border-yellow-500 border-opacity-30">
