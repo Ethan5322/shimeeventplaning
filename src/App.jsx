@@ -1062,7 +1062,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, nationality: value });
-          setStep(2);
+          setStep(3);
           addAgentMessage(getBilingualText("askResidency"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1071,7 +1071,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 2:
+      case 3:
         if (!value || value.trim().length < 2) {
           isValid = false;
           errorMsg = "Please enter your country of residence (at least 2 characters)";
@@ -1086,7 +1086,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
             ? `${getBilingualText("askPhone")}\n\n(Expected format for ${value}: ${countryCode}XXX... where XXX are the remaining digits)`
             : getBilingualText("askPhone");
 
-          setStep(3);
+          setStep(4);
           addAgentMessage(phoneInstruction);
           showToast(t("success"), "success", 2000);
         } else {
@@ -1095,7 +1095,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 3:
+      case 4:
         if (!validatePhone(value)) {
           isValid = false;
           errorMsg = getBilingualText("invalidPhone");
@@ -1108,7 +1108,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, phoneNumber: value });
-          setStep(4);
+          setStep(5);
           addAgentMessage(getBilingualText("askEmail"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1117,7 +1117,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 4:
+      case 5:
         if (!validateEmail(value)) {
           isValid = false;
           errorMsg = getBilingualText("invalidEmail");
@@ -1125,7 +1125,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, email: value });
-          setStep(5);
+          setStep(6);
           addAgentMessage(getBilingualText("askFullName"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1134,7 +1134,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 5:
+      case 6:
         if (!validateName(value)) {
           isValid = false;
           errorMsg = getBilingualText("invalidName");
@@ -1142,7 +1142,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, fullName: value });
-          setStep(6);
+          setStep(7);
           addAgentMessage(getBilingualText("askIdType"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1151,7 +1151,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 6:
+      case 7:
         if (!validateId(value)) {
           isValid = false;
           errorMsg = getBilingualText("invalidId");
@@ -1159,7 +1159,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, idNumber: value });
-          setStep(7);
+          setStep(8);
           addAgentMessage(getBilingualText("askPassword"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1168,7 +1168,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 7:
+      case 8:
         if (value.length < 6) {
           isValid = false;
           errorMsg = "PIN must be at least 6 digits";
@@ -1176,7 +1176,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         if (isValid) {
           addUserMessage("••••••");
           setBookingData({ ...bookingData, verificationPin: value, contactPhone: value });
-          setStep(8);
+          setStep(9);
           addAgentMessage(getBilingualText("askContactMethod"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1185,31 +1185,31 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 8:
+      case 9:
         addUserMessage(value);
         setBookingData({ ...bookingData, contactMethod: value });
-        setStep(9);
+        setStep(10);
         addAgentMessage(getBilingualText("askEventType"));
         showToast(t("success"), "success", 2000);
         return;
 
-      case 9:
+      case 10:
         addUserMessage(value);
         setBookingData({ ...bookingData, eventType: value });
-        setStep(10);
+        setStep(11);
         addAgentMessage(getBilingualText("selectPackage"));
         showToast(t("success"), "success", 2000);
         return;
 
-      case 10:
+      case 11:
         addUserMessage(`📦 ${value}`);
         setBookingData({ ...bookingData, plan: value });
-        setStep(11);
+        setStep(12);
         addAgentMessage(getBilingualText("askEventCountry"));
         showToast(t("success"), "success", 2000);
         return;
 
-      case 11:
+      case 12:
         if (!value || value.trim().length < 2) {
           isValid = false;
           errorMsg = "Please enter the event country (at least 2 characters)";
@@ -1222,7 +1222,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
             addAgentMessage(getBilingualText("eventCountryMismatch"));
           }
 
-          setStep(12);
+          setStep(13);
           addAgentMessage(getBilingualText("askEventCity"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1231,7 +1231,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 12:
+      case 13:
         if (!value || value.length < 2) {
           isValid = false;
           errorMsg = "Please enter a valid city";
@@ -1239,7 +1239,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, eventCity: value });
-          setStep(13);
+          setStep(14);
           addAgentMessage(getBilingualText("askDate"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1248,7 +1248,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 13:
+      case 14:
         if (!isDateInFuture(value)) {
           isValid = false;
           errorMsg = "Please select a future date";
@@ -1259,7 +1259,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, eventDate: value });
-          setStep(14);
+          setStep(15);
           addAgentMessage(getBilingualText("askTime"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1268,7 +1268,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 14:
+      case 15:
         // Validate time format (HH:MM)
         const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
         if (!timeRegex.test(value)) {
@@ -1283,7 +1283,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, eventTime: value });
-          setStep(15);
+          setStep(16);
           addAgentMessage(getBilingualText("askLocation"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1292,7 +1292,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 15:
+      case 16:
         if (!value || value.length < 3) {
           isValid = false;
           errorMsg = "Please enter a valid venue";
@@ -1300,7 +1300,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, eventLocation: value });
-          setStep(16);
+          setStep(17);
           addAgentMessage(getBilingualText("noticeTitle"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1567,7 +1567,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
           </div>
         );
 
-      case 10:
+      case 11:
         return (
           <div className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1602,7 +1602,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         );
 
 
-      case 16:
+      case 17:
         const pkgInfoDeposit = PACKAGES.find(p => p.name === bookingData.plan);
         const depositAmount = Math.round((pkgInfoDeposit?.price || 0) / 2);
         return (
@@ -1697,7 +1697,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
           </div>
         );
 
-      case 17:
+      case 18:
         const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
         return (
           <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-yellow-500 rounded-xl p-6 space-y-4 shadow-2xl">
