@@ -1382,17 +1382,17 @@ Your signature/acceptance serves as binding agreement to this contract.`;
     switch (step) {
       case 0:
         return (
-          <div className="flex flex-col md:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
             <button
               onClick={() => handleNext("en")}
-              className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition transform hover:scale-105 shadow-lg font-semibold"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition transform hover:scale-105 shadow-lg font-semibold text-base sm:text-lg"
               aria-label="Select English language"
             >
               🇬🇧 English
             </button>
             <button
               onClick={() => handleNext("am")}
-              className="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl hover:from-purple-700 hover:to-purple-800 transition transform hover:scale-105 shadow-lg font-semibold"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl hover:from-purple-700 hover:to-purple-800 transition transform hover:scale-105 shadow-lg font-semibold text-base sm:text-lg"
               aria-label="Select Amharic language"
             >
               🇪🇹 አማርኛ
@@ -1750,9 +1750,9 @@ Your signature/acceptance serves as binding agreement to this contract.`;
 
       default:
         return (
-          <div className="w-full max-w-md space-y-3">
+          <div className="w-full max-w-full sm:max-w-md space-y-3">
             <div>
-              <label className="block text-yellow-400 text-sm font-semibold mb-2">
+              <label className="block text-yellow-400 text-xs sm:text-sm font-semibold mb-2">
                 {step < 17 && <span className="text-red-400">*</span>} {t("required")}
               </label>
               <input
@@ -1769,17 +1769,17 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                   }
                 }}
                 placeholder={step === 14 ? "YYYY-MM-DD" : step === 15 ? "HH:MM" : ""}
-                className="w-full px-4 py-3 bg-white text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-lg"
+                className="w-full px-3 sm:px-4 py-3 sm:py-3 bg-white text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-lg text-base"
                 autoFocus
                 aria-label={`Input for step ${step}`}
               />
             </div>
-            {error && <div className="text-red-400 text-sm font-semibold bg-red-900 bg-opacity-20 p-2 rounded">{error}</div>}
-            <div className="flex gap-3">
+            {error && <div className="text-red-400 text-xs sm:text-sm font-semibold bg-red-900 bg-opacity-20 p-2 rounded">{error}</div>}
+            <div className="flex gap-2 sm:gap-3">
               {step > 0 && step < 17 && (
                 <button
                   onClick={goBack}
-                  className="flex-1 px-4 py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-bold transition"
+                  className="flex-1 px-3 sm:px-4 py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-bold transition text-sm sm:text-base"
                   aria-label="Go to previous step"
                 >
                   {t("back")}
@@ -1792,7 +1792,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                     setInputValue("");
                   }
                 }}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition text-lg transform hover:scale-105 shadow-lg"
+                className="flex-1 px-3 sm:px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition transform hover:scale-105 shadow-lg text-sm sm:text-base"
                 aria-label="Submit current answer and continue"
               >
                 {t("next")}
@@ -1832,11 +1832,11 @@ Your signature/acceptance serves as binding agreement to this contract.`;
 
       <Toast {...toast} />
 
-      <header className="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-8 border-b-2 border-yellow-500 sticky top-0 z-10 shadow-2xl">
-        <div className="max-w-5xl mx-auto px-4">
+      <header className="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-6 sm:py-8 border-b-2 border-yellow-500 sticky top-0 z-10 shadow-2xl">
+        <div className="max-w-full sm:max-w-5xl mx-auto px-4">
           <div className="text-center mb-6 animate-fadeIn">
-            <h1 className="brand-font text-5xl md:text-6xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">Shime Events</h1>
-            <p className="text-white text-sm opacity-90 tracking-wide">Professional Event Planning & Coordination</p>
+            <h1 className="brand-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">Shime Events</h1>
+            <p className="text-white text-xs sm:text-sm opacity-90 tracking-wide">Professional Event Planning & Coordination</p>
           </div>
 
           {step > 0 && language && step < 17 && (
@@ -1857,19 +1857,19 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-4 py-8 pb-20">
-        <div className="space-y-4 mb-8 max-h-[60vh] overflow-y-auto pr-4 rounded-lg">
+      <main className="max-w-full sm:max-w-5xl mx-auto px-3 sm:px-4 py-6 sm:py-8 pb-24 sm:pb-20">
+        <div className="space-y-3 mb-6 sm:mb-8 max-h-[50vh] sm:max-h-[60vh] overflow-y-auto pr-2 sm:pr-4 rounded-lg">
           {messages.map((msg) => (
             <div
               key={msg.id}
               className={`animate-fadeIn flex ${msg.type === "agent" ? "justify-start" : "justify-end"}`}
             >
               <div
-                className={`max-w-sm px-4 py-3 rounded-xl ${
+                className={`max-w-xs sm:max-w-sm px-3 sm:px-4 py-2 sm:py-3 rounded-xl ${
                   msg.type === "agent"
                     ? "bg-gradient-to-br from-slate-700 to-slate-800 border-l-4 border-yellow-500 text-white shadow-lg"
                     : "bg-gradient-to-br from-yellow-500 to-yellow-600 text-slate-900 font-semibold shadow-lg"
-                } whitespace-pre-line text-sm leading-relaxed`}
+                } whitespace-pre-line text-xs sm:text-sm leading-relaxed`}
               >
                 {msg.text}
               </div>
@@ -1878,14 +1878,14 @@ Your signature/acceptance serves as binding agreement to this contract.`;
           <div ref={chatEndRef} />
         </div>
 
-        <div className="max-w-md mx-auto space-y-4">
+        <div className="max-w-full sm:max-w-md mx-auto px-2 sm:px-0 space-y-3 sm:space-y-4">
           {renderStep()}
         </div>
 
         {/* Floating QR Button */}
         <button
           onClick={() => setShowQRSection(!showQRSection)}
-          className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-full shadow-2xl hover:from-purple-700 hover:to-purple-800 transition transform hover:scale-110 flex items-center justify-center font-bold text-xl z-40"
+          className="fixed bottom-4 right-4 sm:bottom-8 sm:right-8 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-full shadow-2xl hover:from-purple-700 hover:to-purple-800 transition transform hover:scale-110 flex items-center justify-center font-bold text-lg sm:text-xl z-40"
           aria-label="Show booking QR code"
           title="Booking QR Code"
         >
