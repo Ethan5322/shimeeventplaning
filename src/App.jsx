@@ -6,13 +6,12 @@ const translations = {
   en: {
     welcome: "Welcome to Shime Events & Planning",
     welcomeSubtitle: "Your Trusted Partner for Unforgettable Celebrations",
-    welcomeDesc: "We specialize in creating bespoke events tailored to your vision.",
     selectLanguage: "Select your preferred language:",
     askNationality: "What is your nationality?",
     askResidency: "Which country do you currently reside in?",
     askPhone: "What is your phone number? (Format: +country code + number)",
     invalidPhone: "❌ Invalid phone number. Please use format: +251911234567",
-    phoneCountryMismatch: "⚠️ Your phone number country code doesn't match your residence country. Please verify.",
+    phoneCountryMismatch: "⚠️ Your phone number country code doesn't match your residence country.",
     askEmail: "What is your email address?",
     invalidEmail: "❌ Invalid email. Please enter a valid email address.",
     askIdType: "Please enter your ID or Passport number:",
@@ -26,7 +25,6 @@ const translations = {
     askEventCountry: "In which country will the event be held?",
     eventCountryMismatch: "⚠️ Note: Your event is in a different country than your residence.",
     askEventCity: "In which city will the event take place?",
-    cityCountryMismatch: "⚠️ Please ensure the city matches your selected country.",
     askDate: "When will your event take place?",
     dateBooked: "⚠️ This date is unavailable. Please select another date.",
     askTime: "What time would you prefer?",
@@ -49,31 +47,35 @@ By signing this agreement, you confirm that you have read and accepted all terms
     shareWhatsapp: "📲 Share via WhatsApp",
     viewBooking: "📋 Booking Confirmation",
     downloadPdf: "⬇️ Download Contract",
+    downloadQr: "⬇️ Download QR Code",
     sendInstructions: "Next Steps:\n1. Send proof of payment\n2. Send signed contract\n\nSubmit to:\n📱 WhatsApp: +251 91 234 5678\n✉️ Telegram: @ShimeEvents",
     bookingConfirmed: "Booking Confirmed",
     termsAccepted: "✅ Terms accepted successfully.",
     proceedBooking: "Review Booking",
     contactUs: "📲 Contact Us",
     stepOf: "Step",
-    estimatedDeposit: "Estimated Deposit:",
-    signature: "Signature",
-    elegance: "Elegance",
-    premium: "Premium",
-    exclusive: "Exclusive",
-    selectPackage: "Select your event package:",
+    required: "(Required)",
+    back: "← Back",
+    next: "Continue →",
+    success: "✅ Success!",
+    loading: "Loading...",
+    generatingPdf: "Generating PDF...",
+    generatingQr: "Generating QR Code...",
+    copy: "Copy",
+    copied: "Copied!",
+    startOver: "Start Over",
   },
   am: {
     welcome: "በ Shime Events & Planning ደህና መጡ",
     welcomeSubtitle: "ለተረጋገጥ አጠቃሉ ዝግጅት ታሪካዊ አጋዥ",
-    welcomeDesc: "እኛ በእርስዎ ራዕይ ላይ ተመስርተው ልዩ ዝግጅቶችን ይፈጥራለን።",
     selectLanguage: "ተመራጭ ቋንቋዎን ይምረጡ:",
     askNationality: "ተዋለድነትዎ ምንድን ነው?",
     askResidency: "በአሁኑ ጊዜ በ የት ሀገር ነው የሚኖሩት?",
-    askPhone: "ስልክ ቁጥርዎ ምንድን ነው? (ገጽታ: +251911234567)",
-    invalidPhone: "❌ ተገቢ ያልሆነ ስልክ ቁጥር። እንደገና ይሞክሩ።",
-    phoneCountryMismatch: "⚠️ ስልክ ቁጥርዎ ከደረሰበት ሀገር ጋር አይዛመድም። እባክዎ ያረጋግጡ።",
+    askPhone: "ስልክ ቁጥርዎ ምንድን ነው?",
+    invalidPhone: "❌ ተገቢ ያልሆነ ስልክ ቁጥር።",
+    phoneCountryMismatch: "⚠️ ስልክ ቁጥርዎ ከደረሰበት ሀገር ጋር አይዛመድም።",
     askEmail: "ኢሜይሉ ምንድን ነው?",
-    invalidEmail: "❌ ተገቢ ያልሆነ ኢሜይል። እባክዎ ትክክለኛ ኢሜይል ያስገቡ።",
+    invalidEmail: "❌ ተገቢ ያልሆነ ኢሜይል።",
     askIdType: "ID ወይም ፓስፖርት ቁጥርዎን ያስገቡ:",
     invalidId: "❌ ተገቢ ያልሆነ ID/ፓስፖርት።",
     askFullName: "ሙሉ ስምዎ ምንድን ነው?",
@@ -85,36 +87,35 @@ By signing this agreement, you confirm that you have read and accepted all terms
     askEventCountry: "ዝግጅቱ በ የት ሀገር ይሆናል?",
     eventCountryMismatch: "⚠️ ማስታወሻ: ዝግጅትዎ ከመኖሪያ ሀገር በተለየ ሀገር ነው።",
     askEventCity: "ዝግጅቱ በ የት ከተማ ይሆናል?",
-    cityCountryMismatch: "⚠️ ከተማው ከተመረጠው ሀገር ጋር ይዛመድ እንደሆነ ያረጋግጡ።",
     askDate: "ዝግጅትዎ መቼ ይሆናል?",
-    dateBooked: "⚠️ ይህ ቀን ተገኝነት የለውም།",
+    dateBooked: "⚠️ ይህ ቀን ተገኝነት የለውም።",
     askTime: "ምን ሰዓት ይመርጣሉ?",
     timeBooked: "⚠️ ይህ ሰዓት ተገኝነት የለውም።",
     askLocation: "ቦታ/አድራሻ ምንድን ነው?",
     noticeTitle: "ዝግጅት ማረጋገጥ እና ክፍያ",
     noticeBody: "ዝግጅትዎን ለማረጋገጥ ክፍያ ያስገቡ:\n\n🏦 CBE WALLET\nHesaab: 1000XXXXXXXX\nSemie: Shime Events & Planning",
     termsTitle: "ውል ስምምነት",
-    termsText: `1. ዝግጅቱን ለማረጋገጥ ማይወስድ ክፍያ ያስፈልጋል።
-2. ሙሉ ክፍያ ከዝግጅቱ 14 ቀን በፊት ይከሰታል።
-3. በዝግጅቱ 7 ቀን ውስጥ ሥራ ማስቋረጥ 50% ይጠፋል።
-4. Shime Events & Planning ተመሳሳይ ጥራት ያላቸውን አገልግሎቶችን መለዋወጥ ይችላል።
-5. ደንበኛው ስለ ገቢ ትክክለኛ መረጃ ተጠያቂ ነው።
-6. ወደ ቀን፣ ቦታ ወይም ስብሰባ ቁጥር ለውጥ በጽሁፍ መጠየቅ ያስፈልጋል።
-7. ታናናሽ ሁኔታዎች ተፈጥሯዊ ሚና ይጫወታሉ።
-8. ሁሉም ክርክር በኢትዮጵያ ሕግ ይመገባል።
-
-ይህን ስምምነት በመፈረም፣ ሁሉንም ውሎች ተቀብለዋል።`,
     acceptTerms: "✅ ውሎችን ተቀብያለሁ",
     shareWhatsapp: "📲 በ WhatsApp ላክ",
     viewBooking: "📋 ዝግጅት ማረጋገጥ",
     downloadPdf: "⬇️ ውል ድቅድቅ",
-    sendInstructions: "ቀጣይ ደረጃ:\n1. ክፍያ ማስረጃ ይላኩ\n2. ውል ይላኩ\n\nልኩ:\n📱 WhatsApp: +251 91 234 5678\n✉️ Telegram: @ShimeEvents",
+    downloadQr: "⬇️ QR Code ድቅድቅ",
+    sendInstructions: "ቀጣይ ደረጃ:",
     bookingConfirmed: "ዝግጅት ተረጋግጧል",
     termsAccepted: "✅ ውሎች ተቀባይ ነበሩ።",
     proceedBooking: "ዝግጅትን ይገምግሙ",
     contactUs: "📲 ያገኙ",
     stepOf: "ደረጃ",
-    selectPackage: "የዝግጅት ፓኬጅ ይምረጡ:",
+    required: "(ያስፈልጋል)",
+    back: "← ወደ ኋላ",
+    next: "ቀጥል →",
+    success: "✅ ተሳካ!",
+    loading: "ሊጠበቅ...",
+    generatingPdf: "PDF ይሰበሰብ...",
+    generatingQr: "QR Code ይሰበሰብ...",
+    copy: "ቅዴ",
+    copied: "ተቅዳ!",
+    startOver: "ድጋሚ ጀምር",
   }
 };
 
@@ -145,6 +146,32 @@ const PHONE_CODES = {
   "Ghana": "+233",
 };
 
+// Toast Notification Component
+const Toast = ({ message, type, visible }) => {
+  if (!visible) return null;
+
+  const bgColor = {
+    success: "bg-green-600",
+    error: "bg-red-600",
+    info: "bg-blue-600",
+    warning: "bg-yellow-600"
+  }[type] || "bg-blue-600";
+
+  return (
+    <div className={`fixed top-4 right-4 ${bgColor} text-white px-6 py-3 rounded-lg shadow-lg animate-slideDown z-50`}>
+      {message}
+    </div>
+  );
+};
+
+// Loading Spinner Component
+const Spinner = () => (
+  <div className="flex items-center justify-center gap-2">
+    <div className="animate-spin h-5 w-5 border-2 border-yellow-400 border-t-transparent rounded-full"></div>
+    <span>Processing...</span>
+  </div>
+);
+
 export default function ShimeAssistant() {
   const [step, setStep] = useState(0);
   const [language, setLanguage] = useState(null);
@@ -156,7 +183,18 @@ export default function ShimeAssistant() {
   const [showTerms, setShowTerms] = useState(false);
   const [qrCode, setQrCode] = useState(null);
   const [bookingRefNum, setBookingRefNum] = useState(null);
+
+  // Toast state
+  const [toast, setToast] = useState({ message: "", type: "info", visible: false });
+  const [loading, setLoading] = useState(false);
+  const [copying, setCopying] = useState(false);
+
   const chatEndRef = useRef(null);
+
+  const showToast = (message, type = "info", duration = 3000) => {
+    setToast({ message, type, visible: true });
+    setTimeout(() => setToast({ ...toast, visible: false }), duration);
+  };
 
   const getBilingualText = (key) => {
     if (!language) return translations.en[key];
@@ -169,11 +207,11 @@ export default function ShimeAssistant() {
   const t = (key) => translations[language || "en"][key] || translations.en[key];
 
   const addAgentMessage = (text) => {
-    setMessages((prev) => [...prev, { type: "agent", text }]);
+    setMessages((prev) => [...prev, { type: "agent", text, id: Date.now() }]);
   };
 
   const addUserMessage = (text) => {
-    setMessages((prev) => [...prev, { type: "user", text }]);
+    setMessages((prev) => [...prev, { type: "user", text, id: Date.now() }]);
   };
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -199,16 +237,14 @@ export default function ShimeAssistant() {
           quality: 0.95,
           margin: 1,
           width: 300,
-          color: {
-            dark: '#d4af37',
-            light: '#1a1a2e'
-          }
+          color: { dark: '#d4af37', light: '#1a1a2e' }
         }
       );
       setQrCode(qrDataUrl);
       return qrDataUrl;
     } catch (err) {
       console.error('QR Code generation failed:', err);
+      showToast("Failed to generate QR code", "error");
     }
   };
 
@@ -245,176 +281,168 @@ export default function ShimeAssistant() {
     return canvas.toDataURL("image/png");
   };
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    const pageWidth = doc.internal.pageSize.getWidth();
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const goldColor = [212, 175, 55];
-    const textColor = [255, 255, 255];
-    const refNum = `SE-${Date.now()}`;
-    const today = new Date().toLocaleDateString();
-    const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
-    const deposit = pkgInfo?.price || 0;
+  const generatePDF = async () => {
+    try {
+      setLoading(true);
+      showToast(t("generatingPdf"), "info");
 
-    // Page 1
-    doc.setFillColor(26, 26, 46);
-    doc.rect(0, 0, pageWidth, pageHeight, "F");
+      const doc = new jsPDF();
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const goldColor = [212, 175, 55];
+      const textColor = [255, 255, 255];
+      const refNum = bookingRefNum || `SE-${Date.now()}`;
+      const today = new Date().toLocaleDateString();
+      const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
+      const deposit = pkgInfo?.price || 0;
 
-    doc.setTextColor(...goldColor);
-    doc.setFontSize(36);
-    doc.text("SHIME EVENTS", pageWidth / 2, 30, { align: "center" });
-    doc.setFontSize(16);
-    doc.text("& PLANNING", pageWidth / 2, 45, { align: "center" });
+      // Page 1 - Cover
+      doc.setFillColor(26, 26, 46);
+      doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-    doc.setFontSize(10);
-    doc.setTextColor(...textColor);
-    doc.text("Professional Event Planning & Coordination", pageWidth / 2, 60, { align: "center" });
-
-    doc.setLineWidth(0.5);
-    doc.setDrawColor(...goldColor);
-    doc.line(30, 70, pageWidth - 30, 70);
-
-    doc.setFontSize(12);
-    doc.setTextColor(...goldColor);
-    doc.text("BOOKING CONFIRMATION DOCUMENT", pageWidth / 2, 85, { align: "center" });
-
-    doc.setFontSize(9);
-    doc.setTextColor(...textColor);
-    doc.text(`Booking Reference: ${refNum}`, pageWidth / 2, 100, { align: "center" });
-    doc.text(`Booking Date: ${today}`, pageWidth / 2, 108, { align: "center" });
-
-    let boxY = 125;
-    doc.setFillColor(40, 40, 70);
-    doc.rect(20, boxY, pageWidth - 40, 60);
-
-    doc.setTextColor(...goldColor);
-    doc.setFontSize(11);
-    doc.text("BOOKING SUMMARY", 25, boxY + 8);
-
-    doc.setTextColor(...textColor);
-    doc.setFontSize(9);
-    doc.text(`Client: ${bookingData.fullName}`, 25, boxY + 20);
-    doc.text(`Event: ${bookingData.eventType} | Date: ${bookingData.eventDate}`, 25, boxY + 30);
-    doc.text(`Package: ${bookingData.plan} | Location: ${bookingData.eventCity}, ${bookingData.eventCountry}`, 25, boxY + 40);
-    doc.text(`Deposit: ETB ${deposit.toLocaleString()}`, 25, boxY + 50);
-
-    // Page 2
-    doc.addPage();
-    doc.setFillColor(26, 26, 46);
-    doc.rect(0, 0, pageWidth, pageHeight, "F");
-
-    doc.setTextColor(...goldColor);
-    doc.setFontSize(14);
-    doc.text("CLIENT INFORMATION", 20, 15);
-    doc.setLineWidth(0.5);
-    doc.setDrawColor(...goldColor);
-    doc.line(20, 18, pageWidth - 20, 18);
-
-    doc.setTextColor(...textColor);
-    doc.setFontSize(9);
-    let yPos = 28;
-    const clientInfo = [
-      ["Full Name", bookingData.fullName || "N/A"],
-      ["Email Address", bookingData.email || "N/A"],
-      ["Phone Number", bookingData.phoneNumber || "N/A"],
-      ["Contact Phone", bookingData.contactPhone || "N/A"],
-      ["ID / Passport Number", bookingData.idNumber || "N/A"],
-      ["Nationality", bookingData.nationality || "N/A"],
-      ["Country of Residence", bookingData.residency || "N/A"],
-      ["Preferred Contact Method", bookingData.contactMethod || "N/A"],
-      ["Security PIN", bookingData.verificationPin ? "••••••" : "N/A"],
-    ];
-
-    clientInfo.forEach(([label, value]) => {
       doc.setTextColor(...goldColor);
-      doc.text(`${label}:`, 20, yPos);
+      doc.setFontSize(36);
+      doc.text("SHIME EVENTS", pageWidth / 2, 30, { align: "center" });
+      doc.setFontSize(16);
+      doc.text("& PLANNING", pageWidth / 2, 45, { align: "center" });
+
+      doc.setFontSize(10);
       doc.setTextColor(...textColor);
-      doc.text(value, 80, yPos);
-      yPos += 7;
-    });
+      doc.text("Professional Event Planning & Coordination", pageWidth / 2, 60, { align: "center" });
 
-    doc.setTextColor(...goldColor);
-    doc.setFontSize(14);
-    doc.text("EVENT DETAILS", 20, yPos + 5);
-    doc.line(20, yPos + 8, pageWidth - 20, yPos + 8);
+      doc.setLineWidth(0.5);
+      doc.setDrawColor(...goldColor);
+      doc.line(30, 70, pageWidth - 30, 70);
 
-    doc.setTextColor(...textColor);
-    doc.setFontSize(9);
-    yPos += 18;
-    const eventInfo = [
-      ["Event Type", bookingData.eventType || "N/A"],
-      ["Selected Package", bookingData.plan || "N/A"],
-      ["Event Date", bookingData.eventDate || "N/A"],
-      ["Event Time", bookingData.eventTime || "N/A"],
-      ["Event Country", bookingData.eventCountry || "N/A"],
-      ["Event City", bookingData.eventCity || "N/A"],
-      ["Venue / Location", bookingData.eventLocation || "N/A"],
-    ];
-
-    eventInfo.forEach(([label, value]) => {
+      doc.setFontSize(12);
       doc.setTextColor(...goldColor);
-      doc.text(`${label}:`, 20, yPos);
+      doc.text("BOOKING CONFIRMATION DOCUMENT", pageWidth / 2, 85, { align: "center" });
+
+      doc.setFontSize(9);
       doc.setTextColor(...textColor);
-      doc.text(value, 80, yPos);
-      yPos += 7;
-    });
+      doc.text(`Booking Reference: ${refNum}`, pageWidth / 2, 100, { align: "center" });
+      doc.text(`Booking Date: ${today}`, pageWidth / 2, 108, { align: "center" });
 
-    doc.setTextColor(...goldColor);
-    doc.setFontSize(14);
-    doc.text("PAYMENT INFORMATION", 20, yPos + 5);
-    doc.line(20, yPos + 8, pageWidth - 20, yPos + 8);
-
-    doc.setTextColor(...textColor);
-    doc.setFontSize(9);
-    yPos += 18;
-    doc.text("Payment Method: CBE WALLET", 20, yPos);
-    yPos += 7;
-    doc.text("Account Number: 1000XXXXXXXX", 20, yPos);
-    yPos += 7;
-    doc.text("Account Name: Shime Events & Planning", 20, yPos);
-    yPos += 7;
-    doc.setTextColor(...goldColor);
-    doc.text(`Deposit Amount: ETB ${deposit.toLocaleString()}`, 20, yPos);
-
-    // Page 3
-    doc.addPage();
-    doc.setFillColor(26, 26, 46);
-    doc.rect(0, 0, pageWidth, pageHeight, "F");
-
-    doc.setTextColor(...goldColor);
-    doc.setFontSize(14);
-    doc.text("TERMS & CONDITIONS", 20, 15);
-    doc.line(20, 18, pageWidth - 20, 18);
-
-    doc.setTextColor(...textColor);
-    doc.setFontSize(8);
-    const termsLines = doc.splitTextToSize(translations.en["termsText"], pageWidth - 40);
-    let termsY = 28;
-
-    termsLines.forEach((line) => {
-      if (termsY > 270) {
-        doc.addPage();
-        doc.setFillColor(26, 26, 46);
-        doc.rect(0, 0, pageWidth, pageHeight, "F");
-        termsY = 20;
+      // QR Code on Cover
+      if (qrCode) {
+        doc.addImage(qrCode, "PNG", pageWidth / 2 - 30, 125, 60, 60);
       }
-      doc.text(line, 20, termsY);
-      termsY += 4;
-    });
 
-    // Page 4
-    doc.addPage();
-    doc.setFillColor(26, 26, 46);
-    doc.rect(0, 0, pageWidth, pageHeight, "F");
+      // Page 2 - Details
+      doc.addPage();
+      doc.setFillColor(26, 26, 46);
+      doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-    doc.setTextColor(...goldColor);
-    doc.setFontSize(14);
-    doc.text("ELECTRONIC SIGNATURE & CLIENT AGREEMENT", 20, 15);
-    doc.line(20, 18, pageWidth - 20, 18);
+      doc.setTextColor(...goldColor);
+      doc.setFontSize(14);
+      doc.text("CLIENT INFORMATION", 20, 15);
+      doc.line(20, 18, pageWidth - 20, 18);
 
-    doc.setTextColor(...textColor);
-    doc.setFontSize(9);
-    const agreementText = `I, ${bookingData.fullName}, hereby declare that:
+      doc.setTextColor(...textColor);
+      doc.setFontSize(9);
+      let yPos = 28;
+      const clientInfo = [
+        ["Full Name", bookingData.fullName || "N/A"],
+        ["Email Address", bookingData.email || "N/A"],
+        ["Phone Number", bookingData.phoneNumber || "N/A"],
+        ["Contact Phone", bookingData.contactPhone || "N/A"],
+        ["ID / Passport Number", bookingData.idNumber || "N/A"],
+        ["Nationality", bookingData.nationality || "N/A"],
+        ["Country of Residence", bookingData.residency || "N/A"],
+        ["Preferred Contact Method", bookingData.contactMethod || "N/A"],
+        ["Security PIN", bookingData.verificationPin ? "••••••" : "N/A"],
+      ];
+
+      clientInfo.forEach(([label, value]) => {
+        doc.setTextColor(...goldColor);
+        doc.text(`${label}:`, 20, yPos);
+        doc.setTextColor(...textColor);
+        doc.text(value, 80, yPos);
+        yPos += 7;
+      });
+
+      doc.setTextColor(...goldColor);
+      doc.setFontSize(14);
+      doc.text("EVENT DETAILS", 20, yPos + 5);
+      doc.line(20, yPos + 8, pageWidth - 20, yPos + 8);
+
+      doc.setTextColor(...textColor);
+      doc.setFontSize(9);
+      yPos += 18;
+      const eventInfo = [
+        ["Event Type", bookingData.eventType || "N/A"],
+        ["Selected Package", bookingData.plan || "N/A"],
+        ["Event Date", bookingData.eventDate || "N/A"],
+        ["Event Time", bookingData.eventTime || "N/A"],
+        ["Event Country", bookingData.eventCountry || "N/A"],
+        ["Event City", bookingData.eventCity || "N/A"],
+        ["Venue / Location", bookingData.eventLocation || "N/A"],
+      ];
+
+      eventInfo.forEach(([label, value]) => {
+        doc.setTextColor(...goldColor);
+        doc.text(`${label}:`, 20, yPos);
+        doc.setTextColor(...textColor);
+        doc.text(value, 80, yPos);
+        yPos += 7;
+      });
+
+      doc.setTextColor(...goldColor);
+      doc.setFontSize(14);
+      doc.text("PAYMENT INFORMATION", 20, yPos + 5);
+      doc.line(20, yPos + 8, pageWidth - 20, yPos + 8);
+
+      doc.setTextColor(...textColor);
+      doc.setFontSize(9);
+      yPos += 18;
+      doc.text("Payment Method: CBE WALLET", 20, yPos);
+      yPos += 7;
+      doc.text("Account Number: 1000XXXXXXXX", 20, yPos);
+      yPos += 7;
+      doc.text("Account Name: Shime Events & Planning", 20, yPos);
+      yPos += 7;
+      doc.setTextColor(...goldColor);
+      doc.text(`Deposit Amount: ETB ${deposit.toLocaleString()}`, 20, yPos);
+
+      // Page 3 - Terms
+      doc.addPage();
+      doc.setFillColor(26, 26, 46);
+      doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+      doc.setTextColor(...goldColor);
+      doc.setFontSize(14);
+      doc.text("TERMS & CONDITIONS", 20, 15);
+      doc.line(20, 18, pageWidth - 20, 18);
+
+      doc.setTextColor(...textColor);
+      doc.setFontSize(8);
+      const termsLines = doc.splitTextToSize(translations.en["termsText"], pageWidth - 40);
+      let termsY = 28;
+
+      termsLines.forEach((line) => {
+        if (termsY > 270) {
+          doc.addPage();
+          doc.setFillColor(26, 26, 46);
+          doc.rect(0, 0, pageWidth, pageHeight, "F");
+          termsY = 20;
+        }
+        doc.text(line, 20, termsY);
+        termsY += 4;
+      });
+
+      // Page 4 - Signature
+      doc.addPage();
+      doc.setFillColor(26, 26, 46);
+      doc.rect(0, 0, pageWidth, pageHeight, "F");
+
+      doc.setTextColor(...goldColor);
+      doc.setFontSize(14);
+      doc.text("ELECTRONIC SIGNATURE & CLIENT AGREEMENT", 20, 15);
+      doc.line(20, 18, pageWidth - 20, 18);
+
+      doc.setTextColor(...textColor);
+      doc.setFontSize(9);
+      const agreementText = `I, ${bookingData.fullName}, hereby declare that:
 
 1. I have read and fully understood all Terms & Conditions.
 2. I confirm that all information provided is accurate and truthful.
@@ -424,46 +452,81 @@ export default function ShimeAssistant() {
 
 By electronically signing below, I confirm acceptance of this booking agreement.`;
 
-    const agreementLines = doc.splitTextToSize(agreementText, pageWidth - 40);
-    let agreementY = 30;
-    agreementLines.forEach((line) => {
-      doc.text(line, 20, agreementY);
-      agreementY += 5;
-    });
+      const agreementLines = doc.splitTextToSize(agreementText, pageWidth - 40);
+      let agreementY = 30;
+      agreementLines.forEach((line) => {
+        doc.text(line, 20, agreementY);
+        agreementY += 5;
+      });
 
-    agreementY += 10;
-    doc.setTextColor(...goldColor);
-    doc.setFontSize(10);
-    doc.text("ELECTRONIC SIGNATURE", 20, agreementY);
+      agreementY += 10;
+      doc.setTextColor(...goldColor);
+      doc.setFontSize(10);
+      doc.text("ELECTRONIC SIGNATURE", 20, agreementY);
+
+      try {
+        const sigImage = generateElectronicSignature();
+        doc.addImage(sigImage, "PNG", 20, agreementY + 5, 100, 25);
+      } catch (e) {
+        doc.setTextColor(...textColor);
+        doc.setFontSize(12);
+        doc.text(bookingData.fullName.split(" ")[0].charAt(0), 25, agreementY + 15);
+      }
+
+      agreementY += 35;
+
+      doc.setTextColor(...goldColor);
+      doc.setFontSize(8);
+      doc.text(`Signed on: ${today}`, 20, agreementY);
+      doc.text(`Generated: Automated Electronic Signature`, 20, agreementY + 5);
+      doc.text(`Booking Reference: ${refNum}`, 20, agreementY + 10);
+
+      // Footer
+      doc.setFillColor(40, 40, 70);
+      doc.rect(0, pageHeight - 25, pageWidth, 25);
+
+      doc.setTextColor(...goldColor);
+      doc.setFontSize(8);
+      doc.text("IMPORTANT: Keep a copy for your records. Send signed contract & payment proof to WhatsApp +251 91 234 5678", 20, pageHeight - 18);
+      doc.text(`Document ID: ${refNum} | Generated: ${new Date().toLocaleString()}`, 20, pageHeight - 3);
+
+      doc.save(`ShimeEvents_Booking_${(bookingData.fullName || "Client").replace(/ /g, "_")}_${refNum.replace("SE-", "")}.pdf`);
+
+      showToast(t("success") + " PDF downloaded!", "success");
+      setLoading(false);
+    } catch (error) {
+      console.error("PDF generation failed:", error);
+      showToast("Failed to generate PDF", "error");
+      setLoading(false);
+    }
+  };
+
+  const downloadQRCode = () => {
+    if (!qrCode || !bookingRefNum) return;
 
     try {
-      const sigImage = generateElectronicSignature();
-      doc.addImage(sigImage, "PNG", 20, agreementY + 5, 100, 25);
-    } catch (e) {
-      doc.setTextColor(...textColor);
-      doc.setFontSize(12);
-      doc.text(bookingData.fullName.split(" ")[0].charAt(0) + bookingData.fullName.split(" ")[bookingData.fullName.split(" ").length - 1].charAt(0), 25, agreementY + 15);
+      const link = document.createElement('a');
+      link.href = qrCode;
+      link.download = `ShimeEvents_QRCode_${bookingRefNum}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast("QR Code downloaded!", "success");
+    } catch (error) {
+      showToast("Failed to download QR Code", "error");
     }
+  };
 
-    agreementY += 35;
-
-    doc.setTextColor(...goldColor);
-    doc.setFontSize(8);
-    doc.text(`Signed on: ${today}`, 20, agreementY);
-    doc.text(`Generated: Automated Electronic Signature`, 20, agreementY + 5);
-    doc.text(`Booking Reference: ${refNum}`, 20, agreementY + 10);
-
-    // Footer
-    doc.setFillColor(40, 40, 70);
-    doc.rect(0, pageHeight - 25, pageWidth, 25);
-
-    doc.setTextColor(...goldColor);
-    doc.setFontSize(8);
-    doc.text("IMPORTANT: Please keep a copy of this document for your records.", 20, pageHeight - 18);
-    doc.text("Send signed contract and proof of payment to: WhatsApp +251 91 234 5678 | Telegram @ShimeEvents", 20, pageHeight - 13);
-    doc.text(`Document ID: ${refNum} | Generated: ${new Date().toLocaleString()}`, 20, pageHeight - 3);
-
-    doc.save(`ShimeEvents_Booking_${(bookingData.fullName || "Client").replace(/ /g, "_")}_${refNum.replace("SE-", "")}.pdf`);
+  const copyToClipboard = async (text) => {
+    try {
+      setCopying(true);
+      await navigator.clipboard.writeText(text);
+      showToast(t("copied"), "success", 2000);
+      setTimeout(() => setCopying(false), 2000);
+    } catch (error) {
+      showToast("Failed to copy", "error");
+      setCopying(false);
+    }
   };
 
   const handleNext = (value) => {
@@ -476,6 +539,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         addUserMessage(value === "en" ? "🇬🇧 English" : "🇪🇹 አማርኛ");
         setStep(1);
         addAgentMessage(getBilingualText("askNationality"));
+        showToast(t("success"), "success", 2000);
         return;
 
       case 1:
@@ -488,7 +552,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           setBookingData({ ...bookingData, nationality: value });
           setStep(2);
           addAgentMessage(getBilingualText("askResidency"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -503,7 +569,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           setBookingData({ ...bookingData, residency: value });
           setStep(3);
           addAgentMessage(getBilingualText("askPhone"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -525,7 +593,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
 
           setStep(4);
           addAgentMessage(getBilingualText("askEmail"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -540,7 +610,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           setBookingData({ ...bookingData, email: value });
           setStep(5);
           addAgentMessage(getBilingualText("askFullName"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -555,7 +627,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           setBookingData({ ...bookingData, fullName: value });
           setStep(6);
           addAgentMessage(getBilingualText("askIdType"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -570,7 +644,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           setBookingData({ ...bookingData, idNumber: value });
           setStep(7);
           addAgentMessage(getBilingualText("askPassword"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -585,7 +661,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           setBookingData({ ...bookingData, verificationPin: value });
           setStep(8);
           addAgentMessage(getBilingualText("askPhoneContact"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -600,7 +678,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           setBookingData({ ...bookingData, contactPhone: value });
           setStep(9);
           addAgentMessage(getBilingualText("askContactMethod"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -610,6 +690,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         setBookingData({ ...bookingData, contactMethod: value });
         setStep(10);
         addAgentMessage(getBilingualText("askEventType"));
+        showToast(t("success"), "success", 2000);
         return;
 
       case 10:
@@ -617,6 +698,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         setBookingData({ ...bookingData, eventType: value });
         setStep(11);
         addAgentMessage(getBilingualText("selectPackage"));
+        showToast(t("success"), "success", 2000);
         return;
 
       case 11:
@@ -624,6 +706,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         setBookingData({ ...bookingData, plan: value });
         setStep(12);
         addAgentMessage(getBilingualText("askEventCountry"));
+        showToast(t("success"), "success", 2000);
         return;
 
       case 12:
@@ -641,7 +724,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
 
           setStep(13);
           addAgentMessage(getBilingualText("askEventCity"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -656,7 +741,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           setBookingData({ ...bookingData, eventCity: value });
           setStep(14);
           addAgentMessage(getBilingualText("askDate"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -674,7 +761,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           setBookingData({ ...bookingData, eventDate: value });
           setStep(15);
           addAgentMessage(getBilingualText("askTime"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -689,7 +778,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           setBookingData({ ...bookingData, eventTime: value });
           setStep(16);
           addAgentMessage(getBilingualText("askLocation"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -704,7 +795,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           setBookingData({ ...bookingData, eventLocation: value });
           setStep(17);
           addAgentMessage(getBilingualText("noticeTitle"));
+          showToast(t("success"), "success", 2000);
         } else {
+          showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
@@ -712,6 +805,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
       case 17:
         setStep(18);
         addAgentMessage(getBilingualText("bookingConfirmed"));
+        showToast(t("success"), "success", 2000);
         return;
 
       default:
@@ -719,6 +813,14 @@ By electronically signing below, I confirm acceptance of this booking agreement.
     }
 
     setInputValue("");
+  };
+
+  const goBack = () => {
+    if (step > 0 && step < 17) {
+      setStep(step - 1);
+      setError("");
+      showToast("Going back...", "info", 1000);
+    }
   };
 
   const handlePackageSelect = (planName) => {
@@ -736,6 +838,21 @@ By electronically signing below, I confirm acceptance of this booking agreement.
   const handleAcceptTerms = () => {
     setTermsAccepted(true);
     addAgentMessage(getBilingualText("termsAccepted"));
+    showToast(t("termsAccepted"), "success");
+  };
+
+  const resetBooking = () => {
+    setStep(0);
+    setLanguage(null);
+    setMessages([]);
+    setBookingData({});
+    setInputValue("");
+    setTermsAccepted(false);
+    setError("");
+    setQrCode(null);
+    setBookingRefNum(null);
+    addAgentMessage(`${t("welcome")}\n\n${t("welcomeSubtitle")}\n\n${t("selectLanguage")}`);
+    showToast("Booking reset", "info");
   };
 
   useEffect(() => {
@@ -745,16 +862,16 @@ By electronically signing below, I confirm acceptance of this booking agreement.
   }, []);
 
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  useEffect(() => {
     if (step === 18 && !bookingRefNum) {
       const refNum = `SE-${Date.now()}`;
       setBookingRefNum(refNum);
       generateQRCode(refNum);
     }
   }, [step]);
+
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const getProgressPercentage = () => {
     return Math.min((step / 18) * 100, 100);
@@ -764,16 +881,18 @@ By electronically signing below, I confirm acceptance of this booking agreement.
     switch (step) {
       case 0:
         return (
-          <div className="flex gap-4 justify-center">
+          <div className="flex flex-col md:flex-row gap-4 justify-center">
             <button
               onClick={() => handleNext("en")}
               className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition transform hover:scale-105 shadow-lg font-semibold"
+              aria-label="Select English language"
             >
               🇬🇧 English
             </button>
             <button
               onClick={() => handleNext("am")}
               className="px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl hover:from-purple-700 hover:to-purple-800 transition transform hover:scale-105 shadow-lg font-semibold"
+              aria-label="Select Amharic language"
             >
               🇪🇹 አማርኛ
             </button>
@@ -781,89 +900,118 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         );
 
       case 2:
+      case 12:
         return (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {COUNTRIES.map((country) => (
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+              {COUNTRIES.map((country) => (
+                <button
+                  key={country}
+                  onClick={() => handleNext(country)}
+                  className="p-3 bg-gradient-to-br from-slate-700 to-slate-800 border border-yellow-500 hover:border-yellow-400 rounded-lg hover:bg-gradient-to-br hover:from-yellow-700 hover:to-yellow-800 transition text-sm font-semibold text-white"
+                  aria-label={`Select ${country}`}
+                >
+                  {country}
+                </button>
+              ))}
+            </div>
+            {step > 0 && (
               <button
-                key={country}
-                onClick={() => handleNext(country)}
-                className="p-3 bg-gradient-to-br from-slate-700 to-slate-800 border border-blue-500 hover:border-blue-400 rounded-lg hover:bg-gradient-to-br hover:from-blue-700 hover:to-blue-800 transition text-sm font-semibold text-white"
+                onClick={goBack}
+                className="w-full px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition text-sm font-semibold"
+                aria-label="Go back to previous question"
               >
-                {country}
+                {t("back")}
               </button>
-            ))}
+            )}
           </div>
         );
 
       case 9:
         return (
-          <div className="flex gap-3 justify-center">
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => handleContactMethod("Telegram")}
+                className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition transform hover:scale-105 font-semibold"
+                aria-label="Select Telegram as contact method"
+              >
+                📱 Telegram
+              </button>
+              <button
+                onClick={() => handleContactMethod("WhatsApp")}
+                className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition transform hover:scale-105 font-semibold"
+                aria-label="Select WhatsApp as contact method"
+              >
+                💬 WhatsApp
+              </button>
+            </div>
             <button
-              onClick={() => handleContactMethod("Telegram")}
-              className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:from-blue-600 hover:to-blue-700 transition transform hover:scale-105 font-semibold"
+              onClick={goBack}
+              className="w-full px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition text-sm font-semibold"
+              aria-label="Go back to previous question"
             >
-              📱 Telegram
-            </button>
-            <button
-              onClick={() => handleContactMethod("WhatsApp")}
-              className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg hover:from-green-600 hover:to-green-700 transition transform hover:scale-105 font-semibold"
-            >
-              💬 WhatsApp
+              {t("back")}
             </button>
           </div>
         );
 
       case 10:
         return (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {[
-              { type: "💍 Wedding", name: "Wedding" },
-              { type: "🎓 Graduation", name: "Graduation" },
-              { type: "🎂 Birthday", name: "Birthday" },
-              { type: "💕 Anniversary", name: "Anniversary" },
-              { type: "🎉 Corporate", name: "Corporate" },
-              { type: "✨ Other", name: "Other" },
-            ].map((event) => (
-              <button
-                key={event.name}
-                onClick={() => handleEventType(event.name)}
-                className="p-3 bg-gradient-to-br from-indigo-600 to-indigo-700 border border-indigo-500 hover:border-indigo-400 rounded-lg hover:bg-gradient-to-br hover:from-indigo-700 hover:to-indigo-800 transition text-center font-semibold text-white"
-              >
-                {event.type}
-              </button>
-            ))}
+          <div className="space-y-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+              {[
+                { type: "💍 Wedding", name: "Wedding" },
+                { type: "🎓 Graduation", name: "Graduation" },
+                { type: "🎂 Birthday", name: "Birthday" },
+                { type: "💕 Anniversary", name: "Anniversary" },
+                { type: "🎉 Corporate", name: "Corporate" },
+                { type: "✨ Other", name: "Other" },
+              ].map((event) => (
+                <button
+                  key={event.name}
+                  onClick={() => handleEventType(event.name)}
+                  className="p-3 bg-gradient-to-br from-indigo-600 to-indigo-700 border border-indigo-500 hover:border-indigo-400 rounded-lg hover:bg-gradient-to-br hover:from-indigo-700 hover:to-indigo-800 transition text-center font-semibold text-white"
+                  aria-label={`Select ${event.name} event type`}
+                >
+                  {event.type}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={goBack}
+              className="w-full px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition text-sm font-semibold"
+              aria-label="Go back to previous question"
+            >
+              {t("back")}
+            </button>
           </div>
         );
 
       case 11:
         return (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {PACKAGES.map((pkg) => (
-              <button
-                key={pkg.id}
-                onClick={() => handlePackageSelect(pkg.name)}
-                className="p-6 bg-gradient-to-br from-slate-700 to-slate-800 border-2 border-yellow-500 hover:border-yellow-400 rounded-xl hover:bg-gradient-to-br hover:from-yellow-700 hover:to-yellow-800 transition text-left transform hover:scale-105 shadow-lg"
-              >
-                <div className="text-3xl mb-2">{pkg.icon}</div>
-                <div className="font-bold text-lg text-white">{pkg.name}</div>
-                <div className="text-yellow-300 font-semibold mt-2">ETB {pkg.price.toLocaleString()}</div>
-              </button>
-            ))}
-          </div>
-        );
-
-      case 12:
-        return (
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {COUNTRIES.map((country) => (
-              <button
-                key={country}
-                onClick={() => handleNext(country)}
-                className="p-3 bg-gradient-to-br from-slate-700 to-slate-800 border border-blue-500 hover:border-blue-400 rounded-lg hover:bg-gradient-to-br hover:from-blue-700 hover:to-blue-800 transition text-sm font-semibold text-white"
-              >
-                {country}
-              </button>
-            ))}
+          <div className="space-y-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {PACKAGES.map((pkg) => (
+                <button
+                  key={pkg.id}
+                  onClick={() => handlePackageSelect(pkg.name)}
+                  className="p-6 bg-gradient-to-br from-slate-700 to-slate-800 border-2 border-yellow-500 hover:border-yellow-400 rounded-xl hover:bg-gradient-to-br hover:from-yellow-700 hover:to-yellow-800 transition text-left transform hover:scale-105 shadow-lg"
+                  aria-label={`Select ${pkg.name} package for ETB ${pkg.price.toLocaleString()}`}
+                >
+                  <div className="text-3xl mb-2">{pkg.icon}</div>
+                  <div className="font-bold text-lg text-white">{pkg.name}</div>
+                  <div className="text-yellow-300 font-semibold mt-2">ETB {pkg.price.toLocaleString()}</div>
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={goBack}
+              className="w-full px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition text-sm font-semibold"
+              aria-label="Go back to previous question"
+            >
+              {t("back")}
+            </button>
           </div>
         );
 
@@ -878,6 +1026,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
               <button
                 onClick={() => setShowTerms(true)}
                 className="w-full text-left px-4 py-3 bg-slate-700 hover:bg-slate-600 rounded-lg text-yellow-400 transition font-semibold"
+                aria-label="Show terms and conditions"
               >
                 📄 {language === "en" ? "View Terms & Conditions" : "ውሎችን ይመልከቱ"}
               </button>
@@ -894,6 +1043,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
               <button
                 onClick={handleAcceptTerms}
                 className="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition text-lg transform hover:scale-105"
+                aria-label="Accept terms and conditions"
               >
                 {getBilingualText("acceptTerms")}
               </button>
@@ -905,6 +1055,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
                 <button
                   onClick={() => handleNext("")}
                   className="w-full px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition text-lg transform hover:scale-105"
+                  aria-label="Proceed to booking confirmation"
                 >
                   {getBilingualText("proceedBooking")}
                 </button>
@@ -926,7 +1077,7 @@ By electronically signing below, I confirm acceptance of this booking agreement.
               </div>
               <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
                 <div className="text-yellow-400 text-xs font-semibold mb-1">Email</div>
-                <div className="text-white font-bold text-sm">{bookingData.email}</div>
+                <div className="text-white font-bold text-sm truncate">{bookingData.email}</div>
               </div>
               <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
                 <div className="text-yellow-400 text-xs font-semibold mb-1">Package</div>
@@ -939,12 +1090,10 @@ By electronically signing below, I confirm acceptance of this booking agreement.
             </div>
 
             <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30 space-y-2 text-sm text-white">
-              <div><strong className="text-yellow-400">Residence:</strong> {bookingData.residency}</div>
-              <div><strong className="text-yellow-400">Phone:</strong> {bookingData.phoneNumber}</div>
-              <div><strong className="text-yellow-400">Event Type:</strong> {bookingData.eventType}</div>
+              <div><strong className="text-yellow-400">Reference:</strong> {bookingRefNum}</div>
               <div><strong className="text-yellow-400">Event Date:</strong> {bookingData.eventDate} at {bookingData.eventTime}</div>
               <div><strong className="text-yellow-400">Location:</strong> {bookingData.eventCity}, {bookingData.eventCountry}</div>
-              <div><strong className="text-yellow-400">Venue:</strong> {bookingData.eventLocation}</div>
+              <div><strong className="text-yellow-400">Contact:</strong> {bookingData.contactMethod}</div>
             </div>
 
             {bookingRefNum && (
@@ -953,48 +1102,64 @@ By electronically signing below, I confirm acceptance of this booking agreement.
                 <div className="flex justify-center">
                   {qrCode ? (
                     <img
-                      id="bookingQRCode"
                       src={qrCode}
                       alt="Booking QR Code"
-                      className="w-48 h-48 border-2 border-yellow-500 rounded-lg p-2 bg-white"
+                      className="w-40 h-40 border-2 border-yellow-500 rounded-lg p-2 bg-white"
                     />
                   ) : (
-                    <div className="w-48 h-48 bg-slate-700 rounded-lg flex items-center justify-center text-white">Generating QR Code...</div>
+                    <div className="w-40 h-40 bg-slate-700 rounded-lg flex items-center justify-center text-white">
+                      <Spinner />
+                    </div>
                   )}
                 </div>
                 <div className="text-xs text-gray-300 mt-3">Reference: {bookingRefNum}</div>
-                <div className="text-xs text-gray-400 mt-1">Scan to share your booking</div>
-
-                {qrCode && (
-                  <button
-                    onClick={() => {
-                      const link = document.createElement('a');
-                      link.href = qrCode;
-                      link.download = `ShimeEvents_QRCode_${bookingRefNum}.png`;
-                      document.body.appendChild(link);
-                      link.click();
-                      document.body.removeChild(link);
-                    }}
-                    className="mt-3 px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-purple-800 transition transform hover:scale-105 text-sm"
-                  >
-                    ⬇️ Download QR Code
-                  </button>
-                )}
+                <div className="flex gap-2 mt-3">
+                  {qrCode && (
+                    <button
+                      onClick={downloadQRCode}
+                      className="flex-1 px-3 py-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-purple-800 transition transform hover:scale-105 text-xs"
+                      aria-label="Download QR code"
+                    >
+                      {t("downloadQr")}
+                    </button>
+                  )}
+                  {bookingRefNum && (
+                    <button
+                      onClick={() => copyToClipboard(bookingRefNum)}
+                      className="flex-1 px-3 py-2 bg-slate-700 hover:bg-slate-600 text-yellow-400 rounded-lg font-semibold transition text-xs"
+                      disabled={copying}
+                      aria-label="Copy booking reference"
+                    >
+                      {copying ? "✓ Copied" : "📋 Copy Ref"}
+                    </button>
+                  )}
+                </div>
               </div>
             )}
 
             <button
               onClick={generatePDF}
-              className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-bold hover:from-blue-700 hover:to-blue-800 transition text-lg mb-2 transform hover:scale-105"
+              className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-bold hover:from-blue-700 hover:to-blue-800 transition text-lg mb-2 transform hover:scale-105 disabled:opacity-50"
+              disabled={loading}
+              aria-label="Download booking contract PDF"
             >
-              {getBilingualText("downloadPdf")}
+              {loading ? <Spinner /> : getBilingualText("downloadPdf")}
             </button>
 
             <button
               onClick={() => window.open("https://wa.me/251912345678", "_blank")}
               className="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition transform hover:scale-105"
+              aria-label="Contact us via WhatsApp"
             >
               {getBilingualText("contactUs")}
+            </button>
+
+            <button
+              onClick={resetBooking}
+              className="w-full px-4 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-lg font-bold hover:from-indigo-700 hover:to-indigo-800 transition"
+              aria-label="Start a new booking"
+            >
+              {t("startOver")}
             </button>
 
             <div className="bg-slate-900 p-4 rounded-lg text-white text-xs whitespace-pre-line border-l-4 border-yellow-500">
@@ -1005,36 +1170,54 @@ By electronically signing below, I confirm acceptance of this booking agreement.
 
       default:
         return (
-          <div className="w-full max-w-md">
-            <input
-              type={step === 7 ? "password" : step === 14 ? "date" : step === 15 ? "time" : "text"}
-              value={inputValue}
-              onChange={(e) => {
-                setInputValue(e.target.value);
-                setError("");
-              }}
-              onKeyPress={(e) => {
-                if (e.key === "Enter" && inputValue.trim()) {
-                  handleNext(inputValue);
-                  setInputValue("");
-                }
-              }}
-              placeholder={step === 14 ? "YYYY-MM-DD" : step === 15 ? "HH:MM" : ""}
-              className="w-full px-4 py-3 bg-white text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-lg"
-              autoFocus
-            />
-            {error && <div className="text-red-400 text-sm mt-2 font-semibold">{error}</div>}
-            <button
-              onClick={() => {
-                if (inputValue.trim()) {
-                  handleNext(inputValue);
-                  setInputValue("");
-                }
-              }}
-              className="mt-3 w-full px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition text-lg transform hover:scale-105 shadow-lg"
-            >
-              {language === "en" ? "Continue" : "ቀጥል"}
-            </button>
+          <div className="w-full max-w-md space-y-3">
+            <div>
+              <label className="block text-yellow-400 text-sm font-semibold mb-2">
+                {step < 17 && <span className="text-red-400">*</span>} {t("required")}
+              </label>
+              <input
+                type={step === 7 ? "password" : step === 14 ? "date" : step === 15 ? "time" : "text"}
+                value={inputValue}
+                onChange={(e) => {
+                  setInputValue(e.target.value);
+                  setError("");
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" && inputValue.trim()) {
+                    handleNext(inputValue);
+                    setInputValue("");
+                  }
+                }}
+                placeholder={step === 14 ? "YYYY-MM-DD" : step === 15 ? "HH:MM" : ""}
+                className="w-full px-4 py-3 bg-white text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-lg"
+                autoFocus
+                aria-label={`Input for step ${step}`}
+              />
+            </div>
+            {error && <div className="text-red-400 text-sm font-semibold bg-red-900 bg-opacity-20 p-2 rounded">{error}</div>}
+            <div className="flex gap-3">
+              {step > 0 && step < 17 && (
+                <button
+                  onClick={goBack}
+                  className="flex-1 px-4 py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-bold transition"
+                  aria-label="Go to previous step"
+                >
+                  {t("back")}
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  if (inputValue.trim()) {
+                    handleNext(inputValue);
+                    setInputValue("");
+                  }
+                }}
+                className="flex-1 px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition text-lg transform hover:scale-105 shadow-lg"
+                aria-label="Submit current answer and continue"
+              >
+                {t("next")}
+              </button>
+            </div>
           </div>
         );
     }
@@ -1048,24 +1231,28 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         .brand-font { font-family: 'Playfair Display', serif; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fadeIn { animation: fadeIn 0.6s ease-in; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-slideUp { animation: slideUp 0.6s ease-in; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-slideDown { animation: slideDown 0.3s ease-in; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .animate-spin { animation: spin 0.6s linear infinite; }
       `}</style>
+
+      <Toast {...toast} />
 
       <header className="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-8 border-b-2 border-yellow-500 sticky top-0 z-10 shadow-2xl">
         <div className="max-w-5xl mx-auto px-4">
-          <div className="text-center mb-6 animate-slideUp">
-            <h1 className="brand-font text-6xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">Shime Events</h1>
+          <div className="text-center mb-6 animate-fadeIn">
+            <h1 className="brand-font text-5xl md:text-6xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">Shime Events</h1>
             <p className="text-white text-sm opacity-90 tracking-wide">Professional Event Planning & Coordination</p>
           </div>
 
           {step > 0 && step < 18 && (
             <div className="space-y-2 animate-fadeIn">
               <div className="flex justify-between items-center text-xs text-yellow-400 mb-2 font-semibold">
-                <span>{t("stepOf")} {step}/18</span>
+                <span>{t("stepOf")} {step}/17</span>
                 <span>{Math.round(getProgressPercentage())}%</span>
               </div>
-              <div className="h-1.5 bg-slate-700 rounded-full overflow-hidden border border-yellow-500 border-opacity-30">
+              <div className="h-2 bg-slate-700 rounded-full overflow-hidden border border-yellow-500 border-opacity-30">
                 <div
                   className="h-full bg-gradient-to-r from-yellow-400 to-yellow-600 transition-all duration-500 shadow-lg shadow-yellow-500"
                   style={{ width: `${getProgressPercentage()}%` }}
@@ -1077,14 +1264,14 @@ By electronically signing below, I confirm acceptance of this booking agreement.
       </header>
 
       <main className="max-w-5xl mx-auto px-4 py-8 pb-20">
-        <div className="space-y-4 mb-8 max-h-[60vh] overflow-y-auto pr-4">
-          {messages.map((msg, idx) => (
+        <div className="space-y-4 mb-8 max-h-[60vh] overflow-y-auto pr-4 rounded-lg">
+          {messages.map((msg) => (
             <div
-              key={idx}
+              key={msg.id}
               className={`animate-fadeIn flex ${msg.type === "agent" ? "justify-start" : "justify-end"}`}
             >
               <div
-                className={`max-w-md px-4 py-3 rounded-xl ${
+                className={`max-w-sm px-4 py-3 rounded-xl ${
                   msg.type === "agent"
                     ? "bg-gradient-to-br from-slate-700 to-slate-800 border-l-4 border-yellow-500 text-white shadow-lg"
                     : "bg-gradient-to-br from-yellow-500 to-yellow-600 text-slate-900 font-semibold shadow-lg"
