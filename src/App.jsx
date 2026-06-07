@@ -6,29 +6,32 @@ const translations = {
   en: {
     welcome: "Welcome to Shime Events & Planning",
     welcomeSubtitle: "Your Premier Partner for Exceptional Celebrations",
-    selectLanguage: "Please select your preferred language:",
-    askNationality: "What is your nationality?",
-    askResidency: "Which country is your current place of residence?",
-    askPhone: "Please provide your phone number (Example: +251911234567)",
+    selectLanguage: "Hello! 👋 Which language would you prefer to use?",
+    selectCalendar: "Which calendar system would you like to use for your event date?",
+    gregorianCalendar: "📅 Gregorian Calendar (International)",
+    ethiopianCalendar: "🇪🇹 Ethiopian Calendar",
+    askNationality: "Great! 😊 What is your nationality?",
+    askResidency: "Perfect! Which country are you currently residing in?",
+    askPhone: "Thank you! 🙏 Please provide your phone number (Example: +251911234567)",
     invalidPhone: "❌ The phone number you entered is invalid. Please use the format: +251911234567",
     phoneCountryMismatch: "⚠️ Please note: Your phone number country code differs from your country of residence.",
-    askEmail: "Please provide your email address:",
-    invalidEmail: "❌ The email address you entered is invalid. Please enter a valid email.",
-    askIdType: "Please provide your ID number or Passport number:",
-    invalidId: "❌ The ID/Passport number you entered is invalid. Please try again.",
-    askFullName: "Please provide your full name (First name and last name):",
-    invalidName: "❌ Please enter your valid full name with both first and last name.",
-    askPassword: "Please create a security PIN (6 or more digits):",
+    askEmail: "Excellent! 📧 What is your email address?",
+    invalidEmail: "❌ Hmm, that email doesn't look quite right. Could you please try again?",
+    askIdType: "Great! 📋 Please provide your ID number or Passport number:",
+    invalidId: "❌ That ID/Passport number doesn't look right. Could you double-check and try again?",
+    askFullName: "Perfect! 👤 What is your full name (First and Last name)?",
+    invalidName: "❌ We need both your first and last name. Could you please try again?",
+    askPassword: "Wonderful! 🔐 Let's create a secure PIN for your account (6 or more digits):",
     askContactMethod: "How would you prefer us to contact you?",
-    askEventType: "What type of event are you planning?",
-    askEventCountry: "In which country will your event take place?",
-    eventCountryMismatch: "⚠️ Please note: Your event location is in a different country than your current residence.",
-    askEventCity: "In which city will your event be held?",
-    askDate: "Please select the date of your event:",
-    dateBooked: "⚠️ The date you selected is unavailable. Please choose another date.",
-    askTime: "What is your preferred time for the event?",
-    timeBooked: "⚠️ The time slot you selected is unavailable. Please choose another time.",
-    askLocation: "Please provide the venue location or complete address:",
+    askEventType: "Exciting! 🎉 What type of event are you planning?",
+    askEventCountry: "Where will your celebration take place? Which country?",
+    eventCountryMismatch: "ℹ️ Just noting: Your event will be in a different country than where you currently live. That's great!",
+    askEventCity: "Which city will your event be in?",
+    askDate: "Perfect! 📅 When would you like to host your event? (Please select a date)",
+    dateBooked: "⚠️ That date is fully booked, I'm afraid. Could you choose another date?",
+    askTime: "What time would you like your event to start? (Format: HH:MM, e.g., 14:00 for 2:00 PM)",
+    timeBooked: "⚠️ That time slot is not available. Let's find another time that works!",
+    askLocation: "Wonderful! 📍 Where exactly will your event be held? (Please provide the venue or address):",
     depositNotice: "A 50% deposit is required to secure your booking.",
     noticeTitle: "Booking Confirmation & Payment Instructions",
     noticeBody: "To secure your booking, please submit the required 50% deposit payment:\n\n🏦 Payment Method: CBE WALLET\nAccount Number: 1000XXXXXXXX\nAccount Name: Shime Events & Planning",
@@ -72,6 +75,8 @@ By accepting this agreement, you confirm that you have reviewed and accepted all
     printQRCode: "🖨️ Print QR Code",
     shareQRCode: "📱 Share QR Link",
     qrCodeDownloaded: "QR Code downloaded successfully!",
+    closeChat: "✕ Close Chatbot",
+    bookingComplete: "Thank you for choosing Shime Events! Your booking is complete. 🎉",
   },
   am: {
     welcome: "በ Shime Events & Planning እንኋን ደህና መጡ",
@@ -544,6 +549,7 @@ export default function ShimeAssistant() {
   const [showTerms, setShowTerms] = useState(false);
   const [qrCode, setQrCode] = useState(null);
   const [bookingRefNum, setBookingRefNum] = useState(null);
+  const [calendarType, setCalendarType] = useState(null);
 
   // Toast state
   const [toast, setToast] = useState({ message: "", type: "info", visible: false });
@@ -1024,11 +1030,19 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         setLanguage(value);
         addUserMessage(value === "en" ? "🇬🇧 English" : "🇪🇹 አማርኛ");
         setStep(1);
-        addAgentMessage(getBilingualText("askNationality"));
+        addAgentMessage(getBilingualText("selectCalendar"));
         showToast(t("success"), "success", 2000);
         return;
 
       case 1:
+        setCalendarType(value);
+        addUserMessage(value === "gregorian" ? t("gregorianCalendar") : t("ethiopianCalendar"));
+        setStep(2);
+        addAgentMessage(getBilingualText("askNationality"));
+        showToast(t("success"), "success", 2000);
+        return;
+
+      case 2:
         if (!value || value.trim().length < 2) {
           isValid = false;
           errorMsg = "Please enter your nationality (at least 2 characters)";
@@ -1243,7 +1257,14 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         return;
 
       case 14:
-        if (isDateBooked(bookingData.eventDate, value)) {
+        // Validate time format (HH:MM)
+        const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
+        if (!timeRegex.test(value)) {
+          isValid = false;
+          errorMsg = language === 'en'
+            ? "Please enter a valid time in HH:MM format (e.g., 14:30). Hours must be 00-23."
+            : "እባክዎን ትክክለኛ ጊዜ በ HH:MM ቅርጸት ያስገቡ (ምሳሌ፡ 14:30)። ሰዓታት 00-23 መካከል ሊሆን ይገባል።";
+        } else if (isDateBooked(bookingData.eventDate, value)) {
           isValid = false;
           errorMsg = getBilingualText("timeBooked");
         }
@@ -1396,6 +1417,26 @@ Your signature/acceptance serves as binding agreement to this contract.`;
               aria-label="Select Amharic language"
             >
               🇪🇹 አማርኛ
+            </button>
+          </div>
+        );
+
+      case 1:
+        return (
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center w-full">
+            <button
+              onClick={() => handleNext("gregorian")}
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition transform hover:scale-105 shadow-lg font-semibold text-base sm:text-lg"
+              aria-label="Select Gregorian Calendar"
+            >
+              📅 Gregorian Calendar
+            </button>
+            <button
+              onClick={() => handleNext("ethiopian")}
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl hover:from-green-700 hover:to-green-800 transition transform hover:scale-105 shadow-lg font-semibold text-base sm:text-lg"
+              aria-label="Select Ethiopian Calendar"
+            >
+              🇪🇹 Ethiopian Calendar
             </button>
           </div>
         );
