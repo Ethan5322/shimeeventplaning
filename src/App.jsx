@@ -287,7 +287,7 @@ export default function ShimeAssistant() {
     }
   };
 
-  const downloadBookingQR = () => {
+  const downloadBookingQRImage = () => {
     if (!bookingQRCode) return;
 
     try {
@@ -300,6 +300,120 @@ export default function ShimeAssistant() {
       showToast(t("qrCodeDownloaded"), "success");
     } catch (error) {
       showToast("Failed to download QR code", "error");
+    }
+  };
+
+  const downloadBookingQRPDF = async () => {
+    if (!bookingQRCode) return;
+
+    try {
+      setLoading(true);
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'A4'
+      });
+
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const goldColor = [212, 175, 55];
+      const textColor = [26, 26, 46];
+
+      // Background
+      doc.setFillColor(245, 245, 245);
+      doc.rect(0, 0, pageWidth, pageHeight, 'F');
+
+      // Header
+      doc.setTextColor(...goldColor);
+      doc.setFontSize(28);
+      doc.setFont(undefined, 'bold');
+      doc.text('SHIME EVENTS', pageWidth / 2, 20, { align: 'center' });
+
+      doc.setFontSize(14);
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(...textColor);
+      doc.text('& PLANNING', pageWidth / 2, 30, { align: 'center' });
+
+      // Subtitle
+      doc.setFontSize(10);
+      doc.setTextColor(100, 100, 100);
+      doc.text('Professional Event Planning & Coordination', pageWidth / 2, 38, { align: 'center' });
+
+      // Divider line
+      doc.setDrawColor(...goldColor);
+      doc.setLineWidth(1);
+      doc.line(20, 42, pageWidth - 20, 42);
+
+      // QR Code Title
+      doc.setFontSize(16);
+      doc.setTextColor(...textColor);
+      doc.setFont(undefined, 'bold');
+      doc.text('📱 SCAN TO BOOK YOUR EVENT', pageWidth / 2, 55, { align: 'center' });
+
+      // QR Code
+      doc.addImage(bookingQRCode, 'PNG', (pageWidth - 80) / 2, 70, 80, 80);
+
+      // Instructions
+      doc.setFontSize(11);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(...textColor);
+      doc.text('How to Use:', 20, 165);
+
+      doc.setFontSize(10);
+      doc.setFont(undefined, 'normal');
+      const instructions = [
+        '1. Print this page or display on your device',
+        '2. Customer scans QR code with their phone',
+        '3. Booking form opens automatically',
+        '4. Customer completes booking in minutes'
+      ];
+
+      let yPos = 175;
+      instructions.forEach(instruction => {
+        doc.text(instruction, 25, yPos);
+        yPos += 8;
+      });
+
+      // Booking URL
+      doc.setFontSize(9);
+      doc.setTextColor(100, 100, 100);
+      doc.setFont(undefined, 'italic');
+      doc.text(`Booking URL: ${window.location.origin}?ref=booking`, 20, 215);
+
+      // Contact Info
+      doc.setFontSize(9);
+      doc.setFont(undefined, 'bold');
+      doc.setTextColor(...goldColor);
+      doc.text('Contact Information:', 20, 225);
+
+      doc.setFont(undefined, 'normal');
+      doc.setTextColor(100, 100, 100);
+      const contactInfo = [
+        '📱 WhatsApp: +251 91 234 5678',
+        '✉️ Email: contact@shimeeventplaning.com',
+        '🌐 Website: shimeeventplaning.com'
+      ];
+
+      yPos = 232;
+      contactInfo.forEach(info => {
+        doc.text(info, 25, yPos);
+        yPos += 7;
+      });
+
+      // Footer
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text(`Generated: ${new Date().toLocaleString()}`, pageWidth / 2, pageHeight - 10, { align: 'center' });
+
+      // Save PDF
+      const fileName = `ShimeEvents_BookingQR_${new Date().toISOString().split('T')[0]}.pdf`;
+      doc.save(fileName);
+      showToast("PDF downloaded successfully!", "success");
+      setLoading(false);
+    } catch (error) {
+      console.error('PDF generation failed:', error);
+      showToast("Failed to generate PDF", "error");
+      setLoading(false);
     }
   };
 
@@ -1405,10 +1519,19 @@ By electronically signing below, I confirm acceptance of this booking agreement.
 
               <div className="flex flex-col gap-3">
                 <button
-                  onClick={downloadBookingQR}
+                  onClick={downloadBookingQRImage}
                   className="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition"
+                  disabled={loading}
                 >
-                  {t("downloadQRCode")}
+                  {loading ? "⏳ Processing..." : "📥 Download as PNG"}
+                </button>
+
+                <button
+                  onClick={downloadBookingQRPDF}
+                  className="w-full px-4 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition"
+                  disabled={loading}
+                >
+                  {loading ? "⏳ Processing..." : "📄 Download as PDF"}
                 </button>
 
                 <button
