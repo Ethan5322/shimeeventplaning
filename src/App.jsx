@@ -952,13 +952,34 @@ By electronically signing below, I confirm acceptance of this booking agreement.
                 <div className="text-yellow-400 font-bold mb-3">📱 Booking QR Code</div>
                 <div className="flex justify-center">
                   {qrCode ? (
-                    <img src={qrCode} alt="Booking QR Code" className="w-48 h-48 border-2 border-yellow-500 rounded-lg p-2 bg-white" />
+                    <img
+                      id="bookingQRCode"
+                      src={qrCode}
+                      alt="Booking QR Code"
+                      className="w-48 h-48 border-2 border-yellow-500 rounded-lg p-2 bg-white"
+                    />
                   ) : (
                     <div className="w-48 h-48 bg-slate-700 rounded-lg flex items-center justify-center text-white">Generating QR Code...</div>
                   )}
                 </div>
                 <div className="text-xs text-gray-300 mt-3">Reference: {bookingRefNum}</div>
                 <div className="text-xs text-gray-400 mt-1">Scan to share your booking</div>
+
+                {qrCode && (
+                  <button
+                    onClick={() => {
+                      const link = document.createElement('a');
+                      link.href = qrCode;
+                      link.download = `ShimeEvents_QRCode_${bookingRefNum}.png`;
+                      document.body.appendChild(link);
+                      link.click();
+                      document.body.removeChild(link);
+                    }}
+                    className="mt-3 px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg font-semibold hover:from-purple-700 hover:to-purple-800 transition transform hover:scale-105 text-sm"
+                  >
+                    ⬇️ Download QR Code
+                  </button>
+                )}
               </div>
             )}
 
