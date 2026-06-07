@@ -65,6 +65,13 @@ By signing this agreement, you confirm that you have read and accepted all terms
     copied: "Copied!",
     startOver: "Start Over",
     selectPackage: "Which package would you like to book?",
+    scanToBook: "📲 Scan to Book Your Event",
+    qrCodeTitle: "Share This QR Code",
+    qrCodeSubtitle: "Print or share this code so customers can scan and start booking",
+    downloadQRCode: "⬇️ Download QR Code",
+    printQRCode: "🖨️ Print QR Code",
+    shareQRCode: "📱 Share QR Link",
+    qrCodeDownloaded: "QR Code downloaded successfully!",
   },
   am: {
     welcome: "በ Shime Events & Planning ደህና መጡ",
@@ -118,6 +125,13 @@ By signing this agreement, you confirm that you have read and accepted all terms
     copied: "ተቅዳ!",
     startOver: "ድጋሚ ጀምር",
     selectPackage: "ምን ዓይነት ፓኬጅ ይመርጣሉ?",
+    scanToBook: "📲 ዝግጅትዎን ለመያዝ ስካን ያድርጉ",
+    qrCodeTitle: "ይህን QR Code ያጋሩ",
+    qrCodeSubtitle: "ደንበኞች ስካን ማድረግ ይችሉ ዝግጅትን ይጀምሩ",
+    downloadQRCode: "⬇️ QR Code ያውርዱ",
+    printQRCode: "🖨️ QR Code አሳዩ",
+    shareQRCode: "📱 QR 링크 ያጋሩ",
+    qrCodeDownloaded: "QR Code በተሳካ ሁኔታ ታውርዷል!",
   }
 };
 
@@ -191,6 +205,10 @@ export default function ShimeAssistant() {
   const [loading, setLoading] = useState(false);
   const [copying, setCopying] = useState(false);
 
+  // QR Code for customer booking
+  const [bookingQRCode, setBookingQRCode] = useState(null);
+  const [showQRSection, setShowQRSection] = useState(false);
+
   const chatEndRef = useRef(null);
 
   const showToast = (message, type = "info", duration = 3000) => {
@@ -247,6 +265,41 @@ export default function ShimeAssistant() {
     } catch (err) {
       console.error('QR Code generation failed:', err);
       showToast("Failed to generate QR code", "error");
+    }
+  };
+
+  const generateBookingQRCode = async () => {
+    try {
+      const bookingUrl = `${window.location.origin}?ref=booking`;
+      const qrDataUrl = await QRCode.toDataURL(bookingUrl, {
+        errorCorrectionLevel: 'H',
+        type: 'image/png',
+        quality: 0.95,
+        margin: 2,
+        width: 500,
+        color: { dark: '#d4af37', light: '#1a1a2e' }
+      });
+      setBookingQRCode(qrDataUrl);
+      return qrDataUrl;
+    } catch (err) {
+      console.error('Booking QR Code generation failed:', err);
+      showToast("Failed to generate QR code", "error");
+    }
+  };
+
+  const downloadBookingQR = () => {
+    if (!bookingQRCode) return;
+
+    try {
+      const link = document.createElement('a');
+      link.href = bookingQRCode;
+      link.download = `ShimeEvents_BookingQR_${new Date().toISOString().split('T')[0]}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      showToast(t("qrCodeDownloaded"), "success");
+    } catch (error) {
+      showToast("Failed to download QR code", "error");
     }
   };
 
@@ -858,6 +911,25 @@ By electronically signing below, I confirm acceptance of this booking agreement.
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  useEffect(() => {
+    // Check if user came from QR code scan
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('ref') === 'booking' && step === 0) {
+      // Auto-start with English, user can still change language
+      setLanguage('en');
+      setStep(1);
+      addAgentMessage(`${translations.en.welcome}\n\n${translations.en.welcomeSubtitle}`);
+      addAgentMessage(translations.en.askNationality);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Generate booking QR code on component load
+    if (!bookingQRCode) {
+      generateBookingQRCode();
+    }
+  }, []);
+
   const getProgressPercentage = () => {
     return Math.min((step / 17) * 100, 100);
   };
@@ -1300,6 +1372,78 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         <div className="max-w-md mx-auto space-y-4">
           {renderStep()}
         </div>
+
+        {/* Floating QR Button */}
+        <button
+          onClick={() => setShowQRSection(!showQRSection)}
+          className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-full shadow-2xl hover:from-purple-700 hover:to-purple-800 transition transform hover:scale-110 flex items-center justify-center font-bold text-xl z-40"
+          aria-label="Show booking QR code"
+          title="Booking QR Code"
+        >
+          📱
+        </button>
+
+        {/* QR Code Modal */}
+        {showQRSection && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-yellow-500 rounded-xl p-8 max-w-md w-full shadow-2xl animate-fadeIn">
+              <h2 className="text-2xl font-bold text-yellow-400 mb-4 text-center">{t("scanToBook")}</h2>
+
+              <div className="bg-white p-4 rounded-lg mb-6 flex justify-center">
+                {bookingQRCode && (
+                  <img src={bookingQRCode} alt="Booking QR Code" className="w-64 h-64" />
+                )}
+              </div>
+
+              <div className="space-y-3 text-white text-sm mb-6">
+                <p className="text-yellow-300 font-semibold">{t("qrCodeTitle")}</p>
+                <p className="text-gray-300">{t("qrCodeSubtitle")}</p>
+                <p className="text-xs text-gray-400">
+                  Booking URL: {window.location.origin}?ref=booking
+                </p>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <button
+                  onClick={downloadBookingQR}
+                  className="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition"
+                >
+                  {t("downloadQRCode")}
+                </button>
+
+                <button
+                  onClick={() => window.print()}
+                  className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-bold hover:from-blue-700 hover:to-blue-800 transition"
+                >
+                  {t("printQRCode")}
+                </button>
+
+                <button
+                  onClick={() => {
+                    const url = `${window.location.origin}?ref=booking`;
+                    const message = `Book your event with Shime Events! Scan this link: ${url}`;
+                    if (navigator.share) {
+                      navigator.share({ title: 'Shime Events Booking', text: message, url });
+                    } else {
+                      copyToClipboard(url);
+                      showToast("Booking link copied!", "success");
+                    }
+                  }}
+                  className="w-full px-4 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-lg font-bold hover:from-indigo-700 hover:to-indigo-800 transition"
+                >
+                  {t("shareQRCode")}
+                </button>
+
+                <button
+                  onClick={() => setShowQRSection(false)}
+                  className="w-full px-4 py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-bold transition"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
