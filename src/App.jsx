@@ -188,6 +188,164 @@ const Spinner = () => (
   </div>
 );
 
+// QR Code Download Page Component
+const QRCodeDownloadPage = ({ bookingQRCode, loading, onDownloadImage, onDownloadPDF, onGoBack }) => {
+  const [language, setLanguage] = useState('en');
+
+  const t = (key) => {
+    const translations = {
+      en: {
+        title: "Download Your Shime Events QR Code",
+        subtitle: "Share this code so customers can easily book their events",
+        instructions: "How to use:",
+        step1: "Download the QR code (PNG or PDF)",
+        step2: "Print or share on social media",
+        step3: "Customers scan to start booking",
+        step4: "Get bookings automatically!",
+        downloadPNG: "📥 Download as PNG",
+        downloadPDF: "📄 Download as PDF",
+        print: "🖨️ Print QR Code",
+        backToBooking: "← Back to Booking",
+        scanMessage: "Scan this code to book your event with Shime Events!",
+        contact: "Questions? Contact us:",
+      },
+      am: {
+        title: "የ Shime Events QR Code ያውርዱ",
+        subtitle: "ይህ ኮድ ያጋሩ ዝግጅትዎን ለመያዝ",
+        instructions: "እንዴት ይጠቀሙ:",
+        step1: "QR ኮድ ያውርዱ (PNG ወይም PDF)",
+        step2: "አሳዩ ወይም በማህበራዊ ሚዲያ ላይ ያጋሩ",
+        step3: "ደንበኞች ስካን ማድረግ ይችላሉ",
+        step4: "ዝግጅት ያግኙ!",
+        downloadPNG: "📥 PNG ሆነ ያውርዱ",
+        downloadPDF: "📄 PDF ሆነ ያውርዱ",
+        print: "🖨️ QR ኮድ አሳዩ",
+        backToBooking: "← ወደ ዝግጅት ይመለሱ",
+        scanMessage: "ይህን ኮድ ስካን ማድረግ ዝግጅትዎን ለመያዝ",
+        contact: "ጥያቄ? ያገኙ:",
+      }
+    };
+    return translations[language][key] || translations.en[key];
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%)" }}>
+      <header className="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-8 border-b-2 border-yellow-500 shadow-2xl">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h1 className="brand-font text-5xl md:text-6xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">Shime Events</h1>
+          <p className="text-white text-sm opacity-90 tracking-wide">Professional Event Planning & Coordination</p>
+        </div>
+      </header>
+
+      <main className="max-w-4xl mx-auto px-4 py-12">
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-yellow-500 rounded-xl p-8 shadow-2xl">
+          {/* Language Toggle */}
+          <div className="flex justify-center gap-4 mb-8">
+            <button
+              onClick={() => setLanguage('en')}
+              className={`px-6 py-2 rounded-lg font-bold transition ${language === 'en' ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white' : 'bg-slate-700 text-gray-300 hover:bg-slate-600'}`}
+            >
+              🇬🇧 English
+            </button>
+            <button
+              onClick={() => setLanguage('am')}
+              className={`px-6 py-2 rounded-lg font-bold transition ${language === 'am' ? 'bg-gradient-to-r from-purple-600 to-purple-700 text-white' : 'bg-slate-700 text-gray-300 hover:bg-slate-600'}`}
+            >
+              🇪🇹 አማርኛ
+            </button>
+          </div>
+
+          <h2 className="text-3xl font-bold text-yellow-400 text-center mb-2">{t("title")}</h2>
+          <p className="text-gray-300 text-center mb-8">{t("subtitle")}</p>
+
+          {/* QR Code Display */}
+          <div className="bg-white p-8 rounded-lg mb-8 flex justify-center">
+            {bookingQRCode ? (
+              <div className="text-center">
+                <img src={bookingQRCode} alt="Shime Events Booking QR Code" className="w-80 h-80" />
+                <p className="text-slate-900 font-semibold mt-4 text-sm">{t("scanMessage")}</p>
+              </div>
+            ) : (
+              <div className="text-center text-slate-500">Loading QR Code...</div>
+            )}
+          </div>
+
+          {/* Instructions */}
+          <div className="bg-slate-800 border border-yellow-500 border-opacity-30 rounded-lg p-6 mb-8">
+            <h3 className="text-xl font-bold text-yellow-400 mb-4">{t("instructions")}</h3>
+            <ul className="space-y-3 text-white">
+              <li className="flex items-start">
+                <span className="text-2xl mr-3">1️⃣</span>
+                <span>{t("step1")}</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-2xl mr-3">2️⃣</span>
+                <span>{t("step2")}</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-2xl mr-3">3️⃣</span>
+                <span>{t("step3")}</span>
+              </li>
+              <li className="flex items-start">
+                <span className="text-2xl mr-3">4️⃣</span>
+                <span>{t("step4")}</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Download Buttons */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <button
+              onClick={onDownloadImage}
+              disabled={loading}
+              className="w-full px-6 py-4 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition disabled:opacity-50"
+            >
+              {loading ? "⏳ Processing..." : t("downloadPNG")}
+            </button>
+            <button
+              onClick={onDownloadPDF}
+              disabled={loading}
+              className="w-full px-6 py-4 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition disabled:opacity-50"
+            >
+              {loading ? "⏳ Processing..." : t("downloadPDF")}
+            </button>
+            <button
+              onClick={() => window.print()}
+              className="w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-bold hover:from-blue-700 hover:to-blue-800 transition"
+            >
+              {t("print")}
+            </button>
+          </div>
+
+          {/* Contact Info */}
+          <div className="bg-slate-800 border border-yellow-500 border-opacity-30 rounded-lg p-6 mb-8">
+            <p className="text-yellow-400 font-bold mb-3">{t("contact")}</p>
+            <div className="text-gray-300 space-y-2 text-sm">
+              <p>📱 WhatsApp: +251 91 234 5678</p>
+              <p>✉️ Email: contact@shimeeventplaning.com</p>
+              <p>🌐 Website: shimeeventplaning.com</p>
+            </div>
+          </div>
+
+          {/* Back Button */}
+          <button
+            onClick={onGoBack}
+            className="w-full px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg font-bold transition"
+          >
+            {t("backToBooking")}
+          </button>
+        </div>
+      </main>
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap');
+        * { font-family: 'Lato', sans-serif; }
+        .brand-font { font-family: 'Playfair Display', serif; }
+      `}</style>
+    </div>
+  );
+};
+
 export default function ShimeAssistant() {
   const [step, setStep] = useState(0);
   const [language, setLanguage] = useState(null);
@@ -208,6 +366,7 @@ export default function ShimeAssistant() {
   // QR Code for customer booking
   const [bookingQRCode, setBookingQRCode] = useState(null);
   const [showQRSection, setShowQRSection] = useState(false);
+  const [showQRPage, setShowQRPage] = useState(false);
 
   const chatEndRef = useRef(null);
 
@@ -1026,8 +1185,16 @@ By electronically signing below, I confirm acceptance of this booking agreement.
   }, [messages]);
 
   useEffect(() => {
-    // Check if user came from QR code scan
+    // Check URL parameters on load
     const params = new URLSearchParams(window.location.search);
+
+    // Check if this is QR code download page
+    if (params.get('page') === 'qrcode') {
+      setShowQRPage(true);
+      return;
+    }
+
+    // Check if user came from QR code scan
     if (params.get('ref') === 'booking' && step === 0) {
       // Auto-start with English, user can still change language
       setLanguage('en');
@@ -1421,6 +1588,19 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         );
     }
   };
+
+  // Show QR Code Download Page
+  if (showQRPage) {
+    return (
+      <QRCodeDownloadPage
+        bookingQRCode={bookingQRCode}
+        loading={loading}
+        onDownloadImage={downloadBookingQRImage}
+        onDownloadPDF={downloadBookingQRPDF}
+        onGoBack={() => setShowQRPage(false)}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%)" }}>
