@@ -617,117 +617,115 @@ export default function ShimeAssistant() {
       const refNum = bookingRefNum || `SE-${Date.now()}`;
       const today = new Date().toLocaleDateString();
       const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
-      const deposit = pkgInfo?.price || 0;
+      const deposit = Math.round((pkgInfo?.price || 0) / 2); // 50% deposit
 
-      // Page 1 - Cover
+      // PAGE 1 - BOOKING CONFIRMATION
       doc.setFillColor(26, 26, 46);
       doc.rect(0, 0, pageWidth, pageHeight, "F");
 
+      // Header
       doc.setTextColor(...goldColor);
-      doc.setFontSize(36);
-      doc.text("SHIME EVENTS", pageWidth / 2, 30, { align: "center" });
-      doc.setFontSize(16);
-      doc.text("& PLANNING", pageWidth / 2, 45, { align: "center" });
+      doc.setFontSize(32);
+      doc.text("SHIME EVENTS", pageWidth / 2, 20, { align: "center" });
+      doc.setFontSize(12);
+      doc.text("& PLANNING", pageWidth / 2, 28, { align: "center" });
 
-      doc.setFontSize(10);
+      doc.setFontSize(9);
       doc.setTextColor(...textColor);
-      doc.text("Professional Event Planning & Coordination", pageWidth / 2, 60, { align: "center" });
+      doc.text("Professional Event Planning & Coordination", pageWidth / 2, 35, { align: "center" });
 
       doc.setLineWidth(0.5);
       doc.setDrawColor(...goldColor);
-      doc.line(30, 70, pageWidth - 30, 70);
+      doc.line(20, 38, pageWidth - 20, 38);
 
-      doc.setFontSize(12);
+      // Booking Reference
+      doc.setFontSize(11);
       doc.setTextColor(...goldColor);
-      doc.text("BOOKING CONFIRMATION DOCUMENT", pageWidth / 2, 85, { align: "center" });
+      doc.text("BOOKING CONFIRMATION", pageWidth / 2, 48, { align: "center" });
 
       doc.setFontSize(9);
       doc.setTextColor(...textColor);
-      doc.text(`Booking Reference: ${refNum}`, pageWidth / 2, 100, { align: "center" });
-      doc.text(`Booking Date: ${today}`, pageWidth / 2, 108, { align: "center" });
+      doc.text(`Reference: ${refNum}`, pageWidth / 2, 55, { align: "center" });
+      doc.text(`Date: ${today}`, pageWidth / 2, 61, { align: "center" });
 
-      // QR Code on Cover
+      // QR Code
       if (qrCode) {
-        doc.addImage(qrCode, "PNG", pageWidth / 2 - 30, 125, 60, 60);
+        doc.addImage(qrCode, "PNG", pageWidth / 2 - 25, 68, 50, 50);
       }
 
-      // Page 2 - Details
-      doc.addPage();
-      doc.setFillColor(26, 26, 46);
-      doc.rect(0, 0, pageWidth, pageHeight, "F");
-
+      // Event Summary
+      let yPos = 125;
       doc.setTextColor(...goldColor);
-      doc.setFontSize(14);
-      doc.text("CLIENT INFORMATION", 20, 15);
-      doc.line(20, 18, pageWidth - 20, 18);
+      doc.setFontSize(10);
+      doc.text("EVENT DETAILS", 20, yPos);
+      doc.line(20, yPos + 2, pageWidth - 20, yPos + 2);
 
+      yPos += 10;
       doc.setTextColor(...textColor);
       doc.setFontSize(9);
-      let yPos = 28;
-      const clientInfo = [
-        ["Full Name", bookingData.fullName || "N/A"],
-        ["Email Address", bookingData.email || "N/A"],
-        ["Phone Number", bookingData.phoneNumber || "N/A"],
-        ["Contact Phone", bookingData.contactPhone || "N/A"],
-        ["ID / Passport Number", bookingData.idNumber || "N/A"],
-        ["Nationality", bookingData.nationality || "N/A"],
-        ["Country of Residence", bookingData.residency || "N/A"],
-        ["Preferred Contact Method", bookingData.contactMethod || "N/A"],
-        ["Security PIN", bookingData.verificationPin ? "••••••" : "N/A"],
+
+      const eventSummary = [
+        [`Event Type: ${bookingData.eventType || "N/A"}`],
+        [`Date & Time: ${bookingData.eventDate || "N/A"} at ${bookingData.eventTime || "N/A"}`],
+        [`Location: ${bookingData.eventCity || "N/A"}, ${bookingData.eventCountry || "N/A"}`],
+        [`Venue: ${bookingData.eventLocation || "N/A"}`],
+        [`Package: ${bookingData.plan || "N/A"}`],
       ];
 
-      clientInfo.forEach(([label, value]) => {
-        doc.setTextColor(...goldColor);
-        doc.text(`${label}:`, 20, yPos);
-        doc.setTextColor(...textColor);
-        doc.text(value, 80, yPos);
-        yPos += 7;
+      eventSummary.forEach(([text]) => {
+        doc.text(text, 25, yPos);
+        yPos += 6;
       });
 
+      // Payment Section
+      yPos += 5;
       doc.setTextColor(...goldColor);
-      doc.setFontSize(14);
-      doc.text("EVENT DETAILS", 20, yPos + 5);
-      doc.line(20, yPos + 8, pageWidth - 20, yPos + 8);
+      doc.setFontSize(10);
+      doc.text("NON-REFUNDABLE DEPOSIT AMOUNT", 20, yPos);
+      doc.line(20, yPos + 2, pageWidth - 20, yPos + 2);
 
+      yPos += 12;
+      doc.setFontSize(18);
+      doc.setTextColor([255, 215, 0]); // Bright gold for amount
+      doc.text(`ETB ${deposit.toLocaleString()}`, 20, yPos);
+
+      doc.setFontSize(8);
       doc.setTextColor(...textColor);
-      doc.setFontSize(9);
+      doc.text("(50% of total package cost - required to secure your booking)", 20, yPos + 8);
+
+      // Payment Instructions
       yPos += 18;
-      const eventInfo = [
-        ["Event Type", bookingData.eventType || "N/A"],
-        ["Selected Package", bookingData.plan || "N/A"],
-        ["Event Date", bookingData.eventDate || "N/A"],
-        ["Event Time", bookingData.eventTime || "N/A"],
-        ["Event Country", bookingData.eventCountry || "N/A"],
-        ["Event City", bookingData.eventCity || "N/A"],
-        ["Venue / Location", bookingData.eventLocation || "N/A"],
+      doc.setTextColor(...goldColor);
+      doc.setFontSize(10);
+      doc.text("PAYMENT INSTRUCTIONS", 20, yPos);
+      doc.line(20, yPos + 2, pageWidth - 20, yPos + 2);
+
+      yPos += 10;
+      doc.setFontSize(9);
+      doc.setTextColor(...textColor);
+      const paymentInfo = [
+        `Payment Method: CBE WALLET`,
+        `Account Number: 1000XXXXXXXX`,
+        `Account Name: Shime Events & Planning`,
+        `Amount: ETB ${deposit.toLocaleString()}`,
       ];
 
-      eventInfo.forEach(([label, value]) => {
-        doc.setTextColor(...goldColor);
-        doc.text(`${label}:`, 20, yPos);
-        doc.setTextColor(...textColor);
-        doc.text(value, 80, yPos);
-        yPos += 7;
+      paymentInfo.forEach((info) => {
+        doc.text(info, 25, yPos);
+        yPos += 6;
       });
 
+      // Contact
+      yPos += 5;
       doc.setTextColor(...goldColor);
-      doc.setFontSize(14);
-      doc.text("PAYMENT INFORMATION", 20, yPos + 5);
-      doc.line(20, yPos + 8, pageWidth - 20, yPos + 8);
-
-      doc.setTextColor(...textColor);
       doc.setFontSize(9);
-      yPos += 18;
-      doc.text("Payment Method: CBE WALLET", 20, yPos);
-      yPos += 7;
-      doc.text("Account Number: 1000XXXXXXXX", 20, yPos);
-      yPos += 7;
-      doc.text("Account Name: Shime Events & Planning", 20, yPos);
-      yPos += 7;
-      doc.setTextColor(...goldColor);
-      doc.text(`Deposit Amount: ETB ${deposit.toLocaleString()}`, 20, yPos);
+      doc.text("After payment, send proof to:", 20, yPos);
+      yPos += 5;
+      doc.setTextColor(...textColor);
+      doc.setFontSize(8);
+      doc.text("WhatsApp: +251 91 234 5678 | Email: contact@shimeeventplaning.com", 25, yPos);
 
-      // Page 3 - Terms
+      // PAGE 2 - TERMS & CONDITIONS
       doc.addPage();
       doc.setFillColor(26, 26, 46);
       doc.rect(0, 0, pageWidth, pageHeight, "F");
@@ -735,68 +733,38 @@ export default function ShimeAssistant() {
       doc.setTextColor(...goldColor);
       doc.setFontSize(14);
       doc.text("TERMS & CONDITIONS", 20, 15);
-      doc.line(20, 18, pageWidth - 20, 18);
+      doc.line(20, 17, pageWidth - 20, 17);
 
       doc.setTextColor(...textColor);
       doc.setFontSize(8);
-      const termsLines = doc.splitTextToSize(translations.en["termsText"], pageWidth - 40);
-      let termsY = 28;
+      const termsText = `1. A 50% non-refundable deposit is required to secure your event booking.
+2. Full payment is due 14 days before your scheduled event date.
+3. Cancellations made within 7 days of the event will result in forfeiture of 50% of total payment.
+4. Shime Events & Planning reserves the right to substitute vendors of equal or superior quality.
+5. The client is fully responsible for providing accurate and complete information during the booking process.
+6. Any requested changes to event date, venue, or guest count must be submitted in writing.
+7. Force majeure clauses apply to events affected by circumstances beyond our control.
+8. All disputes arising from this agreement shall be subject to Ethiopian jurisdiction.
 
+By accepting this booking, you confirm that you have reviewed and accepted all terms and conditions.
+Your signature/acceptance serves as binding agreement to this contract.`;
+
+      const termsLines = doc.splitTextToSize(termsText, pageWidth - 40);
+      let termsY = 25;
       termsLines.forEach((line) => {
-        if (termsY > 270) {
-          doc.addPage();
-          doc.setFillColor(26, 26, 46);
-          doc.rect(0, 0, pageWidth, pageHeight, "F");
-          termsY = 20;
-        }
         doc.text(line, 20, termsY);
         termsY += 4;
       });
 
-      // Page 4 - Signature
-      doc.addPage();
-      doc.setFillColor(26, 26, 46);
-      doc.rect(0, 0, pageWidth, pageHeight, "F");
-
+      // Acceptance line
       doc.setTextColor(...goldColor);
-      doc.setFontSize(14);
-      doc.text("ELECTRONIC SIGNATURE & CLIENT AGREEMENT", 20, 15);
-      doc.line(20, 18, pageWidth - 20, 18);
+      doc.setFontSize(9);
+      doc.text("Client Acceptance", 20, pageHeight - 15);
+      doc.line(20, pageHeight - 12, 70, pageHeight - 12);
 
       doc.setTextColor(...textColor);
-      doc.setFontSize(9);
-      const agreementText = `I, ${bookingData.fullName}, hereby declare that:
-
-1. I have read and fully understood all Terms & Conditions.
-2. I confirm that all information provided is accurate and truthful.
-3. I authorize Shime Events & Planning to commence planning services.
-4. I agree to the deposit of ETB ${deposit.toLocaleString()} and payment terms.
-5. I have received and reviewed my security PIN for account access.
-
-By electronically signing below, I confirm acceptance of this booking agreement.`;
-
-      const agreementLines = doc.splitTextToSize(agreementText, pageWidth - 40);
-      let agreementY = 30;
-      agreementLines.forEach((line) => {
-        doc.text(line, 20, agreementY);
-        agreementY += 5;
-      });
-
-      agreementY += 10;
-      doc.setTextColor(...goldColor);
-      doc.setFontSize(10);
-      doc.text("ELECTRONIC SIGNATURE", 20, agreementY);
-
-      try {
-        const sigImage = generateElectronicSignature();
-        doc.addImage(sigImage, "PNG", 20, agreementY + 5, 100, 25);
-      } catch (e) {
-        doc.setTextColor(...textColor);
-        doc.setFontSize(12);
-        doc.text(bookingData.fullName.split(" ")[0].charAt(0), 25, agreementY + 15);
-      }
-
-      agreementY += 35;
+      doc.setFontSize(7);
+      doc.text("Signature / Date", 25, pageHeight - 8);
 
       doc.setTextColor(...goldColor);
       doc.setFontSize(8);
@@ -809,13 +777,11 @@ By electronically signing below, I confirm acceptance of this booking agreement.
       doc.rect(0, pageHeight - 25, pageWidth, 25);
 
       doc.setTextColor(...goldColor);
-      doc.setFontSize(8);
-      doc.text("IMPORTANT: Keep a copy for your records. Send signed contract & payment proof to WhatsApp +251 91 234 5678", 20, pageHeight - 18);
-      doc.text(`Document ID: ${refNum} | Generated: ${new Date().toLocaleString()}`, 20, pageHeight - 3);
+      // Save PDF
+      const fileName = `ShimeEvents_Booking_${refNum.replace("SE-", "")}.pdf`;
+      doc.save(fileName);
 
-      doc.save(`ShimeEvents_Booking_${(bookingData.fullName || "Client").replace(/ /g, "_")}_${refNum.replace("SE-", "")}.pdf`);
-
-      showToast(t("success") + " PDF downloaded!", "success");
+      showToast("PDF downloaded successfully!", "success");
       setLoading(false);
     } catch (error) {
       console.error("PDF generation failed:", error);
@@ -1350,18 +1316,25 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         return (
           <div className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {PACKAGES.map((pkg) => (
-                <button
-                  key={pkg.id}
-                  onClick={() => handlePackageSelect(pkg.name)}
-                  className="p-6 bg-gradient-to-br from-slate-700 to-slate-800 border-2 border-yellow-500 hover:border-yellow-400 rounded-xl hover:bg-gradient-to-br hover:from-yellow-700 hover:to-yellow-800 transition text-left transform hover:scale-105 shadow-lg"
-                  aria-label={`Select ${pkg.name} package - 50% deposit required`}
-                >
-                  <div className="text-3xl mb-2">{pkg.icon}</div>
-                  <div className="font-bold text-lg text-white">{pkg.name}</div>
-                  <div className="text-yellow-300 font-semibold mt-2">50% {language === 'en' ? 'Deposit Required' : 'ዝቅ ብለህ ክፍያ'}</div>
-                </button>
-              ))}
+              {PACKAGES.map((pkg) => {
+                const depositAmount = Math.round(pkg.price / 2); // 50% deposit
+                return (
+                  <button
+                    key={pkg.id}
+                    onClick={() => handlePackageSelect(pkg.name)}
+                    className="p-6 bg-gradient-to-br from-slate-700 to-slate-800 border-2 border-yellow-500 hover:border-yellow-400 rounded-xl hover:bg-gradient-to-br hover:from-yellow-700 hover:to-yellow-800 transition text-left transform hover:scale-105 shadow-lg"
+                    aria-label={`Select ${pkg.name} package`}
+                  >
+                    <div className="text-3xl mb-2">{pkg.icon}</div>
+                    <div className="font-bold text-lg text-white">{pkg.name}</div>
+                    <div className="text-gray-300 text-sm mt-1">{pkg.description}</div>
+                    <div className="mt-3 pt-3 border-t border-yellow-500 border-opacity-30">
+                      <div className="text-xs text-gray-400 mb-1">{language === 'en' ? 'Non-Refundable Deposit (50%)' : 'ይመላሰ ያልሚችል ዝቅ ብለህ ክፍያ (50%)'}</div>
+                      <div className="text-2xl font-bold text-yellow-300">ETB {depositAmount.toLocaleString()}</div>
+                    </div>
+                  </button>
+                );
+              })}
             </div>
             <button
               onClick={goBack}
