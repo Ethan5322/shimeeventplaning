@@ -1550,8 +1550,17 @@ Your signature/acceptance serves as binding agreement to this contract.`;
 
 
       case 16:
+        const pkgInfoDeposit = PACKAGES.find(p => p.name === bookingData.plan);
+        const depositAmount = Math.round((pkgInfoDeposit?.price || 0) / 2);
         return (
           <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-yellow-500 rounded-xl p-6 space-y-4 shadow-2xl">
+            {/* Deposit Amount Display */}
+            <div className="bg-gradient-to-r from-yellow-900 to-yellow-800 border-2 border-yellow-500 p-6 rounded-lg text-center">
+              <div className="text-yellow-300 text-sm font-semibold mb-2">{language === 'en' ? 'Non-Refundable Deposit Required' : 'ይመላሰ ያልሚችል ዝቅ ብለህ ክፍያ ያስፈልጋል'}</div>
+              <div className="text-4xl font-bold text-yellow-100 mb-2">ETB {depositAmount.toLocaleString()}</div>
+              <div className="text-xs text-yellow-200">{language === 'en' ? '(50% of ' + bookingData.plan + ' package)' : '(የ' + bookingData.plan + ' ፓኬጅ 50%)'}</div>
+            </div>
+
             <div className="bg-slate-900 p-4 rounded-lg text-white text-sm whitespace-pre-line mb-4 border-l-4 border-yellow-500">
               {getBilingualText("noticeBody")}
             </div>
@@ -1586,6 +1595,43 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                 <div className="text-green-400 text-sm font-semibold bg-green-900 bg-opacity-30 p-3 rounded-lg border border-green-500">
                   ✅ {getBilingualText("termsAccepted")}
                 </div>
+
+                {/* Download PDF Button */}
+                <button
+                  onClick={generatePDF}
+                  disabled={loading}
+                  className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-bold hover:from-blue-700 hover:to-blue-800 transition text-lg transform hover:scale-105 disabled:opacity-50"
+                  aria-label="Download booking contract as PDF"
+                >
+                  {loading ? "⏳ Generating PDF..." : "📄 Download Contract (PDF)"}
+                </button>
+
+                {/* Share with WhatsApp */}
+                <button
+                  onClick={() => {
+                    const message = `Hello Shime Events Team,\n\nI have completed my event booking with the following details:\n\nBooking Reference: ${bookingRefNum}\nClient: ${bookingData.fullName}\nEmail: ${bookingData.email}\nEvent Type: ${bookingData.eventType}\nEvent Date: ${bookingData.eventDate} at ${bookingData.eventTime}\nLocation: ${bookingData.eventCity}, ${bookingData.eventCountry}\nPackage: ${bookingData.plan}\n\nPlease confirm receipt of my booking and provide further payment instructions.\n\nThank you!`;
+                    const whatsappUrl = `https://wa.me/251912345678?text=${encodeURIComponent(message)}`;
+                    window.open(whatsappUrl, '_blank');
+                  }}
+                  className="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-bold hover:from-green-600 hover:to-green-700 transition text-lg transform hover:scale-105"
+                  aria-label="Share booking via WhatsApp"
+                >
+                  📱 Share via WhatsApp
+                </button>
+
+                {/* Share with Telegram */}
+                <button
+                  onClick={() => {
+                    const message = `Hello Shime Events Team%0A%0AI have completed my event booking:%0A%0ABooking Reference: ${bookingRefNum}%0AClient: ${bookingData.fullName}%0AEmail: ${bookingData.email}%0AEvent Type: ${bookingData.eventType}%0AEvent Date: ${bookingData.eventDate} at ${bookingData.eventTime}%0ALocation: ${bookingData.eventCity}, ${bookingData.eventCountry}%0APackage: ${bookingData.plan}%0A%0APlease confirm receipt of my booking.%0A%0AThank you!`;
+                    const telegramUrl = `https://t.me/ShimeEvents?text=${message}`;
+                    window.open(telegramUrl, '_blank');
+                  }}
+                  className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-bold hover:from-blue-600 hover:to-blue-700 transition text-lg transform hover:scale-105"
+                  aria-label="Share booking via Telegram"
+                >
+                  ✈️ Share via Telegram
+                </button>
+
                 <button
                   onClick={() => handleNext("")}
                   className="w-full px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition text-lg transform hover:scale-105"
@@ -1618,8 +1664,8 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                 <div className="text-white font-bold text-sm">{bookingData.plan}</div>
               </div>
               <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
-                <div className="text-yellow-400 text-xs font-semibold mb-1">Deposit</div>
-                <div className="text-white font-bold text-sm">ETB {(pkgInfo?.price || 0).toLocaleString()}</div>
+                <div className="text-yellow-400 text-xs font-semibold mb-1">Non-Refundable Deposit (50%)</div>
+                <div className="text-yellow-300 font-bold text-lg">ETB {Math.round((pkgInfo?.price || 0) / 2).toLocaleString()}</div>
               </div>
             </div>
 
