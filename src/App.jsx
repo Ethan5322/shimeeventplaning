@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { jsPDF } from "jspdf";
 import QRCode from "qrcode";
 import QRLanding from "./QRLanding";
+import { gregorianToEthiopian, formatDateForDisplay } from "./EthiopianCalendar";
+import { generateCompanyQRCode, downloadCompanyQRPDF } from "./CompanyQRPDF";
 
 const translations = {
   en: {
@@ -597,10 +599,59 @@ export default function ShimeAssistant() {
 
   const addAgentMessage = (text) => {
     setMessages((prev) => [...prev, { type: "agent", text, id: Date.now() }]);
+    setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 
   const addUserMessage = (text) => {
     setMessages((prev) => [...prev, { type: "user", text, id: Date.now() }]);
+    setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
+  };
+
+  // Smart AI Response System
+  const getSmartResponse = (step, input) => {
+    const responses = {
+      en: {
+        0: "Great choice! Let's get your booking started! 🚀",
+        1: "Perfect calendar selection! Now let's get to know you better.",
+        2: "Awesome! Your nationality helps us understand your background. ✨",
+        3: "Excellent! Knowing where you live helps us provide better service. 🌍",
+        4: "Perfect! Your phone number is secure with us. 📱",
+        5: "Great email! We'll use this for all important updates. ✉️",
+        6: "Wonderful! Your full name is important for your booking. 👤",
+        7: "Perfect! Your ID helps us verify your booking. 🔐",
+        8: "Excellent! Your PIN is now secure. 🔒",
+        9: "Nice! We'll contact you through your preferred method. 💬",
+        10: "Exciting! What a wonderful event type! 🎊",
+        11: "Perfect package choice! You're going to have an amazing event! 🎉",
+        12: "Wonderful! That's going to be a beautiful location! 🌟",
+        13: "Great city choice! Perfect for your event! 🏙️",
+        14: "Excellent date selection! Mark it on the calendar! 📅",
+        15: "Perfect time! Your event will be unforgettable! ⏰",
+        16: "Wonderful venue! Everything looks perfect! 🎊",
+        17: "Thank you for reviewing your booking details!",
+      },
+      am: {
+        0: "ጥሩ ምርጫ! ዝግጅትዎ እንጀምር! 🚀",
+        1: "ፍጹም የካሌንደር ምርጫ! አሁን እራስህን ሪፖርት ።",
+        2: "ድንቅ! ተወላጅነት ምንጫወት ለምክንያት ያስጨንቀናል። ✨",
+        3: "ፍጹም! የመኖሪያ ሀገር ምንጫወት ታገዝናል። 🌍",
+        4: "ፍጹም! ስልክ ቁጥርህ ከኛ ጋር ደህንነቱ ነው። 📱",
+        5: "ድንቅ ኢሜይል! ለሁሉም ወሳኝ ዝመናዎች ተጠቀምነው። ✉️",
+        6: "ድንቅ! ሙሉ ስምህ ለዝግጅትህ አስፈላጊ ነው። 👤",
+        7: "ፍጹም! ለ ID ዝግጅትህ ማረጋገጥ ያስችለናል። 🔐",
+        8: "ድንቅ! PIN ሚስጢራዊ ነው። 🔒",
+        9: "ጥሩ! እንደ ምርጫዎ ለመገናኘት እንዲችሉ። 💬",
+        10: "ራሳቸዎ! ምን ሚስጥር ዝግጅት ዓይነት! 🎊",
+        11: "ፍጹም ፓኬጅ ምርጫ! አስገራሚ ዝግጅት ይኖርብህ! 🎉",
+        12: "ድንቅ! ሌሎች ውብ ቦታ ይኖር! 🌟",
+        13: "ጥሩ ከተማ ምርጫ! ለዝግጅትህ ፍጹም! 🏙️",
+        14: "ድንቅ ቀን ምርጫ! ያቀሙ! 📅",
+        15: "ፍጹም ጊዜ! ዝግጅትህ ታስረዋለች! ⏰",
+        16: "ድንቅ ቤተ! ሁሉም ፍጹም ነዋ! 🎊",
+        17: "ዝግጅት ዝርዝራቸው ገምግመዋቸው ምስጋና!",
+      },
+    };
+    return responses[language]?.[step] || "Great! Moving forward! ✨";
   };
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
