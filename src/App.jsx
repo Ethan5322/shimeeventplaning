@@ -947,7 +947,7 @@ export default function ShimeAssistant() {
       yPos += 5;
       doc.setTextColor(...goldColor);
       doc.setFontSize(10);
-      doc.text("NON-REFUNDABLE DEPOSIT AMOUNT", 20, yPos);
+      doc.text("BOOKING FEE (NON-REFUNDABLE)", 20, yPos);
       doc.line(20, yPos + 2, pageWidth - 20, yPos + 2);
 
       yPos += 12;
@@ -957,7 +957,7 @@ export default function ShimeAssistant() {
 
       doc.setFontSize(8);
       doc.setTextColor(...textColor);
-      doc.text("(50% of total package cost - required to secure your booking)", 20, yPos + 8);
+      doc.text("(Booking fee - non-refundable - required to secure your booking)", 20, yPos + 8);
 
       // Payment Instructions
       yPos += 18;
@@ -1003,9 +1003,9 @@ export default function ShimeAssistant() {
 
       doc.setTextColor(...textColor);
       doc.setFontSize(8);
-      const termsText = `1. A 50% non-refundable deposit is required to secure your event booking.
+      const termsText = `1. A non-refundable booking fee is required to secure your event booking.
 2. Full payment is due 14 days before your scheduled event date.
-3. Cancellations made within 7 days of the event will result in forfeiture of 50% of total payment.
+3. Cancellations made within 7 days of the event will result in forfeiture of the booking fee.
 4. Shime Events & Planning reserves the right to substitute vendors of equal or superior quality.
 5. The client is fully responsible for providing accurate and complete information during the booking process.
 6. Any requested changes to event date, venue, or guest count must be submitted in writing.
@@ -1034,6 +1034,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
 
       doc.setTextColor(...goldColor);
       doc.setFontSize(8);
+      const agreementY = pageHeight - 40;
       doc.text(`Signed on: ${today}`, 20, agreementY);
       doc.text(`Generated: Automated Electronic Signature`, 20, agreementY + 5);
       doc.text(`Booking Reference: ${refNum}`, 20, agreementY + 10);
@@ -1635,7 +1636,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                     <div className="font-bold text-lg text-white">{pkg.name}</div>
                     <div className="text-gray-300 text-sm mt-1">{pkg.description}</div>
                     <div className="mt-3 pt-3 border-t border-yellow-500 border-opacity-30">
-                      <div className="text-xs text-gray-400 mb-1">{language === 'en' ? 'Non-Refundable Deposit (50%)' : 'ይመላሰ ያልሚችል ዝቅ ብለህ ክፍያ (50%)'}</div>
+                      <div className="text-xs text-gray-400 mb-1">{language === 'en' ? 'Booking Fee (Non-Refundable)' : 'ብጃ ክፍያ (ይመላሰ ያልሚችል)'}</div>
                       <div className="text-2xl font-bold text-yellow-300">ETB {depositAmount.toLocaleString()}</div>
                     </div>
                   </button>
@@ -1660,9 +1661,9 @@ Your signature/acceptance serves as binding agreement to this contract.`;
           <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-yellow-500 rounded-xl p-6 space-y-4 shadow-2xl">
             {/* Deposit Amount Display */}
             <div className="bg-gradient-to-r from-yellow-900 to-yellow-800 border-2 border-yellow-500 p-6 rounded-lg text-center">
-              <div className="text-yellow-300 text-sm font-semibold mb-2">{language === 'en' ? 'Non-Refundable Deposit Required' : 'ይመላሰ ያልሚችል ዝቅ ብለህ ክፍያ ያስፈልጋል'}</div>
+              <div className="text-yellow-300 text-sm font-semibold mb-2">{language === 'en' ? 'Booking Fee (Non-Refundable)' : 'ብጃ ክፍያ (ይመላሰ ያልሚችል)'}</div>
               <div className="text-4xl font-bold text-yellow-100 mb-2">ETB {depositAmount.toLocaleString()}</div>
-              <div className="text-xs text-yellow-200">{language === 'en' ? '(50% of ' + bookingData.plan + ' package)' : '(የ' + bookingData.plan + ' ፓኬጅ 50%)'}</div>
+              <div className="text-xs text-yellow-200">{language === 'en' ? 'Required to secure your ' + bookingData.plan + ' package booking' : 'የ' + bookingData.plan + ' ፓኬጅ ዝግጅትዎን ለማረጋገጥ ያስፈልጋል'}</div>
             </div>
 
             <div className="bg-slate-900 p-4 rounded-lg text-white text-sm whitespace-pre-line mb-4 border-l-4 border-yellow-500">
@@ -1768,7 +1769,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                 <div className="text-white font-bold text-sm">{bookingData.plan}</div>
               </div>
               <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
-                <div className="text-yellow-400 text-xs font-semibold mb-1">Non-Refundable Deposit (50%)</div>
+                <div className="text-yellow-400 text-xs font-semibold mb-1">Booking Fee (Non-Refundable)</div>
                 <div className="text-yellow-300 font-bold text-lg">ETB {Math.round((pkgInfo?.price || 0) / 2).toLocaleString()}</div>
               </div>
             </div>
