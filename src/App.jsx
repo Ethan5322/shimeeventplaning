@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { jsPDF } from "jspdf";
 import QRCode from "qrcode";
+import QRLanding from "./QRLanding";
 
 const translations = {
   en: {
@@ -541,6 +542,15 @@ const QRCodeDownloadPage = ({ bookingQRCode, loading, onDownloadImage, onDownloa
 };
 
 export default function ShimeAssistant() {
+  // Check for page parameter to show QR Landing
+  const params = new URLSearchParams(window.location.search);
+  const page = params.get("page");
+
+  // Show QR Landing if requested
+  if (page === "qr" || page === "marketing" || page === "landing") {
+    return <QRLanding />;
+  }
+
   const [step, setStep] = useState(0);
   const [language, setLanguage] = useState(null);
   const [messages, setMessages] = useState([]);
