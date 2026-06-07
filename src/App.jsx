@@ -5,53 +5,53 @@ import QRCode from "qrcode";
 const translations = {
   en: {
     welcome: "Welcome to Shime Events & Planning",
-    welcomeSubtitle: "Your Trusted Partner for Unforgettable Celebrations",
-    selectLanguage: "Select your preferred language:",
-    askNationality: "What is your nationality? (Please select from the list)",
-    askResidency: "Which country do you currently reside in?",
-    askPhone: "What is your phone number? (Example: +251911234567)",
-    invalidPhone: "❌ Invalid phone number. Please use format: +251911234567",
-    phoneCountryMismatch: "⚠️ Your phone number country code doesn't match your residence country.",
-    askEmail: "What is your email address?",
-    invalidEmail: "❌ Invalid email. Please enter a valid email address.",
-    askIdType: "Please enter your ID or Passport number:",
-    invalidId: "❌ Invalid ID/Passport. Please try again.",
-    askFullName: "What is your full name? (First and last name)",
-    invalidName: "❌ Please enter a valid full name (first and last name).",
-    askPassword: "Create a security PIN (6 or more digits):",
-    askContactMethod: "How would you prefer to be contacted?",
+    welcomeSubtitle: "Your Premier Partner for Exceptional Celebrations",
+    selectLanguage: "Please select your preferred language:",
+    askNationality: "What is your nationality?",
+    askResidency: "Which country is your current place of residence?",
+    askPhone: "Please provide your phone number (Example: +251911234567)",
+    invalidPhone: "❌ The phone number you entered is invalid. Please use the format: +251911234567",
+    phoneCountryMismatch: "⚠️ Please note: Your phone number country code differs from your country of residence.",
+    askEmail: "Please provide your email address:",
+    invalidEmail: "❌ The email address you entered is invalid. Please enter a valid email.",
+    askIdType: "Please provide your ID number or Passport number:",
+    invalidId: "❌ The ID/Passport number you entered is invalid. Please try again.",
+    askFullName: "Please provide your full name (First name and last name):",
+    invalidName: "❌ Please enter your valid full name with both first and last name.",
+    askPassword: "Please create a security PIN (6 or more digits):",
+    askContactMethod: "How would you prefer us to contact you?",
     askEventType: "What type of event are you planning?",
-    askEventCountry: "In which country will the event be held? (Please select from the list)",
-    eventCountryMismatch: "⚠️ Note: Your event is in a different country than your residence.",
-    askEventCity: "In which city will the event take place?",
-    askDate: "When will your event take place? (Select a future date)",
-    dateBooked: "⚠️ This date is unavailable. Please select another date.",
-    askTime: "What time would you prefer for your event?",
-    timeBooked: "⚠️ This time slot is unavailable. Please select another time.",
-    askLocation: "What is the venue location or address?",
+    askEventCountry: "In which country will your event take place?",
+    eventCountryMismatch: "⚠️ Please note: Your event location is in a different country than your current residence.",
+    askEventCity: "In which city will your event be held?",
+    askDate: "Please select the date of your event:",
+    dateBooked: "⚠️ The date you selected is unavailable. Please choose another date.",
+    askTime: "What is your preferred time for the event?",
+    timeBooked: "⚠️ The time slot you selected is unavailable. Please choose another time.",
+    askLocation: "Please provide the venue location or complete address:",
     depositNotice: "A 50% deposit is required to secure your booking.",
-    noticeTitle: "Booking Confirmation & Payment",
-    noticeBody: "To secure your booking, please submit a 50% deposit payment:\n\n🏦 CBE WALLET\nAccount: 1000XXXXXXXX\nName: Shime Events & Planning",
+    noticeTitle: "Booking Confirmation & Payment Instructions",
+    noticeBody: "To secure your booking, please submit the required 50% deposit payment:\n\n🏦 Payment Method: CBE WALLET\nAccount Number: 1000XXXXXXXX\nAccount Name: Shime Events & Planning",
     termsTitle: "TERMS & CONDITIONS",
-    termsText: `1. A 50% non-refundable deposit is required to secure your booking.
-2. Full payment is due 14 days before the event.
-3. Cancellations within 7 days of the event forfeit 50% of total payment.
-4. Shime Events & Planning reserves the right to substitute vendors of equal quality.
-5. The client is responsible for providing accurate information during booking.
-6. Any changes to date, venue, or guest count must be requested in writing.
-7. Force majeure clauses apply for events outside our control.
-8. All disputes are subject to Ethiopian jurisdiction.
+    termsText: `1. A 50% non-refundable deposit is required to secure your event booking.
+2. Full payment is due 14 days before your scheduled event date.
+3. Cancellations made within 7 days of the event will result in forfeiture of 50% of total payment.
+4. Shime Events & Planning reserves the right to substitute vendors of equal or superior quality.
+5. The client is fully responsible for providing accurate and complete information during the booking process.
+6. Any requested changes to event date, venue, or guest count must be submitted in writing.
+7. Force majeure clauses apply to events affected by circumstances beyond our control.
+8. All disputes arising from this agreement shall be subject to Ethiopian jurisdiction.
 
-By signing this agreement, you confirm that you have read and accepted all terms.`,
+By accepting this agreement, you confirm that you have reviewed and accepted all terms and conditions.`,
     acceptTerms: "✅ I Accept the Terms & Conditions",
     shareWhatsapp: "📲 Share via WhatsApp",
-    viewBooking: "📋 Booking Confirmation",
+    viewBooking: "📋 View Booking Details",
     downloadPdf: "⬇️ Download Contract",
     downloadQr: "⬇️ Download QR Code",
-    sendInstructions: "Next Steps:\n1. Send proof of payment\n2. Send signed contract\n\nSubmit to:\n📱 WhatsApp: +251 91 234 5678\n✉️ Telegram: @ShimeEvents",
+    sendInstructions: "Next Steps to Complete Your Booking:\n\n1. Send proof of payment\n2. Send signed contract\n\nPlease submit to:\n📱 WhatsApp: +251 91 234 5678\n✉️ Telegram: @ShimeEvents",
     bookingConfirmed: "Booking Confirmed",
-    termsAccepted: "✅ Terms accepted successfully.",
-    proceedBooking: "Review Booking",
+    termsAccepted: "✅ Terms and conditions accepted successfully.",
+    proceedBooking: "Review Your Booking",
     contactUs: "📲 Contact Us",
     stepOf: "Step",
     required: "(Required)",
@@ -59,79 +59,79 @@ By signing this agreement, you confirm that you have read and accepted all terms
     next: "Continue →",
     success: "✅ Success!",
     loading: "Loading...",
-    generatingPdf: "Generating PDF...",
+    generatingPdf: "Generating PDF Document...",
     generatingQr: "Generating QR Code...",
     copy: "Copy",
-    copied: "Copied!",
+    copied: "Copied to clipboard!",
     startOver: "Start Over",
-    selectPackage: "Which package would you like to book?",
+    selectPackage: "Which event package would you like to select?",
     scanToBook: "📲 Scan to Book Your Event",
     qrCodeTitle: "Share This QR Code",
-    qrCodeSubtitle: "Print or share this code so customers can scan and start booking",
+    qrCodeSubtitle: "Distribute this QR code so customers can scan and begin their booking",
     downloadQRCode: "⬇️ Download QR Code",
     printQRCode: "🖨️ Print QR Code",
     shareQRCode: "📱 Share QR Link",
     qrCodeDownloaded: "QR Code downloaded successfully!",
   },
   am: {
-    welcome: "በ Shime Events & Planning ደህና መጡ",
-    welcomeSubtitle: "ለተረጋገጥ አጠቃሉ ዝግጅት ታሪካዊ አጋዥ",
-    selectLanguage: "ተመራጭ ቋንቋዎን ይምረጡ:",
-    askNationality: "ተዋለድነትዎ ምንድን ነው? (ከዝርዝር ውስጥ ይምረጡ)",
-    askResidency: "በአሁኑ ጊዜ በየ ሀገር ነው የሚኖሩት?",
-    askPhone: "ስልክ ቁጥርዎ ምንድን ነው? (ምሳሌ: +251911234567)",
-    invalidPhone: "❌ ተገቢ ያልሆነ ስልክ ቁጥር።",
-    phoneCountryMismatch: "⚠️ ስልክ ቁጥርዎ ከመኖሪያ ሀገር ጋር አይዛመድም።",
-    askEmail: "ኢሜይሉ ምንድን ነው?",
-    invalidEmail: "❌ ተገቢ ያልሆነ ኢሜይል።",
-    askIdType: "ID ወይም ፓስፖርት ቁጥርዎን ያስገቡ:",
-    invalidId: "❌ ተገቢ ያልሆነ ID/ፓስፖርት።",
-    askFullName: "ሙሉ ስምዎ ምንድን ነው? (ስም እና የቤት ስም)",
-    invalidName: "❌ ትክክለኛ ሙሉ ስም ያስገቡ።",
-    askPassword: "보안 ፒን ይፍጠሩ (6 ወይም ከዚህ በላይ አሃዞች):",
-    askContactMethod: "እንዴት ለአንተ ተገናኝ ማድረግ ትመርጥ?",
-    askEventType: "ምን ዓይነት ዝግጅት ነው?",
-    askEventCountry: "ዝግጅቱ በየ ሀገር ይሆናል? (ከዝርዝር ውስጥ ይምረጡ)",
-    eventCountryMismatch: "⚠️ ማስታወሻ: ዝግጅትዎ ከመኖሪያ ሀገር በተለየ ሀገር ነው።",
-    askEventCity: "ዝግጅቱ በየ ከተማ ይሆናል?",
-    askDate: "ዝግጅትዎ መቼ ይሆናል? (ወደፊት ቀን ይምረጡ)",
-    dateBooked: "⚠️ ይህ ቀን ተገኝነት የለውም።",
-    askTime: "ምን ሰዓት ይመርጣሉ?",
-    timeBooked: "⚠️ ይህ ሰዓት ተገኝነት የለውም።",
-    askLocation: "ቦታ/አድራሻ ምንድን ነው?",
+    welcome: "በ Shime Events & Planning እንኋን ደህና መጡ",
+    welcomeSubtitle: "ለእርስዎ ልዩ ዝግጅት ለምንም ይልቅ ተስፋ ሰሪ አጋዥ",
+    selectLanguage: "እባክዎን ተመራጩ ቋንቋዎን ይምረጡ:",
+    askNationality: "እባክዎን የእርስዎ ተዋለድነት ይንገሩን:",
+    askResidency: "በአሁኑ ጊዜ በየትኛው ሀገር ይኖራሉ?",
+    askPhone: "እባክዎን የእርስዎ ስልክ ቁጥር ይንገሩን (ምሳሌ: +251911234567)",
+    invalidPhone: "❌ የገቡት ስልክ ቁጥር ትክክል ያልሆነ ነው። እባክዎን ይህንን ቅርጸት ይጠቀሙ: +251911234567",
+    phoneCountryMismatch: "⚠️ እባክዎን ልብ ይበሉ: የእርስዎ ስልክ ቁጥር ከመኖሪያ ሀገርዎ ጋር አይዛመድም።",
+    askEmail: "እባክዎን የእርስዎ ኢሜይል 주소 ይንገሩን:",
+    invalidEmail: "❌ የገቡት ኢሜይል ትክክል ያልሆነ ነው። እባክዎን ትክክለኛ ኢሜይል ይርስሩ።",
+    askIdType: "እባክዎን የእርስዎ መታወቂያ ወይም ፓስፖርት ቁጥር ይርስሩ:",
+    invalidId: "❌ የገቡት መታወቂያ/ፓስፖርት ቁጥር ትክክል ያልሆነ ነው። እባክዎን ድጋሚ ሞክሩ።",
+    askFullName: "እባክዎን የእርስዎ ሙሉ ስም ይርስሩ (ስም እና የቤት ስም):",
+    invalidName: "❌ እባክዎን ስም እና የቤት ስም ጋር ትክክለኛ ሙሉ ስም ይርስሩ።",
+    askPassword: "እባክዎን ደህንነት PIN ይጠግኑ (6 ወይም ከዚያ በላይ አሃዞች):",
+    askContactMethod: "እባክዎን እንዴት ለመገናኘት መከፈት ይምረጡ:",
+    askEventType: "ምን ዓይነት ዝግጅት ታቅደዋል?",
+    askEventCountry: "ዝግጅትዎ በየትኛው ሀገር ይካሄዳል?",
+    eventCountryMismatch: "⚠️ እባክዎን ልብ ይበሉ: ዝግጅትዎ ከመኖሪያ ሀገርዎ በተለያዩ ሀገር ይኖራሉ።",
+    askEventCity: "ዝግጅትዎ በየትኛው ከተማ ይካሄዳል?",
+    askDate: "እባክዎን ዝግጅትዎ ቀንን ይምረጡ:",
+    dateBooked: "⚠️ የመረጡት ቀን አይገኝም። እባክዎን ሌላ ቀን ይምረጡ።",
+    askTime: "የዝግጅትዎ ምርጥ ጊዜ ምንድ ነው?",
+    timeBooked: "⚠️ የመረጡት ጊዜ አይገኝም። እባክዎን ሌላ ጊዜ ይምረጡ።",
+    askLocation: "እባክዎን የክስተት አቀራረብ ወይም ሙሉ አድራሻ ይርስሩ:",
     depositNotice: "ዝግጅትዎን ለማረጋገጥ 50% ዝቅ ብለህ ክፍያ ያስፈልጋል።",
-    noticeTitle: "ዝግጅት ማረጋገጥ እና ክፍያ",
-    noticeBody: "ዝግጅትዎን ለማረጋገጥ 50% ዝቅ ብለህ ክፍያ ያስገቡ:\n\n🏦 CBE WALLET\nHesaab: 1000XXXXXXXX\nSemie: Shime Events & Planning",
-    termsTitle: "ውል ስምምነት",
-    acceptTerms: "✅ ውሎችን ተቀብያለሁ",
+    noticeTitle: "ዝግጅት ማረጋገጫ እና ክፍያ መመሪያ",
+    noticeBody: "ዝግጅትዎን ለማረጋገጥ, እባክዎን የሚያስፈልገው 50% ዝቅ ብለህ ክፍያ ያስገቡ:\n\n🏦 ክፍያ ዘዴ: CBE WALLET\nሂሳብ ቁጥር: 1000XXXXXXXX\nሂሳብ ስም: Shime Events & Planning",
+    termsTitle: "ውሎች እና ሁኔታዎች",
+    acceptTerms: "✅ ውሎች እና ሁኔታዎችን እቀበላለሁ",
     shareWhatsapp: "📲 በ WhatsApp ላክ",
-    viewBooking: "📋 ዝግጅት ማረጋገጥ",
-    downloadPdf: "⬇️ ውል ድቅድቅ",
-    downloadQr: "⬇️ QR Code ድቅድቅ",
-    sendInstructions: "ቀጣይ ደረጃ:",
+    viewBooking: "📋 ዝግጅት ዝርዝር ይመልከቱ",
+    downloadPdf: "⬇️ ውል ሰነድ ያውርዱ",
+    downloadQr: "⬇️ QR ኮድ ያውርዱ",
+    sendInstructions: "ዝግጅትዎን ለመጨረስ ቀጣይ ደረጃዎች:\n\n1. ክፍያ ማስረጃ ይላኩ\n2. ተፈራርሙ ውል ይላኩ\n\nእባክዎን ለአድራሻው ያስገቡ:\n📱 WhatsApp: +251 91 234 5678\n✉️ Telegram: @ShimeEvents",
     bookingConfirmed: "ዝግጅት ተረጋግጧል",
-    termsAccepted: "✅ ውሎች ተቀባይ ነበሩ።",
-    proceedBooking: "ዝግጅትን ይገምግሙ",
-    contactUs: "📲 ያገኙ",
+    termsAccepted: "✅ ውሎች እና ሁኔታዎች በተሳካ ሁኔታ ተቀብለዋል።",
+    proceedBooking: "ዝግጅትዎን ይገምግሙ",
+    contactUs: "📲 ያገኙን",
     stepOf: "ደረጃ",
     required: "(ያስፈልጋል)",
     back: "← ወደ ኋላ",
     next: "ቀጥል →",
     success: "✅ ተሳካ!",
-    loading: "ሊጠበቅ...",
-    generatingPdf: "PDF ይሰበሰብ...",
-    generatingQr: "QR Code ይሰበሰብ...",
+    loading: "ይጠበቅ ይገባል...",
+    generatingPdf: "PDF ሰነድ ይዘጋጃል...",
+    generatingQr: "QR ኮድ ይዘጋጃል...",
     copy: "ቅዴ",
-    copied: "ተቅዳ!",
+    copied: "በ clipboard ውስጥ ገብቷል!",
     startOver: "ድጋሚ ጀምር",
-    selectPackage: "ምን ዓይነት ፓኬጅ ይመርጣሉ?",
+    selectPackage: "ምን ዓይነት ዝግጅት ፓኬጅ መምረጥ ይፈልጋሉ?",
     scanToBook: "📲 ዝግጅትዎን ለመያዝ ስካን ያድርጉ",
-    qrCodeTitle: "ይህን QR Code ያጋሩ",
-    qrCodeSubtitle: "ደንበኞች ስካን ማድረግ ይችሉ ዝግጅትን ይጀምሩ",
-    downloadQRCode: "⬇️ QR Code ያውርዱ",
-    printQRCode: "🖨️ QR Code አሳዩ",
-    shareQRCode: "📱 QR 링크 ያጋሩ",
-    qrCodeDownloaded: "QR Code በተሳካ ሁኔታ ታውርዷል!",
+    qrCodeTitle: "ይህን QR ኮድ ያጋሩ",
+    qrCodeSubtitle: "ደንበኞች ስካን ማድረግ እና ዝግጅትን ይጀምሩ ይችላሉ",
+    downloadQRCode: "⬇️ QR ኮድ ያውርዱ",
+    printQRCode: "🖨️ QR ኮድ አሳዩ",
+    shareQRCode: "📱 QR ሊንክ ያጋሩ",
+    qrCodeDownloaded: "QR ኮድ በተሳካ ሁኔታ ተዘርዝሯል!",
   }
 };
 
@@ -380,7 +380,12 @@ export default function ShimeAssistant() {
     const engText = translations.en[key];
     const transText = translations[language][key];
     if (language === "en") return engText;
+    // Show both languages clearly separated
     return `${engText}\n\n${transText}`;
+  };
+
+  const getLanguageName = (lang) => {
+    return lang === "en" ? "English" : lang === "am" ? "አማርኛ" : "Unknown";
   };
 
   const t = (key) => translations[language || "en"][key] || translations.en[key];
@@ -1625,10 +1630,11 @@ By electronically signing below, I confirm acceptance of this booking agreement.
             <p className="text-white text-sm opacity-90 tracking-wide">Professional Event Planning & Coordination</p>
           </div>
 
-          {step > 0 && step < 17 && (
+          {step > 0 && language && step < 17 && (
             <div className="space-y-2 animate-fadeIn">
               <div className="flex justify-between items-center text-xs text-yellow-400 mb-2 font-semibold">
                 <span>{t("stepOf")} {step}/16</span>
+                <span>Language: {language === "en" ? "🇬🇧 English" : "🇪🇹 አማርኛ"}</span>
                 <span>{Math.round(getProgressPercentage())}%</span>
               </div>
               <div className="h-2 bg-slate-700 rounded-full overflow-hidden border border-yellow-500 border-opacity-30">
