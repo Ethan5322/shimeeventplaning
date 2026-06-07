@@ -150,17 +150,7 @@ const PACKAGES = [
   { id: "exclusive", name: "Exclusive", price: 40000, icon: "👑" },
 ];
 
-const COUNTRIES = ["Ethiopia", "Kenya", "Uganda", "Rwanda", "Tanzania", "South Africa", "Nigeria", "Ghana", "Other"];
-const PHONE_CODES = {
-  "Ethiopia": "+251",
-  "Kenya": "+254",
-  "Uganda": "+256",
-  "Rwanda": "+250",
-  "Tanzania": "+255",
-  "South Africa": "+27",
-  "Nigeria": "+234",
-  "Ghana": "+233",
-};
+// Removed hardcoded country list - clients can now type any country name
 
 // Toast Notification Component
 const Toast = ({ message, type, visible }) => {
@@ -876,9 +866,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         return;
 
       case 1:
-        if (!value || value.length < 3) {
+        if (!value || value.trim().length < 2) {
           isValid = false;
-          errorMsg = "Please enter a valid nationality";
+          errorMsg = "Please enter your nationality (at least 2 characters)";
         }
         if (isValid) {
           addUserMessage(value);
@@ -893,9 +883,9 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         return;
 
       case 2:
-        if (!value || value.length < 2) {
+        if (!value || value.trim().length < 2) {
           isValid = false;
-          errorMsg = "Please select a country";
+          errorMsg = "Please enter your country of residence (at least 2 characters)";
         }
         if (isValid) {
           addUserMessage(value);
@@ -1026,15 +1016,15 @@ By electronically signing below, I confirm acceptance of this booking agreement.
         return;
 
       case 11:
-        if (!value || value.length < 2) {
+        if (!value || value.trim().length < 2) {
           isValid = false;
-          errorMsg = "Please select a country from the list";
+          errorMsg = "Please enter the event country (at least 2 characters)";
         }
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, eventCountry: value });
 
-          if (value !== bookingData.residency) {
+          if (value.toLowerCase() !== bookingData.residency.toLowerCase()) {
             addAgentMessage(getBilingualText("eventCountryMismatch"));
           }
 
@@ -1242,32 +1232,56 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           </div>
         );
 
-      case 1:
       case 2:
-      case 12:
         return (
           <div className="space-y-3">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-              {COUNTRIES.map((country) => (
-                <button
-                  key={country}
-                  onClick={() => handleNext(country)}
-                  className="p-3 bg-gradient-to-br from-slate-700 to-slate-800 border border-yellow-500 hover:border-yellow-400 rounded-lg hover:bg-gradient-to-br hover:from-yellow-700 hover:to-yellow-800 transition text-sm font-semibold text-white"
-                  aria-label={`Select ${country}`}
-                >
-                  {country}
-                </button>
-              ))}
+            <div>
+              <label className="block text-yellow-400 text-sm font-semibold mb-2">
+                <span className="text-red-400">*</span> {t("required")}
+              </label>
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => {
+                  setInputValue(e.target.value);
+                  setError("");
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter" && inputValue.trim()) {
+                    handleNext(inputValue);
+                    setInputValue("");
+                  }
+                }}
+                placeholder="Type your country name..."
+                className="w-full px-4 py-3 bg-white text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-lg"
+                autoFocus
+                aria-label="Enter country of residence"
+              />
             </div>
-            {step > 0 && (
+            {error && <div className="text-red-400 text-sm font-semibold bg-red-900 bg-opacity-20 p-2 rounded">{error}</div>}
+            <div className="flex gap-3">
+              {step > 0 && step < 17 && (
+                <button
+                  onClick={goBack}
+                  className="flex-1 px-4 py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-bold transition"
+                  aria-label="Go to previous step"
+                >
+                  {t("back")}
+                </button>
+              )}
               <button
-                onClick={goBack}
-                className="w-full px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition text-sm font-semibold"
-                aria-label="Go back to previous question"
+                onClick={() => {
+                  if (inputValue.trim()) {
+                    handleNext(inputValue);
+                    setInputValue("");
+                  }
+                }}
+                className="flex-1 px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition text-lg transform hover:scale-105 shadow-lg"
+                aria-label="Submit current answer and continue"
               >
-                {t("back")}
+                {t("next")}
               </button>
-            )}
+            </div>
           </div>
         );
 
@@ -1359,32 +1373,6 @@ By electronically signing below, I confirm acceptance of this booking agreement.
           </div>
         );
 
-      case 11:
-        return (
-          <div className="space-y-3">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-              {COUNTRIES.map((country) => (
-                <button
-                  key={country}
-                  onClick={() => handleNext(country)}
-                  className="p-3 bg-gradient-to-br from-slate-700 to-slate-800 border border-yellow-500 hover:border-yellow-400 rounded-lg hover:bg-gradient-to-br hover:from-yellow-700 hover:to-yellow-800 transition text-sm font-semibold text-white"
-                  aria-label={`Select ${country} for event`}
-                >
-                  {country}
-                </button>
-              ))}
-            </div>
-            {step > 0 && (
-              <button
-                onClick={goBack}
-                className="w-full px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition text-sm font-semibold"
-                aria-label="Go back to previous question"
-              >
-                {t("back")}
-              </button>
-            )}
-          </div>
-        );
 
       case 16:
         return (
