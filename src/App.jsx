@@ -7,8 +7,8 @@ import { generateCompanyQRCode, downloadCompanyQRPDF } from "./CompanyQRPDF";
 import { createClient } from "@supabase/supabase-js";
 
 // Initialize Supabase
-const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
-const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
 const translations = {
@@ -693,7 +693,7 @@ export default function ShimeAssistant() {
   // Chapa Hosted Checkout Integration
   const submitChapaHostedPayment = () => {
     try {
-      const publicKey = process.env.REACT_APP_CHAPA_PUBLIC_KEY;
+      const publicKey = import.meta.env.VITE_CHAPA_PUBLIC_KEY;
       if (!publicKey) {
         showToast("Payment system not configured", "error");
         return;
