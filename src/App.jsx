@@ -702,7 +702,7 @@ export default function ShimeAssistant() {
     try {
       const publicKey = import.meta.env.VITE_CHAPA_PUBLIC_KEY;
       if (!publicKey) {
-        showToast("Payment system not configured", "error");
+        showToast("📱 Online payment temporarily unavailable. Please use bank transfer or cash payment option.", "info", 5000);
         return;
       }
 
@@ -1063,7 +1063,14 @@ export default function ShimeAssistant() {
 
       // QR Code
       if (qrCode) {
-        doc.addImage(qrCode, "PNG", pageWidth / 2 - 25, 68, 50, 50);
+        try {
+          doc.addImage(qrCode, "PNG", pageWidth / 2 - 25, 68, 50, 50);
+        } catch (qrError) {
+          console.warn("Could not add QR code to PDF:", qrError);
+          doc.setFontSize(9);
+          doc.setTextColor(...goldColor);
+          doc.text("[QR Code]", pageWidth / 2, 93, { align: "center" });
+        }
       }
 
       // Event Summary
@@ -1191,15 +1198,23 @@ Your signature/acceptance serves as binding agreement to this contract.`;
       doc.rect(0, pageHeight - 25, pageWidth, 25);
 
       doc.setTextColor(...goldColor);
-      // Save PDF
-      const fileName = `ShimeEvents_Booking_${refNum.replace("SE-", "")}.pdf`;
-      doc.save(fileName);
+      doc.setFontSize(8);
+      doc.text("www.shimeeventplaning.com | contact@shimeeventplaning.com", pageWidth / 2, pageHeight - 8, { align: "center" });
 
-      showToast("PDF downloaded successfully!", "success");
+      // Save PDF
+      try {
+        const fileName = `ShimeEvents_Booking_${refNum.replace("SE-", "")}.pdf`;
+        doc.save(fileName);
+        showToast("✅ PDF downloaded successfully!", "success", 3000);
+      } catch (saveError) {
+        console.error("PDF save failed:", saveError);
+        showToast("⚠️ PDF generated but couldn't download. Check browser settings.", "info", 5000);
+      }
+
       setLoading(false);
     } catch (error) {
       console.error("PDF generation failed:", error);
-      showToast("Failed to generate PDF", "error");
+      showToast("⚠️ PDF generation had issues. Please try again.", "error", 4000);
       setLoading(false);
     }
   };
