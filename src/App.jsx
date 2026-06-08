@@ -608,67 +608,61 @@ export default function ShimeAssistant() {
   };
 
   // Smart AI Response System
-  // Chapa Payment Integration
-  const initiateChapPayment = async () => {
+  // Chapa Hosted Checkout Integration
+  const submitChapaHostedPayment = () => {
     try {
-      setLoading(true);
-      showToast("Initializing payment...", "info");
-
-      const chapaKey = process.env.REACT_APP_CHAPA_KEY;
-      if (!chapaKey) {
+      const publicKey = process.env.REACT_APP_CHAPA_PUBLIC_KEY;
+      if (!publicKey) {
         showToast("Payment system not configured", "error");
-        setLoading(false);
         return;
       }
 
       const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
-      const depositAmount = Math.round((pkgInfo?.price || 0) / 2);
+      const depositAmount = Math.round((pkgInfo?.price || 0) / 2); // Numeric value only
       const refNum = bookingRefNum || `SE-${Date.now()}`;
 
-      // Prepare payment data
-      const paymentData = {
-        amount: depositAmount,
-        currency: "ETB",
-        email: bookingData.email,
-        first_name: bookingData.fullName.split(' ')[0] || "Customer",
-        last_name: bookingData.fullName.split(' ')[1] || bookingData.fullName,
-        phone_number: bookingData.phoneNumber,
+      // Split name into first and last
+      const nameParts = bookingData.fullName.trim().split(/\s+/);
+      const firstName = nameParts[0] || "Customer";
+      const lastName = nameParts.slice(1).join(" ") || bookingData.fullName;
+
+      // Create hidden form for Chapa hosted checkout
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'https://api.chapa.co/v1/hosted/pay';
+      form.style.display = 'none';
+
+      // Form fields
+      const fields = {
+        public_key: publicKey,
         tx_ref: refNum,
-        callback_url: `${window.location.origin}/api/payment-callback`,
-        return_url: `${window.location.origin}?booking=${refNum}&payment=success`,
-        customization: {
-          title: "Shime Events Booking",
-          description: `Booking fee for ${bookingData.eventType} - ${bookingData.plan} Package`,
-          logo: "https://shimeeventplaning.vercel.app/logo.png"
-        }
+        amount: depositAmount.toString(),
+        currency: 'ETB',
+        first_name: firstName,
+        last_name: lastName,
+        phone_number: bookingData.contactPhone || bookingData.phoneNumber,
+        return_url: `${window.location.origin}/?booking=${refNum}&payment_status=completed`,
+        'customization[title]': 'Shime Events & Planning',
+        'customization[description]': `${bookingData.plan} Plan - Deposit Payment`
       };
 
-      // Send to Chapa
-      const response = await fetch('https://api.chapa.co/v1/transaction/initialize', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${chapaKey}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(paymentData)
+      // Add fields to form
+      Object.keys(fields).forEach(key => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = fields[key];
+        form.appendChild(input);
       });
 
-      const data = await response.json();
-
-      if (data.status === 'success') {
-        showToast("Redirecting to payment...", "success");
-        // Redirect to Chapa payment page
-        setTimeout(() => {
-          window.location.href = data.data.checkout_url;
-        }, 1000);
-      } else {
-        showToast("Payment initialization failed: " + (data.message || "Unknown error"), "error");
-        setLoading(false);
-      }
+      // Append form to body and submit
+      document.body.appendChild(form);
+      showToast("Redirecting to payment...", "info");
+      form.submit();
+      document.body.removeChild(form);
     } catch (error) {
       console.error('Chapa payment error:', error);
       showToast("Payment error: " + error.message, "error");
-      setLoading(false);
     }
   };
 
@@ -1506,6 +1500,23 @@ Your signature/acceptance serves as binding agreement to this contract.`;
       return;
     }
 
+    // Check if user came from Chapa payment
+    if (params.get('payment_status') === 'completed') {
+      const bookingRef = params.get('booking');
+      if (bookingRef) {
+        showToast("✅ Payment successful! Your booking is confirmed.", "success", 5000);
+
+        // TODO: Update booking status in Supabase
+        // const { error } = await supabase
+        //   .from('shime_bookings')
+        //   .update({ payment_status: 'completed', booking_status: 'deposit_paid' })
+        //   .eq('booking_ref', bookingRef);
+
+        // Clean URL (remove payment params)
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+
     // Check if user came from QR code scan
     if (params.get('ref') === 'booking' && step === 0) {
       // Auto-start with English, user can still change language
@@ -1765,15 +1776,26 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                   ✅ {getBilingualText("termsAccepted")}
                 </div>
 
-                {/* CHAPA PAYMENT BUTTON - PRIMARY ACTION */}
+                {/* CHAPA HOSTED CHECKOUT - PRIMARY ACTION */}
                 <button
-                  onClick={initiateChapPayment}
-                  disabled={loading}
-                  className="w-full px-4 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg font-bold hover:from-purple-700 hover:to-purple-800 transition text-lg transform hover:scale-105 disabled:opacity-50 shadow-lg"
+                  onClick={submitChapaHostedPayment}
+                  className="w-full px-4 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg font-bold hover:from-purple-700 hover:to-purple-800 transition text-lg transform hover:scale-105 shadow-lg"
                   aria-label="Pay booking fee with Chapa"
                 >
-                  {loading ? "⏳ Processing..." : "💳 Pay Now with Chapa (ETB " + Math.round((PACKAGES.find(p => p.name === bookingData.plan)?.price || 0) / 2).toLocaleString() + ")"}
+                  💳 Pay Deposit Now (ETB {Math.round((PACKAGES.find(p => p.name === bookingData.plan)?.price || 0) / 2).toLocaleString()})
                 </button>
+
+                {/* CBE WALLET ALTERNATIVE */}
+                <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
+                  <p className="text-yellow-400 font-semibold mb-3 text-center">📌 Or Pay via CBE Wallet</p>
+                  <div className="space-y-2 text-sm text-white">
+                    <p><strong>Account Name:</strong> Shime Events & Planning</p>
+                    <p><strong>Account Number:</strong> 1000XXXXXXXX</p>
+                    <p><strong>Amount:</strong> ETB {Math.round((PACKAGES.find(p => p.name === bookingData.plan)?.price || 0) / 2).toLocaleString()}</p>
+                    <p><strong>Reference:</strong> {bookingRefNum || "Your booking reference"}</p>
+                    <p className="text-xs text-gray-400 mt-3">After payment, send proof via WhatsApp to verify your booking.</p>
+                  </div>
+                </div>
 
                 {/* Download PDF Button */}
                 <button
