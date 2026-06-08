@@ -702,7 +702,27 @@ export default function ShimeAssistant() {
     try {
       const publicKey = import.meta.env.VITE_CHAPA_PUBLIC_KEY;
       if (!publicKey) {
-        showToast("📱 Online payment temporarily unavailable. Please use bank transfer or cash payment option.", "info", 5000);
+        const setupMsg = language === 'en'
+          ? "🔧 CHAPA SETUP REQUIRED\n\n" +
+            "To enable online payments:\n\n" +
+            "1. Get your PUBLIC KEY from:\n" +
+            "   https://chapa.co/dashboard\n\n" +
+            "2. Add to Vercel environment variables:\n" +
+            "   Name: VITE_CHAPA_PUBLIC_KEY\n" +
+            "   Value: (Your PUBLIC KEY)\n\n" +
+            "3. Wait 2-3 minutes for deployment\n\n" +
+            "For now, use Bank Transfer or Cash payment."
+          : "🔧 CHAPA ማዋቀር ያስፈልጋል\n\n" +
+            "ምታ ክፍያ ለማንቃት:\n\n" +
+            "1. PUBLIC KEY ን ያግኙ:\n" +
+            "   https://chapa.co/dashboard\n\n" +
+            "2. ወደ Vercel ይጨምሩት:\n" +
+            "   Name: VITE_CHAPA_PUBLIC_KEY\n\n" +
+            "3. 2-3 ደቂቃ ጠብቁ\n\n" +
+            "አሁን ባንክ ወይም ጥሬ ገንዘብ ይጠቀሙ";
+
+        showToast("⚙️ Chapa payment setup required. See instructions below.", "info", 6000);
+        alert(setupMsg);
         return;
       }
 
