@@ -586,6 +586,7 @@ export default function ShimeAssistant() {
   const [bookingQRCode, setBookingQRCode] = useState(null);
   const [showQRSection, setShowQRSection] = useState(false);
   const [showQRPage, setShowQRPage] = useState(false);
+  const [showManualPayment, setShowManualPayment] = useState(false);
 
   const chatEndRef = useRef(null);
 
@@ -1830,6 +1831,8 @@ Your signature/acceptance serves as binding agreement to this contract.`;
       case 17:
         const pkgInfoDeposit = PACKAGES.find(p => p.name === bookingData.plan);
         const depositAmount = Math.round((pkgInfoDeposit?.price || 0) / 2);
+        const chapaKey = import.meta.env.VITE_CHAPA_PUBLIC_KEY;
+
         return (
           <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-yellow-500 rounded-xl p-6 space-y-4 shadow-2xl">
             {/* Deposit Amount Display */}
@@ -1874,26 +1877,95 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                   ✅ {getBilingualText("termsAccepted")}
                 </div>
 
-                {/* CHAPA HOSTED CHECKOUT - PRIMARY ACTION */}
-                <button
-                  onClick={submitChapaHostedPayment}
-                  className="w-full px-4 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg font-bold hover:from-purple-700 hover:to-purple-800 transition text-lg transform hover:scale-105 shadow-lg"
-                  aria-label="Pay booking fee with Chapa"
-                >
-                  💳 Pay Deposit Now (ETB {Math.round((PACKAGES.find(p => p.name === bookingData.plan)?.price || 0) / 2).toLocaleString()})
-                </button>
+                {/* PAYMENT METHOD SELECTION */}
+                <div className="space-y-3">
+                  <h3 className="text-white font-bold text-center mb-4">💳 {language === 'en' ? 'SELECT PAYMENT METHOD' : 'ክፍያ ዘዴ ይምረጡ'}</h3>
 
-                {/* CBE WALLET ALTERNATIVE */}
-                <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
-                  <p className="text-yellow-400 font-semibold mb-3 text-center">📌 Or Pay via CBE Wallet</p>
-                  <div className="space-y-2 text-sm text-white">
-                    <p><strong>Account Name:</strong> Shime Events & Planning</p>
-                    <p><strong>Account Number:</strong> 1000XXXXXXXX</p>
-                    <p><strong>Amount:</strong> ETB {Math.round((PACKAGES.find(p => p.name === bookingData.plan)?.price || 0) / 2).toLocaleString()}</p>
-                    <p><strong>Reference:</strong> {bookingRefNum || "Your booking reference"}</p>
-                    <p className="text-xs text-gray-400 mt-3">After payment, send proof via WhatsApp to verify your booking.</p>
-                  </div>
+                  {/* Option 1: Chapa */}
+                  {chapaKey && (
+                    <button
+                      onClick={submitChapaHostedPayment}
+                      className="w-full p-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg font-bold transition transform hover:scale-105 border-2 border-purple-400 shadow-lg"
+                      aria-label="Pay with Chapa"
+                    >
+                      <div className="text-2xl mb-2">🏦</div>
+                      <div className="font-bold">{language === 'en' ? 'Pay Online with Chapa' : 'ከቻፓ ጋር ምታ ክፍያ'}</div>
+                      <div className="text-xs opacity-90">
+                        {language === 'en'
+                          ? 'Credit Card, Telebirr, or CBE Wallet - Instant payment'
+                          : 'ክሬዲት ካርድ፣ ቴሌቢር ወይም ሲቢኢ ዋሌት - ፈጣን ክፍያ'}
+                      </div>
+                    </button>
+                  )}
+
+                  {/* Option 2: Manual Bank Transfer */}
+                  <button
+                    onClick={() => setShowManualPayment(!showManualPayment)}
+                    className="w-full p-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-bold transition transform hover:scale-105 border-2 border-blue-400 shadow-lg"
+                    aria-label="Pay via bank transfer"
+                  >
+                    <div className="text-2xl mb-2">🏛️</div>
+                    <div className="font-bold">{language === 'en' ? 'Pay via Bank Transfer (CBE)' : 'ባንክ ብድር አማካይነት ክፍያ'}</div>
+                    <div className="text-xs opacity-90">
+                      {language === 'en'
+                        ? 'Direct bank transfer - Manual verification'
+                        : 'ቀጥተኛ ባንክ ዝውውር - ማጣራት ማረጋገጫ'}
+                    </div>
+                  </button>
+
+                  {/* Option 3: Manual Cash Pickup */}
+                  <button
+                    onClick={() => {
+                      showToast(language === 'en'
+                        ? "Please contact us at +251912345678 for cash payment pickup"
+                        : "ጥሬ ገንዘብ መላልስ ለ +251912345678 ያ군ኙ", "info", 5000);
+                    }}
+                    className="w-full p-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg font-bold transition transform hover:scale-105 border-2 border-green-400 shadow-lg"
+                    aria-label="Pay via cash"
+                  >
+                    <div className="text-2xl mb-2">💵</div>
+                    <div className="font-bold">{language === 'en' ? 'Pay Cash in Person' : 'ጥሬ ገንዘብ ክፍያ'}</div>
+                    <div className="text-xs opacity-90">
+                      {language === 'en'
+                        ? 'Visit our office or call for arrangement'
+                        : 'ቢሮአችን ይጎብኙ ወይም ዝግጅት ዘርዝር'}
+                    </div>
+                  </button>
                 </div>
+
+                {/* Bank Transfer Details (if selected) */}
+                {showManualPayment && (
+                  <div className="bg-slate-900 p-4 rounded-lg border border-blue-500 border-opacity-50 animate-slideDown">
+                    <p className="text-blue-400 font-bold mb-4 text-center text-lg">🏛️ {language === 'en' ? 'BANK TRANSFER DETAILS' : 'ባንክ ዝውውር ዝርዝሮች'}</p>
+                    <div className="space-y-3 text-sm text-white">
+                      <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
+                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Account Holder' : 'ሂሳብ ባለቤት'}</p>
+                        <p className="font-mono font-bold">Shime Events & Planning</p>
+                      </div>
+                      <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
+                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Account Number' : 'ሂሳብ ቁጥር'}</p>
+                        <p className="font-mono font-bold">1000XXXXXXXX</p>
+                      </div>
+                      <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
+                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Bank Name' : 'ባንክ ስም'}</p>
+                        <p className="font-mono font-bold">Commercial Bank of Ethiopia (CBE)</p>
+                      </div>
+                      <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
+                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Amount to Transfer' : 'ዝውውር መጠን'}</p>
+                        <p className="font-mono font-bold text-yellow-300">ETB {depositAmount.toLocaleString()}</p>
+                      </div>
+                      <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
+                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Reference/Description' : 'ማጣቀሻ'}</p>
+                        <p className="font-mono font-bold">{bookingRefNum || "Booking Reference"}</p>
+                      </div>
+                      <p className="text-blue-300 text-xs mt-3 bg-blue-900 bg-opacity-30 p-2 rounded">
+                        {language === 'en'
+                          ? '✅ After transfer, send screenshot/proof to WhatsApp along with your booking reference to confirm payment'
+                          : '✅ ስዋይ ከተተላለፉ በኋላ ስክሪንሾት/ማስረጃ ከቅጂ ማጣቀሻ ጋር የWhatsApp ላይ ይላኩ'}
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 {/* Download PDF Button */}
                 <button
@@ -1908,7 +1980,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                 {/* Share with WhatsApp */}
                 <button
                   onClick={() => {
-                    const message = `Hello Shime Events Team,\n\nI have completed my event booking with the following details:\n\nBooking Reference: ${bookingRefNum}\nClient: ${bookingData.fullName}\nEmail: ${bookingData.email}\nEvent Type: ${bookingData.eventType}\nEvent Date: ${bookingData.eventDate} at ${bookingData.eventTime}\nLocation: ${bookingData.eventCity}, ${bookingData.eventCountry}\nPackage: ${bookingData.plan}\n\nPlease confirm receipt of my booking and provide further payment instructions.\n\nThank you!`;
+                    const message = `Hello Shime Events Team,\n\nI have completed my event booking with the following details:\n\nBooking Reference: ${bookingRefNum}\nClient: ${bookingData.fullName}\nEmail: ${bookingData.email}\nEvent Type: ${bookingData.eventType}\nEvent Date: ${bookingData.eventDate} at ${bookingData.eventTime}\nLocation: ${bookingData.eventCity}, ${bookingData.eventCountry}\nPackage: ${bookingData.plan}\nDeposit Amount: ETB ${depositAmount.toLocaleString()}\n\nI have selected a payment method. Please confirm receipt of my booking.\n\nThank you!`;
                     const whatsappUrl = `https://wa.me/251912345678?text=${encodeURIComponent(message)}`;
                     window.open(whatsappUrl, '_blank');
                   }}
@@ -1921,7 +1993,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                 {/* Share with Telegram */}
                 <button
                   onClick={() => {
-                    const message = `Hello Shime Events Team%0A%0AI have completed my event booking:%0A%0ABooking Reference: ${bookingRefNum}%0AClient: ${bookingData.fullName}%0AEmail: ${bookingData.email}%0AEvent Type: ${bookingData.eventType}%0AEvent Date: ${bookingData.eventDate} at ${bookingData.eventTime}%0ALocation: ${bookingData.eventCity}, ${bookingData.eventCountry}%0APackage: ${bookingData.plan}%0A%0APlease confirm receipt of my booking.%0A%0AThank you!`;
+                    const message = `Hello Shime Events Team%0A%0AI have completed my event booking:%0A%0ABooking Reference: ${bookingRefNum}%0AClient: ${bookingData.fullName}%0AEmail: ${bookingData.email}%0AEvent Type: ${bookingData.eventType}%0AEvent Date: ${bookingData.eventDate} at ${bookingData.eventTime}%0ALocation: ${bookingData.eventCity}, ${bookingData.eventCountry}%0APackage: ${bookingData.plan}%0ADeposit: ETB ${depositAmount.toLocaleString()}%0A%0APlease confirm receipt of my booking.%0A%0AThank you!`;
                     const telegramUrl = `https://t.me/ShimeEvents?text=${message}`;
                     window.open(telegramUrl, '_blank');
                   }}

@@ -811,37 +811,81 @@ const AdminPanel = ({ onLogout }) => {
           {/* STEP 3: Payment Method */}
           {bookingStep === 3 && (
             <div className="bg-slate-800 border-2 border-purple-500 rounded-xl p-8 shadow-2xl">
-              <h2 className="text-2xl font-bold text-purple-400 mb-6">💳 PAYMENT METHOD</h2>
+              <h2 className="text-2xl font-bold text-purple-400 mb-2">💳 PAYMENT METHOD SELECTION</h2>
+              <p className="text-gray-400 text-sm mb-6">Choose how the customer will pay for their deposit</p>
               <div className="space-y-4">
-                <p className="text-gray-300">How will the customer pay for the deposit?</p>
                 <div className="grid grid-cols-1 gap-4">
+                  {/* Manual Payment Option */}
                   <button
                     onClick={() => setBookingForm({ ...bookingForm, paymentType: "manual" })}
-                    className={`p-6 rounded-lg border-2 transition ${
+                    className={`p-6 rounded-lg border-2 transition transform hover:scale-105 ${
                       bookingForm.paymentType === "manual"
-                        ? "border-purple-400 bg-purple-900 bg-opacity-50"
-                        : "border-gray-600 bg-slate-700 hover:border-purple-400"
+                        ? "border-green-400 bg-green-900 bg-opacity-40 shadow-lg"
+                        : "border-gray-600 bg-slate-700 hover:border-green-400"
                     }`}
                   >
-                    <div className="text-3xl mb-2">💵</div>
-                    <h3 className="text-xl font-bold text-white mb-2">MANUAL PAYMENT</h3>
-                    <p className="text-gray-300 text-sm">Admin collects cash/check from customer</p>
-                    <p className="text-purple-300 text-xs mt-3">✅ Payment will be marked as received</p>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="text-4xl">💵</div>
+                      {bookingForm.paymentType === "manual" && (
+                        <div className="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full">✅ SELECTED</div>
+                      )}
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">MANUAL PAYMENT (CASH)</h3>
+                    <div className="space-y-2 text-sm">
+                      <p className="text-gray-300">
+                        Admin collects cash payment directly from customer in office or location
+                      </p>
+                      <div className="bg-slate-900 bg-opacity-50 p-3 rounded mt-3 border-l-2 border-green-400">
+                        <p className="text-green-300 text-xs font-bold mb-2">What happens:</p>
+                        <ul className="text-green-200 text-xs space-y-1">
+                          <li>✅ Customer pays cash to admin</li>
+                          <li>✅ Booking marked as PAID immediately</li>
+                          <li>✅ Booking confirmed right away</li>
+                          <li>✅ No online payment needed</li>
+                        </ul>
+                      </div>
+                    </div>
                   </button>
 
+                  {/* System Payment Option */}
                   <button
                     onClick={() => setBookingForm({ ...bookingForm, paymentType: "system" })}
-                    className={`p-6 rounded-lg border-2 transition ${
+                    className={`p-6 rounded-lg border-2 transition transform hover:scale-105 ${
                       bookingForm.paymentType === "system"
-                        ? "border-blue-400 bg-blue-900 bg-opacity-50"
+                        ? "border-blue-400 bg-blue-900 bg-opacity-40 shadow-lg"
                         : "border-gray-600 bg-slate-700 hover:border-blue-400"
                     }`}
                   >
-                    <div className="text-3xl mb-2">🏦</div>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="text-4xl">🏦</div>
+                      {bookingForm.paymentType === "system" && (
+                        <div className="px-3 py-1 bg-blue-500 text-white text-xs font-bold rounded-full">✅ SELECTED</div>
+                      )}
+                    </div>
                     <h3 className="text-xl font-bold text-white mb-2">SYSTEM PAYMENT (CHAPA)</h3>
-                    <p className="text-gray-300 text-sm">Customer pays through Chapa payment gateway</p>
-                    <p className="text-blue-300 text-xs mt-3">⏳ Awaiting customer payment</p>
+                    <div className="space-y-2 text-sm">
+                      <p className="text-gray-300">
+                        Customer pays online using Chapa payment gateway (Debit Card, Telebirr, CBE Wallet, etc.)
+                      </p>
+                      <div className="bg-slate-900 bg-opacity-50 p-3 rounded mt-3 border-l-2 border-blue-400">
+                        <p className="text-blue-300 text-xs font-bold mb-2">What happens:</p>
+                        <ul className="text-blue-200 text-xs space-y-1">
+                          <li>⏳ Booking created but awaiting payment</li>
+                          <li>📧 Customer receives payment link</li>
+                          <li>💳 Customer can pay anytime (card, Telebirr, etc.)</li>
+                          <li>✅ Auto-updated when customer pays</li>
+                        </ul>
+                      </div>
+                    </div>
                   </button>
+
+                  {/* Bank Transfer Option (for reference) */}
+                  <div className="p-4 rounded-lg border-2 border-yellow-600 bg-yellow-900 bg-opacity-20">
+                    <p className="text-yellow-300 text-sm font-bold">💡 Note:</p>
+                    <p className="text-yellow-200 text-xs mt-2">
+                      Customers can also pay via bank transfer (CBE) or visit in person with cash. These are handled as manual payments.
+                    </p>
+                  </div>
                 </div>
 
                 {/* Deposit Amount Display */}
