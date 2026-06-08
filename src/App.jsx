@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { jsPDF } from "jspdf";
 import QRCode from "qrcode";
 import QRLanding from "./QRLanding";
+import AdminPanel from "./AdminPanel";
 import { gregorianToEthiopian, formatDateForDisplay } from "./EthiopianCalendar";
 import { generateCompanyQRCode, downloadCompanyQRPDF } from "./CompanyQRPDF";
 import { createClient } from "@supabase/supabase-js";
@@ -550,13 +551,18 @@ const QRCodeDownloadPage = ({ bookingQRCode, loading, onDownloadImage, onDownloa
 };
 
 export default function ShimeAssistant() {
-  // Check for page parameter to show QR Landing
+  // Check for page parameter to show QR Landing or Admin Panel
   const params = new URLSearchParams(window.location.search);
   const page = params.get("page");
 
   // Show QR Landing if requested
   if (page === "qr" || page === "marketing" || page === "landing") {
     return <QRLanding />;
+  }
+
+  // Show Admin Panel if requested
+  if (page === "admin") {
+    return <AdminPanel onLogout={() => window.history.pushState({}, "", "/")} />;
   }
 
   const [step, setStep] = useState(0);
@@ -2135,9 +2141,18 @@ Your signature/acceptance serves as binding agreement to this contract.`;
 
       <header className="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-6 sm:py-8 border-b-2 border-yellow-500 sticky top-0 z-10 shadow-2xl">
         <div className="max-w-full sm:max-w-5xl mx-auto px-4">
-          <div className="text-center mb-6 animate-fadeIn">
-            <h1 className="brand-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">Shime Events</h1>
-            <p className="text-white text-xs sm:text-sm opacity-90 tracking-wide">Professional Event Planning & Coordination</p>
+          <div className="flex justify-between items-start mb-6 animate-fadeIn">
+            <div className="flex-1 text-center">
+              <h1 className="brand-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">Shime Events</h1>
+              <p className="text-white text-xs sm:text-sm opacity-90 tracking-wide">Professional Event Planning & Coordination</p>
+            </div>
+            <a
+              href="/?page=admin"
+              className="px-3 py-2 bg-gradient-to-r from-slate-700 to-slate-800 text-yellow-400 rounded-lg font-semibold hover:from-slate-600 hover:to-slate-700 transition text-xs sm:text-sm border border-yellow-500 border-opacity-30 whitespace-nowrap ml-4"
+              title="Admin Panel"
+            >
+              🔐 ADMIN
+            </a>
           </div>
 
           {step > 0 && language && step < 17 && (
