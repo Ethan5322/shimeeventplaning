@@ -4,6 +4,12 @@ import QRCode from "qrcode";
 import QRLanding from "./QRLanding";
 import { gregorianToEthiopian, formatDateForDisplay } from "./EthiopianCalendar";
 import { generateCompanyQRCode, downloadCompanyQRPDF } from "./CompanyQRPDF";
+import { createClient } from "@supabase/supabase-js";
+
+// Initialize Supabase
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
 
 const translations = {
   en: {
@@ -608,6 +614,82 @@ export default function ShimeAssistant() {
   };
 
   // Smart AI Response System
+  // Database: Save Booking to Supabase
+  const saveBookingToDatabase = async () => {
+    try {
+      if (!supabase) {
+        console.log("Supabase not configured - booking saved locally only");
+        return true; // Continue even if database not configured
+      }
+
+      const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
+      const depositAmount = Math.round((pkgInfo?.price || 0) / 2);
+
+      const bookingRecord = {
+        booking_ref: bookingRefNum,
+        full_name: bookingData.fullName,
+        email: bookingData.email,
+        phone_number: bookingData.phoneNumber,
+        nationality: bookingData.nationality,
+        residency: bookingData.residency,
+        id_number: bookingData.idNumber,
+        contact_method: bookingData.contactMethod,
+        language: language,
+        event_type: bookingData.eventType,
+        plan: bookingData.plan,
+        event_date: bookingData.eventDate,
+        event_time: bookingData.eventTime,
+        event_country: bookingData.eventCountry,
+        event_city: bookingData.eventCity,
+        event_location: bookingData.eventLocation,
+        deposit_amount: depositAmount,
+        terms_accepted: true,
+        payment_status: "pending",
+        booking_status: "awaiting_payment",
+        calendar_type: calendarType,
+        created_at: new Date().toISOString()
+      };
+
+      const { error } = await supabase
+        .from("shime_bookings")
+        .insert([bookingRecord]);
+
+      if (error) {
+        console.warn("Database save warning:", error.message);
+        // Don't block booking if database fails
+        return true;
+      }
+
+      console.log("✅ Booking saved to database:", bookingRefNum);
+      return true;
+    } catch (err) {
+      console.warn("Database error:", err);
+      return true; // Continue even if error
+    }
+  };
+
+  // Database: Update Payment Status
+  const updatePaymentStatus = async () => {
+    try {
+      if (!supabase || !bookingRefNum) return;
+
+      const { error } = await supabase
+        .from("shime_bookings")
+        .update({
+          payment_status: "completed",
+          booking_status: "deposit_paid",
+          updated_at: new Date().toISOString()
+        })
+        .eq("booking_ref", bookingRefNum);
+
+      if (!error) {
+        console.log("✅ Payment status updated in database");
+      }
+    } catch (err) {
+      console.warn("Payment update error:", err);
+    }
+  };
+
   // Chapa Hosted Checkout Integration
   const submitChapaHostedPayment = () => {
     try {
@@ -1452,10 +1534,13 @@ Your signature/acceptance serves as binding agreement to this contract.`;
     handleNext(method);
   };
 
-  const handleAcceptTerms = () => {
+  const handleAcceptTerms = async () => {
     setTermsAccepted(true);
     addAgentMessage(getBilingualText("termsAccepted"));
     showToast(t("termsAccepted"), "success");
+
+    // Save booking to database
+    await saveBookingToDatabase();
   };
 
   const resetBooking = () => {
@@ -1505,12 +1590,19 @@ Your signature/acceptance serves as binding agreement to this contract.`;
       const bookingRef = params.get('booking');
       if (bookingRef) {
         showToast("✅ Payment successful! Your booking is confirmed.", "success", 5000);
+        setBookingRefNum(bookingRef); // Set the booking ref for database update
 
-        // TODO: Update booking status in Supabase
-        // const { error } = await supabase
-        //   .from('shime_bookings')
-        //   .update({ payment_status: 'completed', booking_status: 'deposit_paid' })
-        //   .eq('booking_ref', bookingRef);
+        // Update payment status in Supabase (non-blocking)
+        if (supabase) {
+          supabase
+            .from('shime_bookings')
+            .update({ payment_status: 'completed', booking_status: 'deposit_paid' })
+            .eq('booking_ref', bookingRef)
+            .then(({ error }) => {
+              if (error) console.warn("Payment update error:", error);
+              else console.log("✅ Payment status updated in database");
+            });
+        }
 
         // Clean URL (remove payment params)
         window.history.replaceState({}, document.title, window.location.pathname);
