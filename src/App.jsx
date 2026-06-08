@@ -1896,54 +1896,56 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                 <div className="space-y-3">
                   <h3 className="text-white font-bold text-center mb-4">💳 {language === 'en' ? 'SELECT PAYMENT METHOD' : 'ክፍያ ዘዴ ይምረጡ'}</h3>
 
-                  {/* Option 1: Manual Bank Transfer (PRIMARY) */}
+                  {/* Option 1: Chapa */}
+                  {chapaKey && (
+                    <button
+                      onClick={submitChapaHostedPayment}
+                      className="w-full p-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg font-bold transition transform hover:scale-105 border-2 border-purple-400 shadow-lg"
+                      aria-label="Pay with Chapa"
+                    >
+                      <div className="text-2xl mb-2">🏦</div>
+                      <div className="font-bold">{language === 'en' ? 'Pay Online with Chapa' : 'ከቻፓ ጋር ምታ ክፍያ'}</div>
+                      <div className="text-xs opacity-90">
+                        {language === 'en'
+                          ? 'Credit Card, Telebirr, or CBE Wallet - Instant payment'
+                          : 'ክሬዲት ካርድ፣ ቴሌቢር ወይም ሲቢኢ ዋሌት - ፈጣን ክፍያ'}
+                      </div>
+                    </button>
+                  )}
+
+                  {/* Option 2: Manual Bank Transfer */}
                   <button
                     onClick={() => setShowManualPayment(!showManualPayment)}
                     className="w-full p-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-bold transition transform hover:scale-105 border-2 border-blue-400 shadow-lg"
                     aria-label="Pay via bank transfer"
                   >
                     <div className="text-2xl mb-2">🏛️</div>
-                    <div className="font-bold">{language === 'en' ? 'Bank Transfer (CBE Wallet)' : 'ባንክ ዝውውር (ሲቢኢ ዋሌት)'}</div>
+                    <div className="font-bold">{language === 'en' ? 'Pay via Bank Transfer (CBE)' : 'ባንክ ብድር አማካይነት ክፍያ'}</div>
                     <div className="text-xs opacity-90">
                       {language === 'en'
-                        ? 'Direct bank transfer - Fast & Secure'
-                        : 'ቀጥተኛ ባንክ ዝውውር - ፈጣን እና ደህንነተኛ'}
+                        ? 'Direct bank transfer - Manual verification'
+                        : 'ቀጥተኛ ባንክ ዝውውር - ማጣራት ማረጋገጫ'}
                     </div>
-                    {!showManualPayment && (
-                      <div className="text-xs mt-2 opacity-75">{language === 'en' ? 'Click to see bank details →' : 'ሙከራ ላይ ባንክ ዝርዝሮች ለማየት ይጫኑ →'}</div>
-                    )}
                   </button>
 
-                  {/* Option 2: Manual Cash Pickup */}
+                  {/* Option 3: Manual Cash Pickup */}
                   <button
                     onClick={() => {
                       showToast(language === 'en'
-                        ? "📞 Contact us at +251912345678 to arrange cash payment or visit our office"
-                        : "📞 ጥሬ ገንዘብ ክፍያ ለማስተካከል +251912345678 ይጠይቁን ወይም ቢሮአችን ይጎብኙ", "info", 5000);
+                        ? "Please contact us at +251912345678 for cash payment pickup"
+                        : "ጥሬ ገንዘብ መላልስ ለ +251912345678 ያ군ኙ", "info", 5000);
                     }}
                     className="w-full p-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg font-bold transition transform hover:scale-105 border-2 border-green-400 shadow-lg"
                     aria-label="Pay via cash"
                   >
                     <div className="text-2xl mb-2">💵</div>
-                    <div className="font-bold">{language === 'en' ? 'Cash Payment' : 'ጥሬ ገንዘብ ክፍያ'}</div>
+                    <div className="font-bold">{language === 'en' ? 'Pay Cash in Person' : 'ጥሬ ገንዘብ ክፍያ'}</div>
                     <div className="text-xs opacity-90">
                       {language === 'en'
-                        ? 'Pay in person at our office'
-                        : 'ቢሮአችን ውስጥ ግል ክፍያ'}
+                        ? 'Visit our office or call for arrangement'
+                        : 'ቢሮአችን ይጎብኙ ወይም ዝግጅት ዘርዝር'}
                     </div>
                   </button>
-
-                  {/* Chapa Coming Soon (if not configured) */}
-                  {!chapaKey && (
-                    <div className="p-4 rounded-lg border-2 border-purple-400 bg-purple-900 bg-opacity-30">
-                      <div className="text-purple-300 text-sm font-bold mb-2">🏦 Coming Soon: Pay Online with Chapa</div>
-                      <div className="text-purple-200 text-xs">
-                        {language === 'en'
-                          ? 'Online payment with Credit Card, Telebirr, and CBE Wallet will be available soon!'
-                          : 'ከክሬዲት ካርድ፣ ቴሌቢር እና ሲቢኢ ዋሌት ጋር ምታ ክፍያ በቅርቡ ይገኛል!'}
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 {/* Bank Transfer Details (if selected) */}
