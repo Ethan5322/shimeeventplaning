@@ -608,6 +608,70 @@ export default function ShimeAssistant() {
   };
 
   // Smart AI Response System
+  // Chapa Payment Integration
+  const initiateChapPayment = async () => {
+    try {
+      setLoading(true);
+      showToast("Initializing payment...", "info");
+
+      const chapaKey = process.env.REACT_APP_CHAPA_KEY;
+      if (!chapaKey) {
+        showToast("Payment system not configured", "error");
+        setLoading(false);
+        return;
+      }
+
+      const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
+      const depositAmount = Math.round((pkgInfo?.price || 0) / 2);
+      const refNum = bookingRefNum || `SE-${Date.now()}`;
+
+      // Prepare payment data
+      const paymentData = {
+        amount: depositAmount,
+        currency: "ETB",
+        email: bookingData.email,
+        first_name: bookingData.fullName.split(' ')[0] || "Customer",
+        last_name: bookingData.fullName.split(' ')[1] || bookingData.fullName,
+        phone_number: bookingData.phoneNumber,
+        tx_ref: refNum,
+        callback_url: `${window.location.origin}/api/payment-callback`,
+        return_url: `${window.location.origin}?booking=${refNum}&payment=success`,
+        customization: {
+          title: "Shime Events Booking",
+          description: `Booking fee for ${bookingData.eventType} - ${bookingData.plan} Package`,
+          logo: "https://shimeeventplaning.vercel.app/logo.png"
+        }
+      };
+
+      // Send to Chapa
+      const response = await fetch('https://api.chapa.co/v1/transaction/initialize', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${chapaKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(paymentData)
+      });
+
+      const data = await response.json();
+
+      if (data.status === 'success') {
+        showToast("Redirecting to payment...", "success");
+        // Redirect to Chapa payment page
+        setTimeout(() => {
+          window.location.href = data.data.checkout_url;
+        }, 1000);
+      } else {
+        showToast("Payment initialization failed: " + (data.message || "Unknown error"), "error");
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error('Chapa payment error:', error);
+      showToast("Payment error: " + error.message, "error");
+      setLoading(false);
+    }
+  };
+
   const getSmartResponse = (step, input) => {
     const responses = {
       en: {
@@ -1700,6 +1764,16 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                 <div className="text-green-400 text-sm font-semibold bg-green-900 bg-opacity-30 p-3 rounded-lg border border-green-500">
                   ✅ {getBilingualText("termsAccepted")}
                 </div>
+
+                {/* CHAPA PAYMENT BUTTON - PRIMARY ACTION */}
+                <button
+                  onClick={initiateChapPayment}
+                  disabled={loading}
+                  className="w-full px-4 py-4 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg font-bold hover:from-purple-700 hover:to-purple-800 transition text-lg transform hover:scale-105 disabled:opacity-50 shadow-lg"
+                  aria-label="Pay booking fee with Chapa"
+                >
+                  {loading ? "⏳ Processing..." : "💳 Pay Now with Chapa (ETB " + Math.round((PACKAGES.find(p => p.name === bookingData.plan)?.price || 0) / 2).toLocaleString() + ")"}
+                </button>
 
                 {/* Download PDF Button */}
                 <button
