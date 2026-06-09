@@ -741,7 +741,17 @@ export default function ShimeAssistant() {
       form.action = 'https://api.chapa.co/v1/hosted/pay';
       form.style.display = 'none';
 
-      // Form fields
+      // Clean phone number - Chapa requires only numbers and + prefix, 10-15 chars
+      let cleanPhone = (bookingData.contactPhone || bookingData.phoneNumber || "").replace(/[\s\-\(\)]/g, "");
+      if (!cleanPhone.startsWith("+")) {
+        cleanPhone = "+" + cleanPhone;
+      }
+      if (cleanPhone.length < 10 || cleanPhone.length > 15) {
+        showToast("⚠️ Invalid phone number. Please ensure it's between 10-15 digits.", "error");
+        return;
+      }
+
+      // Form fields - Chapa validation rules
       const fields = {
         public_key: publicKey,
         tx_ref: refNum,
@@ -749,9 +759,9 @@ export default function ShimeAssistant() {
         currency: 'ETB',
         first_name: firstName,
         last_name: lastName,
-        phone_number: bookingData.contactPhone || bookingData.phoneNumber,
+        phone_number: cleanPhone,
         return_url: `${window.location.origin}/?booking=${refNum}&payment_status=completed`,
-        'customization[title]': 'Shime Events & Planning',
+        'customization[title]': 'Shime Events', // Max 16 chars, no & allowed
         'customization[description]': `${bookingData.plan} Plan - Deposit Payment`
       };
 
