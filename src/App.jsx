@@ -741,13 +741,29 @@ export default function ShimeAssistant() {
       form.action = 'https://api.chapa.co/v1/hosted/pay';
       form.style.display = 'none';
 
-      // Clean phone number - Chapa requires only numbers and + prefix, 10-15 chars
-      let cleanPhone = (bookingData.contactPhone || bookingData.phoneNumber || "").replace(/[\s\-\(\)]/g, "");
-      if (!cleanPhone.startsWith("+")) {
+      // Clean phone number - Chapa requires ONLY numbers and + prefix, 10-15 chars total
+      let rawPhone = (bookingData.contactPhone || bookingData.phoneNumber || "").trim();
+
+      // Remove ALL non-digit characters except + at start
+      let cleanPhone = rawPhone.replace(/[^\d+]/g, "");
+
+      // Ensure it starts with +
+      if (cleanPhone && !cleanPhone.startsWith("+")) {
         cleanPhone = "+" + cleanPhone;
       }
-      if (cleanPhone.length < 10 || cleanPhone.length > 15) {
-        showToast("⚠️ Invalid phone number. Please ensure it's between 10-15 digits.", "error");
+
+      // Count only digits for length check (Chapa counts 10-15 digits)
+      const digitCount = cleanPhone.replace(/\D/g, "").length;
+
+      console.log("🔧 Phone Debug:", {
+        raw: rawPhone,
+        cleaned: cleanPhone,
+        digitCount: digitCount,
+        lengthValid: digitCount >= 10 && digitCount <= 15
+      });
+
+      if (!cleanPhone || digitCount < 10 || digitCount > 15) {
+        showToast("⚠️ Phone number invalid. Enter format like +251912345678 (10-15 digits)", "error");
         return;
       }
 
@@ -759,11 +775,13 @@ export default function ShimeAssistant() {
         currency: 'ETB',
         first_name: firstName,
         last_name: lastName,
-        phone_number: cleanPhone,
+        phone_number: cleanPhone, // Must be +countrycode + 10-15 digits
         return_url: `${window.location.origin}/?booking=${refNum}&payment_status=completed`,
-        'customization[title]': 'Shime Events', // Max 16 chars, no & allowed
+        'customization[title]': 'Shime Events', // Max 16 chars, letters/numbers/spaces/dots only
         'customization[description]': `${bookingData.plan} Plan - Deposit Payment`
       };
+
+      console.log("📤 Chapa Fields:", fields);
 
       // Add fields to form
       Object.keys(fields).forEach(key => {
@@ -776,7 +794,8 @@ export default function ShimeAssistant() {
 
       // Append form to body and submit
       document.body.appendChild(form);
-      showToast("Redirecting to payment...", "info");
+      showToast("🔄 Redirecting to Chapa payment...", "info");
+      console.log("📨 Submitting form to:", form.action);
       form.submit();
       document.body.removeChild(form);
     } catch (error) {
