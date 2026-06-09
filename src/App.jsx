@@ -17,8 +17,8 @@ const translations = {
     ethiopianCalendar: "🇪🇹 Ethiopian Calendar",
     askNationality: "Great! 😊 What is your nationality?",
     askResidency: "Perfect! Which country are you currently residing in?",
-    askPhone: "Thank you! 🙏 Please provide your phone number (Example: +251911234567)",
-    invalidPhone: "❌ The phone number you entered is invalid. Please use the format: +251911234567",
+    askPhone: "Thank you! 🙏 Please provide your local phone number (Example: 0911234567 - starts with 0)",
+    invalidPhone: "❌ The phone number you entered is invalid. Please use local format starting with 0 (Example: 0911234567)",
     phoneCountryMismatch: "⚠️ Please note: Your phone number country code differs from your country of residence.",
     askEmail: "Excellent! 📧 What is your email address?",
     invalidEmail: "❌ Hmm, that email doesn't look quite right. Could you please try again?",
@@ -89,8 +89,8 @@ By accepting this agreement, you confirm that you have reviewed and accepted all
     selectLanguage: "እባክዎን ተመራጩ ቋንቋዎን ይምረጡ:",
     askNationality: "እባክዎን የእርስዎ ተዋለድነት ይንገሩን:",
     askResidency: "በአሁኑ ጊዜ በየትኛው ሀገር ይኖራሉ?",
-    askPhone: "እባክዎን የእርስዎ ስልክ ቁጥር ይንገሩን (ምሳሌ: +251911234567)",
-    invalidPhone: "❌ የገቡት ስልክ ቁጥር ትክክል ያልሆነ ነው። እባክዎን ይህንን ቅርጸት ይጠቀሙ: +251911234567",
+    askPhone: "እባክዎን የእርስዎ ስልክ ቁጥር ይንገሩን (ምሳሌ: 0911234567 - በ0 ይጀምሩ)",
+    invalidPhone: "❌ የገቡት ስልክ ቁጥር ትክክል ያልሆነ ነው። በ0 የሚጀምር ቁጥር ይጠቀሙ (ምሳሌ: 0911234567)",
     phoneCountryMismatch: "⚠️ እባክዎን ልብ ይበሉ: የእርስዎ ስልክ ቁጥር ከመኖሪያ ሀገርዎ ጋር አይዛመድም።",
     askEmail: "እባክዎን የእርስዎ ኢሜይል 주소 ይንገሩን:",
     invalidEmail: "❌ የገቡት ኢሜይል ትክክል ያልሆነ ነው። እባክዎን ትክክለኛ ኢሜይል ይርስሩ።",
@@ -861,7 +861,7 @@ export default function ShimeAssistant() {
   };
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePhone = (phone) => /^\+[0-9]{9,14}$/.test(phone);
+  const validatePhone = (phone) => /^0[0-9]{9}$/.test(phone.replace(/\D/g, "")); // Local format: 0XXXXXXXXX (10 digits)
   const validateId = (id) => /^[A-Z]{0,2}[0-9]{6,12}$/i.test(id);
   const validateName = (name) => name.trim().split(" ").length >= 2 && name.length >= 5;
 
@@ -1372,10 +1372,6 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         if (!validatePhone(value)) {
           isValid = false;
           errorMsg = getBilingualText("invalidPhone");
-        } else if (bookingData.countryCode && !value.startsWith(bookingData.countryCode)) {
-          // Check if phone number matches residence country code
-          isValid = false;
-          errorMsg = `Your phone number must start with ${bookingData.countryCode} (country code for ${bookingData.residency}). Example: ${bookingData.countryCode}XXXXXXXXX`;
         }
 
         if (isValid) {
