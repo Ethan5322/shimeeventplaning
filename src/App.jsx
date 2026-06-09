@@ -5,12 +5,7 @@ import QRLanding from "./QRLanding";
 import AdminPanel from "./AdminPanel";
 import { gregorianToEthiopian, formatDateForDisplay } from "./EthiopianCalendar";
 import { generateCompanyQRCode, downloadCompanyQRPDF } from "./CompanyQRPDF";
-import { createClient } from "@supabase/supabase-js";
-
-// Initialize Supabase
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = supabaseUrl && supabaseKey ? createClient(supabaseUrl, supabaseKey) : null;
+import { supabase } from "./supabaseClient";
 
 const translations = {
   en: {
@@ -611,12 +606,12 @@ export default function ShimeAssistant() {
   const t = (key) => translations[language || "en"][key] || translations.en[key];
 
   const addAgentMessage = (text) => {
-    setMessages((prev) => [...prev, { type: "agent", text, id: Date.now() }]);
+    setMessages((prev) => [...prev, { type: "agent", text, id: `${Date.now()}-${Math.random()}` }]);
     setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 
   const addUserMessage = (text) => {
-    setMessages((prev) => [...prev, { type: "user", text, id: Date.now() }]);
+    setMessages((prev) => [...prev, { type: "user", text, id: `${Date.now()}-${Math.random()}` }]);
     setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 
@@ -741,29 +736,38 @@ export default function ShimeAssistant() {
       form.action = 'https://api.chapa.co/v1/hosted/pay';
       form.style.display = 'none';
 
-      // Clean phone number - Chapa requires ONLY numbers and + prefix, 10-15 chars total
+      // Clean phone number - Chapa requires: +251XXXXXXXXX format (10-15 digits after +)
       let rawPhone = (bookingData.contactPhone || bookingData.phoneNumber || "").trim();
 
-      // Remove ALL non-digit characters except + at start
+      // Remove ALL non-digit characters except +
       let cleanPhone = rawPhone.replace(/[^\d+]/g, "");
 
-      // Ensure it starts with +
-      if (cleanPhone && !cleanPhone.startsWith("+")) {
+      // Convert to international +251 format for Chapa
+      // If starts with 0 (local), replace 0 with +251
+      if (cleanPhone.startsWith("0")) {
+        cleanPhone = "+251" + cleanPhone.slice(1);
+      }
+      // If starts with 251 (no +), add +
+      else if (cleanPhone.startsWith("251") && !cleanPhone.startsWith("+")) {
         cleanPhone = "+" + cleanPhone;
       }
+      // If no +, assume it's missing and add it
+      else if (!cleanPhone.startsWith("+")) {
+        cleanPhone = "+251" + cleanPhone;
+      }
 
-      // Count only digits for length check (Chapa counts 10-15 digits)
       const digitCount = cleanPhone.replace(/\D/g, "").length;
 
       console.log("🔧 Phone Debug:", {
         raw: rawPhone,
         cleaned: cleanPhone,
         digitCount: digitCount,
+        format: "International (+251XXXXXXXXX)",
         lengthValid: digitCount >= 10 && digitCount <= 15
       });
 
       if (!cleanPhone || digitCount < 10 || digitCount > 15) {
-        showToast("⚠️ Phone number invalid. Enter format like +251912345678 (10-15 digits)", "error");
+        showToast("⚠️ Phone invalid. Use: 0910123456 or +251910123456 (will auto-convert)", "error");
         return;
       }
 
@@ -771,8 +775,9 @@ export default function ShimeAssistant() {
       const fields = {
         public_key: publicKey,
         tx_ref: refNum,
-        amount: depositAmount.toString(),
+        amount: depositAmount, // Plain number, NOT string
         currency: 'ETB',
+        email: bookingData.email || 'no-email@example.com', // Required by Chapa
         first_name: firstName,
         last_name: lastName,
         phone_number: cleanPhone, // Must be +countrycode + 10-15 digits
@@ -781,7 +786,9 @@ export default function ShimeAssistant() {
         'customization[description]': `${bookingData.plan} Plan - Deposit Payment`
       };
 
-      console.log("📤 Chapa Fields:", fields);
+      console.log("📤 Chapa Fields BEFORE form:", fields);
+      console.log("Phone number type:", typeof cleanPhone, "Length:", cleanPhone.length);
+      console.log("Phone number exact value:", JSON.stringify(cleanPhone));
 
       // Add fields to form
       Object.keys(fields).forEach(key => {
@@ -790,12 +797,15 @@ export default function ShimeAssistant() {
         input.name = key;
         input.value = fields[key];
         form.appendChild(input);
+        // Log each field being added
+        console.log(`✅ Form field: ${key} = ${fields[key]}`);
       });
 
       // Append form to body and submit
       document.body.appendChild(form);
       showToast("🔄 Redirecting to Chapa payment...", "info");
       console.log("📨 Submitting form to:", form.action);
+      console.log("📋 Form HTML:", form.outerHTML);
       form.submit();
       document.body.removeChild(form);
     } catch (error) {
@@ -1155,7 +1165,7 @@ export default function ShimeAssistant() {
 
       yPos += 12;
       doc.setFontSize(18);
-      doc.setTextColor([255, 215, 0]); // Bright gold for amount
+      doc.setTextColor(255, 215, 0); // Bright gold for amount
       doc.text(`ETB ${deposit.toLocaleString()}`, 20, yPos);
 
       doc.setFontSize(8);
