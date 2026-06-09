@@ -861,7 +861,13 @@ export default function ShimeAssistant() {
   };
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePhone = (phone) => /^0[0-9]{9}$/.test(phone.replace(/\D/g, "")); // Local format: 0XXXXXXXXX (10 digits)
+
+  const validatePhone = (phone) => {
+    const digits = phone.replace(/\D/g, ""); // Remove all non-digits
+    // Accept: 0XXXXXXXXX (10 digits), 251XXXXXXXXX (12 digits), or +251XXXXXXXXX
+    return /^0[0-9]{9}$/.test(digits) || /^251[0-9]{9}$/.test(digits);
+  };
+
   const validateId = (id) => /^[A-Z]{0,2}[0-9]{6,12}$/i.test(id);
   const validateName = (name) => name.trim().split(" ").length >= 2 && name.length >= 5;
 
@@ -1375,8 +1381,14 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
 
         if (isValid) {
+          // Normalize to local format (0910...)
+          let normalizedPhone = value.replace(/\D/g, "");
+          if (normalizedPhone.startsWith("251")) {
+            normalizedPhone = "0" + normalizedPhone.slice(3); // Convert 251xxx to 0xxx
+          }
+
           addUserMessage(value);
-          setBookingData({ ...bookingData, phoneNumber: value });
+          setBookingData({ ...bookingData, phoneNumber: normalizedPhone });
           setStep(5);
           addAgentMessage(getBilingualText("askEmail"));
           showToast(t("success"), "success", 2000);
