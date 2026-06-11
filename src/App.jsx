@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { jsPDF } from "jspdf";
 import QRCode from "qrcode";
-import QRLanding from "./QRLanding";
 
 import { gregorianToEthiopian, formatDateForDisplay } from "./EthiopianCalendar";
 import { generateCompanyQRCode, downloadCompanyQRPDF } from "./CompanyQRPDF";
@@ -2341,6 +2340,8 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                   }
                 }}
                 placeholder={step === 15 ? "YYYY-MM-DD" : step === 16 ? "HH:MM" : ""}
+                min={step === 16 ? "00:00" : undefined}
+                max={step === 16 ? "23:59" : undefined}
                 className="w-full px-3 sm:px-4 py-3 sm:py-3 bg-white text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-lg text-base"
                 autoFocus
                 aria-label={`Input for step ${step}`}
@@ -2438,18 +2439,9 @@ Your signature/acceptance serves as binding agreement to this contract.`;
 
       <header className="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-6 sm:py-8 border-b-2 border-yellow-500 sticky top-0 z-10 shadow-2xl">
         <div className="max-w-full sm:max-w-5xl mx-auto px-4">
-          <div className="flex justify-between items-start mb-6 animate-fadeIn">
-            <div className="flex-1 text-center">
-              <h1 className="brand-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">Shime Events</h1>
-              <p className="text-white text-xs sm:text-sm opacity-90 tracking-wide">Professional Event Planning & Coordination</p>
-            </div>
-            <a
-              href="/?page=admin"
-              className="px-3 py-2 bg-gradient-to-r from-slate-700 to-slate-800 text-yellow-400 rounded-lg font-semibold hover:from-slate-600 hover:to-slate-700 transition text-xs sm:text-sm border border-yellow-500 border-opacity-30 whitespace-nowrap ml-4"
-              title="Admin Panel"
-            >
-              🔐 ADMIN
-            </a>
+          <div className="mb-6 animate-fadeIn text-center">
+            <h1 className="brand-font text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent mb-2">Shime Events</h1>
+            <p className="text-white text-xs sm:text-sm opacity-90 tracking-wide">Professional Event Planning & Coordination</p>
           </div>
 
           {step > 0 && language && step < 19 && (

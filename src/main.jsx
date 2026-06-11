@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import AdminPanel from './AdminPanel.jsx'
+import QRLanding from './QRLanding.jsx'
 import './index.css'
 
 function Root() {
@@ -9,7 +10,18 @@ function Root() {
   const page = params.get("page");
 
   if (page === "admin") {
-    return <AdminPanel onLogout={() => { window.history.pushState({}, "", "/"); window.location.reload(); }} />;
+    return (
+      <AdminPanel
+        onLogout={() => {
+          window.history.pushState({}, "", "/");
+          window.location.reload();
+        }}
+      />
+    );
+  }
+
+  if (page === "qr" || page === "marketing" || page === "landing") {
+    return <QRLanding />;
   }
 
   return <App />;

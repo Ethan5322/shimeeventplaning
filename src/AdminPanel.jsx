@@ -770,7 +770,7 @@ const AdminPanel = ({ onLogout }) => {
                   <div><label className={labelCls}>Event Date *</label>
                     <input type="date" value={bookingForm.eventDate} onChange={e => setBookingForm({...bookingForm, eventDate: e.target.value})} className={inputCls} /></div>
                   <div><label className={labelCls}>Event Time *</label>
-                    <input type="time" value={bookingForm.eventTime} onChange={e => setBookingForm({...bookingForm, eventTime: e.target.value})} className={inputCls} /></div>
+                    <input type="time" min="00:00" max="23:59" value={bookingForm.eventTime} onChange={e => setBookingForm({...bookingForm, eventTime: e.target.value})} className={inputCls} /></div>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div><label className={labelCls}>Country</label>
