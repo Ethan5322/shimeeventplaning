@@ -144,9 +144,8 @@ const AdminPanel = ({ onLogout }) => {
   const [savedBooking, setSavedBooking] = useState(null);
 
   const showMsg = (msg, type = "info") => {
-    if (type === "success") setSuccess(msg);
-    else setError(msg);
-    setTimeout(() => { setSuccess(""); setError(""); }, 5000);
+    if (type === "success") { setSuccess(msg); setTimeout(() => setSuccess(""), 6000); }
+    else { setError(msg); } // errors stay visible until next action
   };
 
   // ── Login ──────────────────────────────────────────────────────────────────
@@ -248,46 +247,51 @@ const AdminPanel = ({ onLogout }) => {
     if (!supabase) { showMsg("Database not configured", "error"); return; }
 
     setLoading(true);
+    setError("");
     try {
       const verificationPin = `ADM${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
       const pkgInfo = PACKAGES.find(p => p.name === bookingForm.plan);
       const depositAmount = Math.round((pkgInfo?.price || 0) / 2);
       const bookingRef = `SE-${Date.now()}`;
 
+      // Only include columns that exist in the shime_bookings table
       const record = {
         booking_ref: bookingRef,
         verification_pin: verificationPin,
         full_name: bookingForm.fullName.trim(),
         email: bookingForm.email.trim().toLowerCase(),
         phone_number: bookingForm.phoneNumber.trim(),
-        nationality: bookingForm.nationality,
-        residency: bookingForm.residency,
-        id_number: bookingForm.idNumber,
-        contact_method: bookingForm.contactMethod,
-        event_type: bookingForm.eventType,
+        nationality: bookingForm.nationality || null,
+        residency: bookingForm.residency || null,
+        id_number: bookingForm.idNumber || null,
+        contact_method: bookingForm.contactMethod || "phone",
+        event_type: bookingForm.eventType || null,
         plan: bookingForm.plan,
-        guest_count: bookingForm.guestCount,
-        special_theme: bookingForm.specialTheme,
         event_date: bookingForm.eventDate,
         event_time: bookingForm.eventTime,
-        event_country: bookingForm.eventCountry,
-        event_city: bookingForm.eventCity,
-        event_location: bookingForm.eventLocation,
+        event_country: bookingForm.eventCountry || null,
+        event_city: bookingForm.eventCity || null,
+        event_location: bookingForm.eventLocation || null,
         deposit_amount: depositAmount,
         payment_status: bookingForm.paymentType === "manual" ? "manual" : "pending",
         booking_status: bookingForm.paymentType === "manual" ? "deposit_paid" : "awaiting_payment",
         calendar_type: "gregorian",
         created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
       };
 
       const { error: insertError } = await supabase.from("shime_bookings").insert([record]);
 
       if (insertError) {
-        showMsg(`Error: ${insertError.message}`, "error");
+        // Show full error permanently so user can read it
+        setError(`❌ Save failed: ${insertError.message} (code: ${insertError.code})`);
       } else {
-        setSavedBooking(record);
-        showMsg(`✅ Booking created! Reference: ${bookingRef} | PIN: ${verificationPin}`, "success");
+        // Store display copy with extra fields for PDF (not saved to DB)
+        setSavedBooking({
+          ...record,
+          guest_count: bookingForm.guestCount,
+          special_theme: bookingForm.specialTheme,
+        });
+        setSuccess(`✅ Booking saved! Reference: ${bookingRef} | PIN: ${verificationPin}`);
         setBookingForm({
           fullName: "", email: "", phoneNumber: "", nationality: "",
           residency: "", idNumber: "", contactMethod: "phone",
@@ -295,10 +299,10 @@ const AdminPanel = ({ onLogout }) => {
           eventCountry: "", eventCity: "", eventLocation: "",
           eventDate: "", eventTime: "", paymentType: "manual",
         });
-        setBookingStep(5); // success step
+        setBookingStep(5);
       }
     } catch (err) {
-      showMsg(`Error: ${err.message}`, "error");
+      setError(`❌ Unexpected error: ${err.message}`);
     } finally {
       setLoading(false);
     }
@@ -313,8 +317,15 @@ const AdminPanel = ({ onLogout }) => {
   // ── Shared: Alerts ─────────────────────────────────────────────────────────
   const Alerts = () => (
     <>
-      {error && <div className="mb-4 p-4 bg-red-900 border-l-4 border-red-500 rounded-lg text-red-200">{error}</div>}
-      {success && <div className="mb-4 p-4 bg-green-900 border-l-4 border-green-500 rounded-lg text-green-200">{success}</div>}
+      {error && (
+        <div className="mb-4 p-4 bg-red-900 border-2 border-red-500 rounded-lg flex justify-between items-start gap-3">
+          <p className="text-red-200 font-semibold text-sm break-all">{error}</p>
+          <button onClick={() => setError("")} className="text-red-400 hover:text-white text-lg font-bold shrink-0">✕</button>
+        </div>
+      )}
+      {success && (
+        <div className="mb-4 p-4 bg-green-900 border-2 border-green-500 rounded-lg text-green-200 font-semibold text-sm">{success}</div>
+      )}
     </>
   );
 
