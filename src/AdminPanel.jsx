@@ -215,19 +215,33 @@ const AdminPanel = ({ onLogout }) => {
     if (!supabase) { showMsg("Database not configured", "error"); return; }
     setLoading(true);
     setBookingDetails(null);
+    const code = verificationCode.trim().toUpperCase();
     try {
-      const { data, error: qErr } = await supabase
+      // Try verification_pin first
+      let { data, error: qErr } = await supabase
         .from("shime_bookings")
         .select("*")
-        .eq("verification_pin", verificationCode.trim().toUpperCase())
-        .single();
+        .eq("verification_pin", code)
+        .maybeSingle();
+
+      // Fallback: try booking_ref (client may share their reference number)
+      if (!data && !qErr) {
+        const res = await supabase
+          .from("shime_bookings")
+          .select("*")
+          .eq("booking_ref", code)
+          .maybeSingle();
+        data = res.data;
+        qErr = res.error;
+      }
 
       if (qErr) {
-        if (qErr.code === "PGRST116") showMsg("❌ No booking found with this verification code", "error");
-        else showMsg(`Error: ${qErr.message}`, "error");
+        showMsg(`Error: ${qErr.message}`, "error");
       } else if (data) {
         setBookingDetails(data);
         showMsg("✅ Booking found!", "success");
+      } else {
+        showMsg("❌ No booking found with this verification code", "error");
       }
     } catch (err) {
       showMsg(`Error: ${err.message}`, "error");

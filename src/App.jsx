@@ -561,6 +561,7 @@ export default function ShimeAssistant() {
   const [showTerms, setShowTerms] = useState(false);
   const [qrCode, setQrCode] = useState(null);
   const [bookingRefNum, setBookingRefNum] = useState(null);
+  const [bookingVerifyPin, setBookingVerifyPin] = useState(null);
   const [calendarType, setCalendarType] = useState(null);
 
   // Toast state
@@ -625,6 +626,7 @@ export default function ShimeAssistant() {
 
       const bookingRecord = {
         booking_ref: bookingRefNum,
+        verification_pin: bookingVerifyPin,
         full_name: bookingData.fullName,
         email: bookingData.email,
         phone_number: bookingData.phoneNumber,
@@ -1589,10 +1591,12 @@ Your signature/acceptance serves as binding agreement to this contract.`;
 
       case 18: {
         const refNum = `SE-${Date.now()}`;
+        const pinCode = `SHM${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
         const fixedTheme = value ? fixGrammar(value, "theme") : "No specific theme";
         addUserMessage(fixedTheme);
         setBookingData({ ...bookingData, specialTheme: fixedTheme });
         setBookingRefNum(refNum);
+        setBookingVerifyPin(pinCode);
         generateQRCode(refNum);
         setStep(19);
         addAgentMessage(getBilingualText("noticeTitle"));
@@ -1646,6 +1650,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
     setError("");
     setQrCode(null);
     setBookingRefNum(null);
+    setBookingVerifyPin(null);
     setShowTerms(false);
     setShowManualPayment(false);
     showToast("Booking reset", "info");
@@ -2149,7 +2154,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                 {/* Share with WhatsApp */}
                 <button
                   onClick={() => {
-                    const message = `Hello Shime Events Team,\n\nI have completed my event booking with the following details:\n\nBooking Reference: ${bookingRefNum}\nClient: ${bookingData.fullName}\nEmail: ${bookingData.email}\nEvent Type: ${bookingData.eventType}\nEvent Date: ${bookingData.eventDate} at ${bookingData.eventTime}\nLocation: ${bookingData.eventCity}, ${bookingData.eventCountry}\nPackage: ${bookingData.plan}\nDeposit Amount: ETB ${depositAmount.toLocaleString()}\n\nI have selected a payment method. Please confirm receipt of my booking.\n\nThank you!`;
+                    const message = `Hello Shime Events Team,\n\nI have completed my event booking with the following details:\n\nBooking Reference: ${bookingRefNum}\nVerification Code: ${bookingVerifyPin}\nClient: ${bookingData.fullName}\nEmail: ${bookingData.email}\nEvent Type: ${bookingData.eventType}\nEvent Date: ${bookingData.eventDate} at ${bookingData.eventTime}\nLocation: ${bookingData.eventCity}, ${bookingData.eventCountry}\nPackage: ${bookingData.plan}\nDeposit Amount: ETB ${depositAmount.toLocaleString()}\n\nI have selected a payment method. Please confirm receipt of my booking.\n\nThank you!`;
                     const whatsappUrl = `https://wa.me/251912345678?text=${encodeURIComponent(message)}`;
                     window.open(whatsappUrl, '_blank');
                   }}
@@ -2224,6 +2229,23 @@ Your signature/acceptance serves as binding agreement to this contract.`;
               <div><strong className="text-yellow-400">Location:</strong> {bookingData.eventCity}, {bookingData.eventCountry}</div>
               <div><strong className="text-yellow-400">Contact:</strong> {bookingData.contactMethod}</div>
             </div>
+
+            {/* Verification PIN — prominent, client must share this with admin */}
+            {bookingVerifyPin && (
+              <div className="bg-gradient-to-r from-green-900 to-emerald-900 border-2 border-green-400 rounded-xl p-5 text-center shadow-lg">
+                <div className="text-green-300 text-xs font-bold uppercase tracking-widest mb-2">
+                  {language === "am" ? "✅ የማረጋገጫ ኮድ / Verification Code" : "✅ Your Verification Code"}
+                </div>
+                <div className="text-4xl font-mono font-black text-white tracking-widest my-3 bg-black bg-opacity-30 rounded-lg py-3 px-4">
+                  {bookingVerifyPin}
+                </div>
+                <div className="text-green-200 text-xs leading-relaxed">
+                  {language === "am"
+                    ? "ይህን ኮድ ያስቀምጡ። አስተዳዳሪው ዝርዝሮቻቸውን ለማረጋገጥ ይህን ኮድ ይጠቀማሉ።"
+                    : "Save this code. The admin uses it to verify and look up your booking details."}
+                </div>
+              </div>
+            )}
 
             {bookingRefNum && (
               <div className="bg-slate-900 p-4 rounded-lg border-2 border-yellow-500 text-center">
