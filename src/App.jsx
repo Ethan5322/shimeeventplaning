@@ -2283,19 +2283,24 @@ Your signature/acceptance serves as binding agreement to this contract.`;
             </button>
 
             <button
-              onClick={() => window.open("https://wa.me/251912345678", "_blank")}
-              className="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition transform hover:scale-105"
-              aria-label="Contact us via WhatsApp"
+              onClick={() => {
+                const pkgForShare = PACKAGES.find(p => p.name === bookingData.plan);
+                const depositForShare = Math.round((pkgForShare?.price || 0) / 2);
+                const message = `Hello Shime Events Team! 🎉\n\nMy booking is confirmed. Here are the details:\n\n📋 Reference: ${bookingRefNum}\n👤 Name: ${bookingData.fullName}\n📧 Email: ${bookingData.email}\n📞 Phone: ${bookingData.phone}\n🎪 Event: ${bookingData.eventType}\n📦 Package: ${bookingData.plan}\n📅 Date: ${bookingData.eventDate} at ${bookingData.eventTime}\n📍 Location: ${bookingData.eventCity}, ${bookingData.eventCountry}\n💰 Deposit: ETB ${depositForShare.toLocaleString()}\n\nPlease confirm my booking. Thank you!`;
+                window.open(`https://wa.me/251912345678?text=${encodeURIComponent(message)}`, "_blank");
+              }}
+              className="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-bold hover:from-green-600 hover:to-green-700 transition transform hover:scale-105 text-lg"
+              aria-label="Share booking via WhatsApp"
             >
-              {t("contactUs")}
+              📲 {language === "am" ? "በ WhatsApp ያጋሩ / Share via WhatsApp" : "Share via WhatsApp"}
             </button>
 
             <button
               onClick={resetBooking}
-              className="w-full px-4 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-lg font-bold hover:from-indigo-700 hover:to-indigo-800 transition"
-              aria-label="Start a new booking"
+              className="w-full px-4 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 text-white rounded-lg font-bold hover:from-indigo-700 hover:to-indigo-800 transition transform hover:scale-105"
+              aria-label="Edit booking - start a new booking from the beginning"
             >
-              {t("startOver")}
+              ✏️ {language === "am" ? "ዝግጅቱን አርትዕ / Edit Booking" : "Edit Booking"}
             </button>
 
             <div className="bg-slate-900 p-4 rounded-lg text-xs whitespace-pre-line border-l-4 border-yellow-500">
