@@ -2,10 +2,10 @@ import { useState, useEffect } from "react";
 import { supabase } from "./supabaseClient";
 
 const PACKAGES = [
-  { name: "Signature", price: 2500, description: "Basic event planning" },
-  { name: "Elegance", price: 5000, description: "Premium event planning" },
-  { name: "Premium", price: 10000, description: "Exclusive event planning" },
-  { name: "Exclusive", price: 20000, description: "Ultimate event planning" },
+  { name: "Signature", price: 5000, description: "Basic event planning" },
+  { name: "Elegance", price: 10000, description: "Premium event planning" },
+  { name: "Premium", price: 20000, description: "Exclusive event planning" },
+  { name: "Exclusive", price: 40000, description: "Ultimate event planning" },
 ];
 
 const COUNTRY_CODES = {
