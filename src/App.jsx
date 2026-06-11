@@ -11,7 +11,7 @@ const translations = {
   en: {
     welcome: "Welcome to Shime Events & Planning",
     welcomeSubtitle: "Your Premier Partner for Exceptional Celebrations",
-    selectLanguage: "Hello! 👋 Which language would you prefer to use?",
+    selectLanguage: "Welcome to Shime Events & Planning! 🌟 We are delighted to assist you in creating an unforgettable celebration. To get started, please select your preferred language.",
     selectCalendar: "Which calendar system would you like to use for your event date?",
     gregorianCalendar: "📅 Gregorian Calendar (International)",
     ethiopianCalendar: "🇪🇹 Ethiopian Calendar",
@@ -37,6 +37,8 @@ const translations = {
     askTime: "What time would you like your event to start? (Format: HH:MM, e.g., 14:00 for 2:00 PM)",
     timeBooked: "⚠️ That time slot is not available. Let's find another time that works!",
     askLocation: "Wonderful! 📍 Where exactly will your event be held? (Please provide the venue or address):",
+    askGuests: "Excellent! 👥 How many guests are you expecting at your event?",
+    askTheme: "Perfect! 🎨 Would you like any special theme or specific design for your event?",
     depositNotice: "A 50% deposit is required to secure your booking.",
     noticeTitle: "Booking Confirmation & Payment Instructions",
     noticeBody: "To secure your booking, please submit the required 50% deposit payment:\n\n🏦 Payment Method: CBE WALLET\nAccount Number: 1000XXXXXXXX\nAccount Name: Shime Events & Planning",
@@ -84,41 +86,43 @@ By accepting this agreement, you confirm that you have reviewed and accepted all
     bookingComplete: "Thank you for choosing Shime Events! Your booking is complete. 🎉",
   },
   am: {
-    welcome: "በ Shime Events & Planning እንኋን ደህና መጡ",
-    welcomeSubtitle: "ለእርስዎ ልዩ ዝግጅት ለምንም ይልቅ ተስፋ ሰሪ አጋዥ",
-    selectLanguage: "እባክዎን ተመራጩ ቋንቋዎን ይምረጡ:",
-    askNationality: "እባክዎን የእርስዎ ተዋለድነት ይንገሩን:",
-    askResidency: "በአሁኑ ጊዜ በየትኛው ሀገር ይኖራሉ?",
-    askPhone: "እባክዎን የእርስዎ ስልክ ቁጥር ይንገሩን (ምሳሌ: 0911234567 - በ0 ይጀምሩ)",
-    invalidPhone: "❌ የገቡት ስልክ ቁጥር ትክክል ያልሆነ ነው። በ0 የሚጀምር ቁጥር ይጠቀሙ (ምሳሌ: 0911234567)",
-    phoneCountryMismatch: "⚠️ እባክዎን ልብ ይበሉ: የእርስዎ ስልክ ቁጥር ከመኖሪያ ሀገርዎ ጋር አይዛመድም።",
-    askEmail: "እባክዎን የእርስዎ ኢሜይል 주소 ይንገሩን:",
-    invalidEmail: "❌ የገቡት ኢሜይል ትክክል ያልሆነ ነው። እባክዎን ትክክለኛ ኢሜይል ይርስሩ።",
-    askIdType: "እባክዎን የእርስዎ መታወቂያ ወይም ፓስፖርት ቁጥር ይርስሩ:",
-    invalidId: "❌ የገቡት መታወቂያ/ፓስፖርት ቁጥር ትክክል ያልሆነ ነው። እባክዎን ድጋሚ ሞክሩ።",
-    askFullName: "እባክዎን የእርስዎ ሙሉ ስም ይርስሩ (ስም እና የቤት ስም):",
-    invalidName: "❌ እባክዎን ስም እና የቤት ስም ጋር ትክክለኛ ሙሉ ስም ይርስሩ።",
-    askPassword: "እባክዎን ደህንነት PIN ይጠግኑ (6 ወይም ከዚያ በላይ አሃዞች):",
-    askContactMethod: "እባክዎን እንዴት ለመገናኘት መከፈት ይምረጡ:",
+    welcome: "ወደ Shime Events & Planning እንኳን ደህና መጡ",
+    welcomeSubtitle: "ለማይረሳ ዝግጅትዎ አጋርዎ",
+    selectLanguage: "ምን ቋንቋ ለመጠቀም ይፈልጋሉ?",
+    askNationality: "እባክዎን የእርስዎ ተወላጅነት ይንገሩን።",
+    askResidency: "በአሁን ጊዜ በየትኛው ሀገር ይኖራሉ?",
+    askPhone: "እባክዎን የእርስዎ ስልክ ቁጥር ይንገሩን (ምሳሌ፡ 0911234567 - በ0 ይጀምሩ)።",
+    invalidPhone: "❌ የገቡት ስልክ ቁጥር ትክክል አይደለም። በ0 የሚጀምር ቁጥር ይጠቀሙ (ምሳሌ፡ 0911234567)።",
+    phoneCountryMismatch: "⚠️ ልብ ይበሉ: የእርስዎ ስልክ ቁጥር ከመኖሪያ ሀገርዎ ጋር አይዛመድም።",
+    askEmail: "እባክዎን የእርስዎ ኢሜይል አድራሻ ይንገሩን።",
+    invalidEmail: "❌ የገቡት ኢሜይል ትክክል አይደለም። እባክዎን ትክክለኛ ኢሜይል ይንገሩን።",
+    askIdType: "እባክዎን የእርስዎ መታወቂያ ወይም ፓስፖርት ቁጥር ይንገሩን።",
+    invalidId: "❌ የገቡት መታወቂያ/ፓስፖርት ቁጥር ትክክል አይደለም። እባክዎን ድጋሚ ሞክሩ።",
+    askFullName: "እባክዎን የእርስዎ ሙሉ ስም (ስም እና የቤት ስም) ይንገሩን።",
+    invalidName: "❌ ሙሉ ስም ሊኖር ይገባል (ስም እና የቤት ስም)።",
+    askPassword: "እባክዎን ደህንነት PIN ቁጥርዎን ይፍጠሩ (6 ወይም ከዚያ በላይ ቁጥሮች)።",
+    askContactMethod: "እባክዎን እንዴት እንደምንገናኝ ይምረጡ።",
     askEventType: "ምን ዓይነት ዝግጅት ታቅደዋል?",
-    askEventCountry: "ዝግጅትዎ በየትኛው ሀገር ይካሄዳል?",
-    eventCountryMismatch: "⚠️ እባክዎን ልብ ይበሉ: ዝግጅትዎ ከመኖሪያ ሀገርዎ በተለያዩ ሀገር ይኖራሉ።",
-    askEventCity: "ዝግጅትዎ በየትኛው ከተማ ይካሄዳል?",
-    askDate: "እባክዎን ዝግጅትዎ ቀንን ይምረጡ:",
+    askEventCountry: "ዝግጅትዎ በየትኛው ሀገር ይሆናል?",
+    eventCountryMismatch: "ℹ️ ልብ ይበሉ: ዝግጅትዎ ከመኖሪያ ሀገርዎ በተለየ ሀገር ይሆናል።",
+    askEventCity: "ዝግጅትዎ በየትኛው ከተማ ይሆናል?",
+    askDate: "እባክዎን ዝግጅትዎ ቀንን ይምረጡ።",
     dateBooked: "⚠️ የመረጡት ቀን አይገኝም። እባክዎን ሌላ ቀን ይምረጡ።",
-    askTime: "የዝግጅትዎ ምርጥ ጊዜ ምንድ ነው?",
+    askTime: "ዝግጅትዎ ምን ሰዓት ላይ ይጀምር ይሆናል? (ሰዓት:ደቂቃ ቅርጸት፣ ምሳሌ፡ 14:00)።",
     timeBooked: "⚠️ የመረጡት ጊዜ አይገኝም። እባክዎን ሌላ ጊዜ ይምረጡ።",
-    askLocation: "እባክዎን የክስተት አቀራረብ ወይም ሙሉ አድራሻ ይርስሩ:",
-    depositNotice: "ዝግጅትዎን ለማረጋገጥ 50% ዝቅ ብለህ ክፍያ ያስፈልጋል።",
+    askLocation: "እባክዎን የዝግጅትዎ ስፍራ ወይም ሙሉ አድራሻ ይንገሩን።",
+    askGuests: "ለዝግጅትዎ ምን ያህል እንግዶች ይጠበቃሉ? (ቁጥር ይጻፉ)።",
+    askTheme: "ለዝግጅትዎ ልዩ ጭብጥ ወይም ዲዛይን ይፈልጋሉ?",
+    depositNotice: "ዝግጅትዎን ለማረጋገጥ 50% ቅድሚያ ክፍያ ያስፈልጋል።",
     noticeTitle: "ዝግጅት ማረጋገጫ እና ክፍያ መመሪያ",
-    noticeBody: "ዝግጅትዎን ለማረጋገጥ, እባክዎን የሚያስፈልገው 50% ዝቅ ብለህ ክፍያ ያስገቡ:\n\n🏦 ክፍያ ዘዴ: CBE WALLET\nሂሳብ ቁጥር: 1000XXXXXXXX\nሂሳብ ስም: Shime Events & Planning",
+    noticeBody: "ዝግጅትዎን ለማረጋገጥ፣ እባክዎን የሚያስፈልገው 50% ቅድሚያ ክፍያ ያስገቡ:\n\n🏦 ክፍያ ዘዴ: CBE WALLET\nሂሳብ ቁጥር: 1000XXXXXXXX\nሂሳብ ስም: Shime Events & Planning",
     termsTitle: "ውሎች እና ሁኔታዎች",
-    acceptTerms: "✅ ውሎች እና ሁኔታዎችን እቀበላለሁ",
+    acceptTerms: "✅ ውሎች እና ሁኔታዎችን ይቀበላለሁ",
     shareWhatsapp: "📲 በ WhatsApp ላክ",
     viewBooking: "📋 ዝግጅት ዝርዝር ይመልከቱ",
-    downloadPdf: "⬇️ ውል ሰነድ ያውርዱ",
+    downloadPdf: "⬇️ ውሉ ሰነድ ያውርዱ",
     downloadQr: "⬇️ QR ኮድ ያውርዱ",
-    sendInstructions: "ዝግጅትዎን ለመጨረስ ቀጣይ ደረጃዎች:\n\n1. ክፍያ ማስረጃ ይላኩ\n2. ተፈራርሙ ውል ይላኩ\n\nእባክዎን ለአድራሻው ያስገቡ:\n📱 WhatsApp: +251 91 234 5678\n✉️ Telegram: @ShimeEvents",
+    sendInstructions: "ዝግጅትዎን ለመጨረስ ቀጣይ ደረጃዎች:\n\n1. ክፍያ ማስረጃ ይላኩ\n2. ተፈራርሙ ውሉ ይላኩ\n\nእባክዎን ለሚከተለው አድራሻ ያስገቡ:\n📱 WhatsApp: +251 91 234 5678\n✉️ Telegram: @ShimeEvents",
     bookingConfirmed: "ዝግጅት ተረጋግጧል",
     termsAccepted: "✅ ውሎች እና ሁኔታዎች በተሳካ ሁኔታ ተቀብለዋል።",
     proceedBooking: "ዝግጅትዎን ይገምግሙ",
@@ -128,21 +132,21 @@ By accepting this agreement, you confirm that you have reviewed and accepted all
     back: "← ወደ ኋላ",
     next: "ቀጥል →",
     success: "✅ ተሳካ!",
-    loading: "ይጠበቅ ይገባል...",
+    loading: "እባክዎን ይጠብቁ...",
     generatingPdf: "PDF ሰነድ ይዘጋጃል...",
     generatingQr: "QR ኮድ ይዘጋጃል...",
-    copy: "ቅዴ",
-    copied: "በ clipboard ውስጥ ገብቷል!",
+    copy: "ቅጂ",
+    copied: "ወደ clipboard ተዛወረ!",
     startOver: "ድጋሚ ጀምር",
-    selectPackage: "ምን ዓይነት ዝግጅት ፓኬጅ መምረጥ ይፈልጋሉ?",
+    selectPackage: "ምን ዓይነት ዝግጅት ፓኬጅ ይምረጡ?",
     scanToBook: "📲 ዝግጅትዎን ለመያዝ ስካን ያድርጉ",
     qrCodeTitle: "ይህን QR ኮድ ያጋሩ",
-    qrCodeSubtitle: "ደንበኞች ስካን ማድረግ እና ዝግጅትን ይጀምሩ ይችላሉ",
+    qrCodeSubtitle: "ደንበኞች ስካን ማድረግ ይችላሉ እና ዝግጅት ሊጀምሩ ይችላሉ",
     downloadQRCode: "⬇️ QR ኮድ ያውርዱ",
     printQRCode: "🖨️ QR ኮድ አሳዩ",
     shareQRCode: "📱 QR ሊንክ ያጋሩ",
     qrCodeDownloaded: "QR ኮድ በተሳካ ሁኔታ ተዘርዝሯል!",
-    closeChat: "✕ ቻትቦት ዝጋ",
+    closeChat: "✕ ዝጋ",
     bookingComplete: "ለ Shime Events ለመረጡ ምስጋና! ዝግጅትዎ ተጠናቅቋል። 🎉",
   }
 };
@@ -562,7 +566,9 @@ export default function ShimeAssistant() {
 
   const [step, setStep] = useState(0);
   const [language, setLanguage] = useState(null);
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    { type: "agent", text: translations.en.selectLanguage, id: "initial-greeting" }
+  ]);
   const [bookingData, setBookingData] = useState({});
   const [inputValue, setInputValue] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
@@ -590,13 +596,14 @@ export default function ShimeAssistant() {
     setTimeout(() => setToast({ ...toast, visible: false }), duration);
   };
 
-  const getBilingualText = (key) => {
-    if (!language) return translations.en[key];
-    const engText = translations.en[key];
-    const transText = translations[language][key];
-    if (language === "en") return engText;
-    // Show both languages clearly separated
-    return `${engText}\n\n${transText}`;
+  // Returns { primary, secondary } — primary is the chosen language, secondary is English subtitle (only for Amharic)
+  // Accepts optional langOverride so callers in the same render cycle can pass the new language before state updates
+  const getBilingualText = (key, langOverride) => {
+    const lang = langOverride || language;
+    const engText = translations.en[key] || "";
+    if (!lang || lang === "en") return { primary: engText, secondary: null };
+    const amText = translations[lang][key] || engText;
+    return { primary: amText, secondary: engText };
   };
 
   const getLanguageName = (lang) => {
@@ -605,8 +612,12 @@ export default function ShimeAssistant() {
 
   const t = (key) => translations[language || "en"][key] || translations.en[key];
 
-  const addAgentMessage = (text) => {
-    setMessages((prev) => [...prev, { type: "agent", text, id: `${Date.now()}-${Math.random()}` }]);
+  // Accepts either a plain string or a { primary, secondary } bilingual object
+  const addAgentMessage = (textOrObj) => {
+    const entry = typeof textOrObj === "string"
+      ? { type: "agent", text: textOrObj, secondary: null, id: `${Date.now()}-${Math.random()}` }
+      : { type: "agent", text: textOrObj.primary, secondary: textOrObj.secondary || null, id: `${Date.now()}-${Math.random()}` };
+    setMessages((prev) => [...prev, entry]);
     setTimeout(() => chatEndRef.current?.scrollIntoView({ behavior: "smooth" }), 100);
   };
 
@@ -692,103 +703,65 @@ export default function ShimeAssistant() {
     }
   };
 
-  // Chapa Hosted Checkout Integration
+  // Chapa Hosted Checkout (Form Submission - no CORS issues)
   const submitChapaHostedPayment = () => {
     try {
       const publicKey = import.meta.env.VITE_CHAPA_PUBLIC_KEY;
       if (!publicKey) {
-        const setupMsg = language === 'en'
-          ? "🔧 CHAPA SETUP REQUIRED\n\n" +
-            "To enable online payments:\n\n" +
-            "1. Get your PUBLIC KEY from:\n" +
-            "   https://chapa.co/dashboard\n\n" +
-            "2. Add to Vercel environment variables:\n" +
-            "   Name: VITE_CHAPA_PUBLIC_KEY\n" +
-            "   Value: (Your PUBLIC KEY)\n\n" +
-            "3. Wait 2-3 minutes for deployment\n\n" +
-            "For now, use Bank Transfer or Cash payment."
-          : "🔧 CHAPA ማዋቀር ያስፈልጋል\n\n" +
-            "ምታ ክፍያ ለማንቃት:\n\n" +
-            "1. PUBLIC KEY ን ያግኙ:\n" +
-            "   https://chapa.co/dashboard\n\n" +
-            "2. ወደ Vercel ይጨምሩት:\n" +
-            "   Name: VITE_CHAPA_PUBLIC_KEY\n\n" +
-            "3. 2-3 ደቂቃ ጠብቁ\n\n" +
-            "አሁን ባንክ ወይም ጥሬ ገንዘብ ይጠቀሙ";
-
-        showToast("⚙️ Chapa payment setup required. See instructions below.", "info", 6000);
-        alert(setupMsg);
+        showToast("🔧 Chapa not configured. Use Bank Transfer instead.", "info");
         return;
       }
 
       const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
-      const depositAmount = Math.round((pkgInfo?.price || 0) / 2); // Numeric value only
+      const amount = Math.round((pkgInfo?.price || 0) / 2);
       const refNum = bookingRefNum || `SE-${Date.now()}`;
 
-      // Split name into first and last
-      const nameParts = bookingData.fullName.trim().split(/\s+/);
+      // Split name
+      const nameParts = bookingData.fullName?.trim().split(/\s+/) || [];
       const firstName = nameParts[0] || "Customer";
-      const lastName = nameParts.slice(1).join(" ") || bookingData.fullName;
+      const lastName = nameParts.slice(1).join(" ") || "Booking";
 
-      // Create hidden form for Chapa hosted checkout
+      // Phone number - convert local to international
+      let phoneNumber = (bookingData.phoneNumber || "").trim();
+      const digitsOnly = phoneNumber.replace(/\D/g, "");
+
+      if (digitsOnly.startsWith("0")) {
+        phoneNumber = "+251" + digitsOnly.slice(1);
+      } else if (digitsOnly.startsWith("251")) {
+        phoneNumber = "+" + digitsOnly;
+      } else {
+        phoneNumber = "+251" + digitsOnly;
+      }
+
+      console.log("=== CHAPA DEBUG ===");
+      console.log("phone raw:", bookingData.phoneNumber);
+      console.log("phone formatted:", phoneNumber);
+      console.log("amount:", amount);
+      console.log("email:", bookingData.email);
+      console.log("fullName:", bookingData.fullName);
+
+      // Create form
       const form = document.createElement('form');
       form.method = 'POST';
       form.action = 'https://api.chapa.co/v1/hosted/pay';
       form.style.display = 'none';
 
-      // Clean phone number - Chapa requires: +251XXXXXXXXX format (10-15 digits after +)
-      let rawPhone = (bookingData.contactPhone || bookingData.phoneNumber || "").trim();
-
-      // Remove ALL non-digit characters except +
-      let cleanPhone = rawPhone.replace(/[^\d+]/g, "");
-
-      // Convert to international +251 format for Chapa
-      // If starts with 0 (local), replace 0 with +251
-      if (cleanPhone.startsWith("0")) {
-        cleanPhone = "+251" + cleanPhone.slice(1);
-      }
-      // If starts with 251 (no +), add +
-      else if (cleanPhone.startsWith("251") && !cleanPhone.startsWith("+")) {
-        cleanPhone = "+" + cleanPhone;
-      }
-      // If no +, assume it's missing and add it
-      else if (!cleanPhone.startsWith("+")) {
-        cleanPhone = "+251" + cleanPhone;
-      }
-
-      const digitCount = cleanPhone.replace(/\D/g, "").length;
-
-      console.log("🔧 Phone Debug:", {
-        raw: rawPhone,
-        cleaned: cleanPhone,
-        digitCount: digitCount,
-        format: "International (+251XXXXXXXXX)",
-        lengthValid: digitCount >= 10 && digitCount <= 15
-      });
-
-      if (!cleanPhone || digitCount < 10 || digitCount > 15) {
-        showToast("⚠️ Phone invalid. Use: 0910123456 or +251910123456 (will auto-convert)", "error");
-        return;
-      }
-
-      // Form fields - Chapa validation rules
+      const email = (bookingData.email || 'customer@shimeevents.com').trim().toLowerCase();
       const fields = {
         public_key: publicKey,
         tx_ref: refNum,
-        amount: depositAmount, // Plain number, NOT string
+        amount: amount,
         currency: 'ETB',
-        email: bookingData.email || 'no-email@example.com', // Required by Chapa
+        email: email,
         first_name: firstName,
         last_name: lastName,
-        phone_number: cleanPhone, // Must be +countrycode + 10-15 digits
+        phone_number: phoneNumber,
         return_url: `${window.location.origin}/?booking=${refNum}&payment_status=completed`,
-        'customization[title]': 'Shime Events', // Max 16 chars, letters/numbers/spaces/dots only
-        'customization[description]': `${bookingData.plan} Plan - Deposit Payment`
+        'customization[title]': 'Shime Events',
+        'customization[description]': `${bookingData.plan} - Deposit Payment`
       };
 
-      console.log("📤 Chapa Fields BEFORE form:", fields);
-      console.log("Phone number type:", typeof cleanPhone, "Length:", cleanPhone.length);
-      console.log("Phone number exact value:", JSON.stringify(cleanPhone));
+      console.log("full Chapa payload:", JSON.stringify(fields, null, 2));
 
       // Add fields to form
       Object.keys(fields).forEach(key => {
@@ -797,19 +770,15 @@ export default function ShimeAssistant() {
         input.name = key;
         input.value = fields[key];
         form.appendChild(input);
-        // Log each field being added
-        console.log(`✅ Form field: ${key} = ${fields[key]}`);
       });
 
-      // Append form to body and submit
       document.body.appendChild(form);
-      showToast("🔄 Redirecting to Chapa payment...", "info");
-      console.log("📨 Submitting form to:", form.action);
-      console.log("📋 Form HTML:", form.outerHTML);
+      showToast("🔄 Redirecting to Chapa...", "info");
+      console.log("📨 Submitting to:", form.action);
       form.submit();
       document.body.removeChild(form);
     } catch (error) {
-      console.error('Chapa payment error:', error);
+      console.error("❌ Chapa error:", error);
       showToast("Payment error: " + error.message, "error");
     }
   };
@@ -858,6 +827,25 @@ export default function ShimeAssistant() {
       },
     };
     return responses[language]?.[step] || "Great! Moving forward! ✨";
+  };
+
+  const fixGrammar = (text, fieldType) => {
+    if (!text || fieldType === "name" || fieldType === "email" || fieldType === "phone" || fieldType === "id") {
+      return text; // Don't fix personal information
+    }
+
+    let fixed = text.trim();
+
+    // Fix double spaces
+    fixed = fixed.replace(/\s+/g, " ");
+
+    // Fix common grammar: capitalize first letter
+    fixed = fixed.charAt(0).toUpperCase() + fixed.slice(1).toLowerCase();
+
+    // Fix 'and' capitalization in the middle
+    fixed = fixed.replace(/\s+and\s+/gi, " and ");
+
+    return fixed;
   };
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -1321,15 +1309,15 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         setLanguage(value);
         addUserMessage(value === "en" ? "🇬🇧 English" : "🇪🇹 አማርኛ");
         setStep(1);
-        addAgentMessage(getBilingualText("selectCalendar"));
-        showToast(t("success"), "success", 2000);
+        addAgentMessage(getBilingualText("selectCalendar", value));
+        showToast("✅ Success!", "success", 2000);
         return;
 
       case 1:
         setCalendarType(value);
-        addUserMessage(value === "gregorian" ? t("gregorianCalendar") : t("ethiopianCalendar"));
+        addUserMessage(value === "gregorian" ? translations[language || "en"].gregorianCalendar || "📅 Gregorian Calendar" : translations[language || "en"].ethiopianCalendar || "🇪🇹 Ethiopian Calendar");
         setStep(2);
-        addAgentMessage(getBilingualText("askNationality"));
+        addAgentMessage(getBilingualText("askNationality", language));
         showToast(t("success"), "success", 2000);
         return;
 
@@ -1361,9 +1349,10 @@ Your signature/acceptance serves as binding agreement to this contract.`;
           setBookingData({ ...bookingData, residency: value, countryCode: countryCode });
 
           // Show phone number instruction with expected country code
+          const basePhone = getBilingualText("askPhone");
           const phoneInstruction = countryCode
-            ? `${getBilingualText("askPhone")}\n\n(Expected format for ${value}: ${countryCode}XXX... where XXX are the remaining digits)`
-            : getBilingualText("askPhone");
+            ? { primary: basePhone.primary + `\n(Expected format for ${value}: ${countryCode}XXX...)`, secondary: basePhone.secondary ? basePhone.secondary + `\n(Expected format for ${value}: ${countryCode}XXX...)` : null }
+            : basePhone;
 
           setStep(4);
           addAgentMessage(phoneInstruction);
@@ -1377,7 +1366,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
       case 4:
         if (!validatePhone(value)) {
           isValid = false;
-          errorMsg = getBilingualText("invalidPhone");
+          errorMsg = t("invalidPhone");
         }
 
         if (isValid) {
@@ -1398,14 +1387,15 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 5:
-        if (!validateEmail(value)) {
+      case 5: {
+        const trimmedEmail = value.trim();
+        if (!validateEmail(trimmedEmail)) {
           isValid = false;
-          errorMsg = getBilingualText("invalidEmail");
+          errorMsg = t("invalidEmail");
         }
         if (isValid) {
-          addUserMessage(value);
-          setBookingData({ ...bookingData, email: value });
+          addUserMessage(trimmedEmail);
+          setBookingData({ ...bookingData, email: trimmedEmail });
           setStep(6);
           addAgentMessage(getBilingualText("askFullName"));
           showToast(t("success"), "success", 2000);
@@ -1414,11 +1404,12 @@ Your signature/acceptance serves as binding agreement to this contract.`;
           setError(errorMsg);
         }
         return;
+      }
 
       case 6:
         if (!validateName(value)) {
           isValid = false;
-          errorMsg = getBilingualText("invalidName");
+          errorMsg = t("invalidName");
         }
         if (isValid) {
           addUserMessage(value);
@@ -1435,7 +1426,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
       case 7:
         if (!validateId(value)) {
           isValid = false;
-          errorMsg = getBilingualText("invalidId");
+          errorMsg = t("invalidId");
         }
         if (isValid) {
           addUserMessage(value);
@@ -1474,36 +1465,52 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         showToast(t("success"), "success", 2000);
         return;
 
-      case 10:
-        addUserMessage(value);
-        setBookingData({ ...bookingData, eventType: value });
+      case 10: {
+        const fixedEventType = fixGrammar(value, "eventtype");
+        addUserMessage(fixedEventType);
+        setBookingData({ ...bookingData, eventType: fixedEventType });
         setStep(11);
         addAgentMessage(getBilingualText("selectPackage"));
         showToast(t("success"), "success", 2000);
         return;
+      }
 
       case 11:
         addUserMessage(`📦 ${value}`);
         setBookingData({ ...bookingData, plan: value });
         setStep(12);
-        addAgentMessage(getBilingualText("askEventCountry"));
+        addAgentMessage(getBilingualText("askGuests"));
         showToast(t("success"), "success", 2000);
         return;
 
-      case 12:
-        if (!value || value.trim().length < 2) {
+      case 12: {
+        const guestCount = parseInt(value);
+        if (isNaN(guestCount) || guestCount < 1) {
+          showToast("Please enter a valid number of guests", "error");
+          setError("Please enter a valid number of guests");
+          return;
+        }
+        addUserMessage(`${guestCount} guests`);
+        setBookingData({ ...bookingData, guestCount: guestCount });
+        setStep(13);
+        addAgentMessage(getBilingualText("askEventCountry"));
+        showToast(t("success"), "success", 2000);
+        return;
+      }
+
+      case 13: {
+        const fixedCountry = fixGrammar(value, "country");
+        if (!fixedCountry || fixedCountry.length < 2) {
           isValid = false;
           errorMsg = "Please enter the event country (at least 2 characters)";
         }
         if (isValid) {
-          addUserMessage(value);
-          setBookingData({ ...bookingData, eventCountry: value });
-
-          if (value.toLowerCase() !== bookingData.residency.toLowerCase()) {
+          addUserMessage(fixedCountry);
+          setBookingData({ ...bookingData, eventCountry: fixedCountry });
+          if (fixedCountry.toLowerCase() !== (bookingData.residency || "").toLowerCase()) {
             addAgentMessage(getBilingualText("eventCountryMismatch"));
           }
-
-          setStep(13);
+          setStep(14);
           addAgentMessage(getBilingualText("askEventCity"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1511,16 +1518,18 @@ Your signature/acceptance serves as binding agreement to this contract.`;
           setError(errorMsg);
         }
         return;
+      }
 
-      case 13:
-        if (!value || value.length < 2) {
+      case 14: {
+        const fixedCity = fixGrammar(value, "city");
+        if (!fixedCity || fixedCity.length < 2) {
           isValid = false;
           errorMsg = "Please enter a valid city";
         }
         if (isValid) {
-          addUserMessage(value);
-          setBookingData({ ...bookingData, eventCity: value });
-          setStep(14);
+          addUserMessage(fixedCity);
+          setBookingData({ ...bookingData, eventCity: fixedCity });
+          setStep(15);
           addAgentMessage(getBilingualText("askDate"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1528,19 +1537,20 @@ Your signature/acceptance serves as binding agreement to this contract.`;
           setError(errorMsg);
         }
         return;
+      }
 
-      case 14:
+      case 15:
         if (!isDateInFuture(value)) {
           isValid = false;
           errorMsg = "Please select a future date";
         } else if (isDateBooked(value)) {
           isValid = false;
-          errorMsg = getBilingualText("dateBooked");
+          errorMsg = t("dateBooked");
         }
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, eventDate: value });
-          setStep(15);
+          setStep(16);
           addAgentMessage(getBilingualText("askTime"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1549,22 +1559,21 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
         return;
 
-      case 15:
-        // Validate time format (HH:MM)
+      case 16: {
         const timeRegex = /^([0-1][0-9]|2[0-3]):[0-5][0-9]$/;
         if (!timeRegex.test(value)) {
           isValid = false;
           errorMsg = language === 'en'
             ? "Please enter a valid time in HH:MM format (e.g., 14:30). Hours must be 00-23."
-            : "እባክዎን ትክክለኛ ጊዜ በ HH:MM ቅርጸት ያስገቡ (ምሳሌ፡ 14:30)። ሰዓታት 00-23 መካከል ሊሆን ይገባል።";
+            : "እባክዎን ትክክለኛ ጊዜ በ HH:MM ቅርጸት ያስገቡ (ምሳሌ፡ 14:30)።";
         } else if (isDateBooked(bookingData.eventDate, value)) {
           isValid = false;
-          errorMsg = getBilingualText("timeBooked");
+          errorMsg = t("timeBooked");
         }
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, eventTime: value });
-          setStep(16);
+          setStep(17);
           addAgentMessage(getBilingualText("askLocation"));
           showToast(t("success"), "success", 2000);
         } else {
@@ -1572,29 +1581,39 @@ Your signature/acceptance serves as binding agreement to this contract.`;
           setError(errorMsg);
         }
         return;
+      }
 
-      case 16:
-        if (!value || value.length < 3) {
+      case 17: {
+        const fixedLocation = fixGrammar(value, "location");
+        if (!fixedLocation || fixedLocation.length < 3) {
           isValid = false;
           errorMsg = "Please enter a valid venue";
         }
         if (isValid) {
-          addUserMessage(value);
-          setBookingData({ ...bookingData, eventLocation: value });
-          setStep(17);
-          addAgentMessage(getBilingualText("noticeTitle"));
+          addUserMessage(fixedLocation);
+          setBookingData({ ...bookingData, eventLocation: fixedLocation });
+          setStep(18);
+          addAgentMessage(getBilingualText("askTheme"));
           showToast(t("success"), "success", 2000);
         } else {
           showToast(errorMsg, "error");
           setError(errorMsg);
         }
         return;
+      }
 
-      case 17:
-        setStep(18);
-        addAgentMessage(getBilingualText("bookingConfirmed"));
+      case 18: {
+        const refNum = `SE-${Date.now()}`;
+        const fixedTheme = value ? fixGrammar(value, "theme") : "No specific theme";
+        addUserMessage(fixedTheme);
+        setBookingData({ ...bookingData, specialTheme: fixedTheme });
+        setBookingRefNum(refNum);
+        generateQRCode(refNum);
+        setStep(19);
+        addAgentMessage(getBilingualText("noticeTitle"));
         showToast(t("success"), "success", 2000);
         return;
+      }
 
       default:
         return;
@@ -1604,7 +1623,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
   };
 
   const goBack = () => {
-    if (step > 0 && step < 16) {
+    if (step > 0 && step < 20) {
       setStep(step - 1);
       setError("");
       showToast("Going back...", "info", 1000);
@@ -1635,28 +1654,27 @@ Your signature/acceptance serves as binding agreement to this contract.`;
   const resetBooking = () => {
     setStep(0);
     setLanguage(null);
-    setMessages([]);
+    setMessages([{ type: "agent", text: translations.en.selectLanguage, id: "initial-greeting" }]);
     setBookingData({});
     setInputValue("");
     setTermsAccepted(false);
     setError("");
     setQrCode(null);
     setBookingRefNum(null);
-    addAgentMessage(`${t("welcome")}\n\n${t("welcomeSubtitle")}\n\n${t("selectLanguage")}`);
+    setShowTerms(false);
+    setShowManualPayment(false);
     showToast("Booking reset", "info");
   };
 
-  useEffect(() => {
-    if (step === 0 && messages.length === 0) {
-      addAgentMessage(`${translations.en.welcome}\n\n${translations.en.welcomeSubtitle}\n\n${translations.en.selectLanguage}`);
-    }
-  }, []);
 
   useEffect(() => {
-    if (step === 17 && !bookingRefNum) {
-      const refNum = `SE-${Date.now()}`;
-      setBookingRefNum(refNum);
-      generateQRCode(refNum);
+    // Only generate if somehow missed (case 18 should have already set it)
+    if (step === 19 && !bookingRefNum) {
+      const newRef = `SE-${Date.now()}`;
+      setBookingRefNum(newRef);
+      generateQRCode(newRef);
+    } else if (step === 19 && bookingRefNum && !qrCode) {
+      generateQRCode(bookingRefNum);
     }
   }, [step]);
 
@@ -1703,8 +1721,8 @@ Your signature/acceptance serves as binding agreement to this contract.`;
       // Auto-start with English, user can still change language
       setLanguage('en');
       setStep(1);
-      addAgentMessage(`${translations.en.welcome}\n\n${translations.en.welcomeSubtitle}`);
-      addAgentMessage(translations.en.askNationality);
+      addAgentMessage({ primary: `${translations.en.welcome} — ${translations.en.welcomeSubtitle}`, secondary: null });
+      addAgentMessage({ primary: translations.en.askNationality, secondary: null });
     }
   }, []);
 
@@ -1716,7 +1734,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
   }, []);
 
   const getProgressPercentage = () => {
-    return Math.min((step / 17) * 100, 100);
+    return Math.min((step / 20) * 100, 100);
   };
 
   const renderStep = () => {
@@ -1789,7 +1807,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
             </div>
             {error && <div className="text-red-400 text-sm font-semibold bg-red-900 bg-opacity-20 p-2 rounded">{error}</div>}
             <div className="flex gap-3">
-              {step > 0 && step < 17 && (
+              {step > 0 && step < 19 && (
                 <button
                   onClick={goBack}
                   className="flex-1 px-4 py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-bold transition"
@@ -1909,8 +1927,74 @@ Your signature/acceptance serves as binding agreement to this contract.`;
           </div>
         );
 
+      case 12:
+        return (
+          <div className="space-y-3 w-full max-w-md">
+            <input
+              type="number"
+              min="1"
+              placeholder="e.g., 50"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={(e) => e.key === "Enter" && handleNext(inputValue)}
+              className="w-full px-4 py-3 bg-slate-700 text-white border-2 border-yellow-500 rounded-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 placeholder-gray-400"
+              aria-label="Enter number of guests"
+            />
+            <div className="flex gap-2">
+              <button
+                onClick={goBack}
+                className="flex-1 px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition text-sm font-semibold"
+                aria-label="Go back"
+              >
+                {t("back")}
+              </button>
+              <button
+                onClick={() => handleNext(inputValue)}
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white rounded-lg transition font-semibold text-sm"
+                aria-label="Continue"
+              >
+                {t("next")}
+              </button>
+            </div>
+          </div>
+        );
 
-      case 17:
+      case 18:
+        return (
+          <div className="space-y-3 w-full max-w-md">
+            <textarea
+              placeholder="e.g., Elegant floral theme, modern minimalist, traditional..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter" && e.ctrlKey) {
+                  handleNext(inputValue);
+                }
+              }}
+              className="w-full px-4 py-3 bg-slate-700 text-white border-2 border-yellow-500 rounded-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 placeholder-gray-400 h-24 resize-none"
+              aria-label="Enter special theme or design preferences"
+            />
+            <p className="text-gray-300 text-xs">Leave blank if no preference</p>
+            <div className="flex gap-2">
+              <button
+                onClick={goBack}
+                className="flex-1 px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg transition text-sm font-semibold"
+                aria-label="Go back"
+              >
+                {t("back")}
+              </button>
+              <button
+                onClick={() => handleNext(inputValue || "No specific theme")}
+                className="flex-1 px-4 py-2 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white rounded-lg transition font-semibold text-sm"
+                aria-label="Continue to confirmation"
+              >
+                {t("next")}
+              </button>
+            </div>
+          </div>
+        );
+
+      case 19: {
         const pkgInfoDeposit = PACKAGES.find(p => p.name === bookingData.plan);
         const depositAmount = Math.round((pkgInfoDeposit?.price || 0) / 2);
         const chapaKey = import.meta.env.VITE_CHAPA_PUBLIC_KEY;
@@ -1924,8 +2008,16 @@ Your signature/acceptance serves as binding agreement to this contract.`;
               <div className="text-xs text-yellow-200">{language === 'en' ? 'Required to secure your ' + bookingData.plan + ' package booking' : 'የ' + bookingData.plan + ' ፓኬጅ ዝግጅትዎን ለማረጋገጥ ያስፈልጋል'}</div>
             </div>
 
-            <div className="bg-slate-900 p-4 rounded-lg text-white text-sm whitespace-pre-line mb-4 border-l-4 border-yellow-500">
-              {getBilingualText("noticeBody")}
+            <div className="bg-slate-900 p-4 rounded-lg text-sm mb-4 border-l-4 border-yellow-500">
+              {language === "am" ? (
+                <>
+                  <p className="text-white whitespace-pre-line">{translations.am.noticeBody}</p>
+                  <hr className="border-yellow-500 border-opacity-30 my-2" />
+                  <p className="text-gray-400 whitespace-pre-line text-xs">{translations.en.noticeBody}</p>
+                </>
+              ) : (
+                <p className="text-white whitespace-pre-line">{translations.en.noticeBody}</p>
+              )}
             </div>
 
             {!showTerms && (
@@ -1934,14 +2026,24 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                 className="w-full text-left px-4 py-3 bg-slate-700 hover:bg-slate-600 rounded-lg text-yellow-400 transition font-semibold"
                 aria-label="Show terms and conditions"
               >
-                📄 {language === "en" ? "View Terms & Conditions" : "ውሎችን ይመልከቱ"}
+                📄 {language === "en" ? "View Terms & Conditions" : "ውሎቹን ይመልከቱ / View Terms & Conditions"}
               </button>
             )}
 
             {showTerms && (
-              <div className="bg-slate-900 p-4 rounded-lg text-white text-xs max-h-64 overflow-y-auto mb-4 border border-yellow-500 border-opacity-30">
-                <h3 className="text-yellow-400 font-bold mb-3">{getBilingualText("termsTitle")}</h3>
-                <p className="whitespace-pre-line leading-relaxed">{getBilingualText("termsText")}</p>
+              <div className="bg-slate-900 p-4 rounded-lg text-xs max-h-64 overflow-y-auto mb-4 border border-yellow-500 border-opacity-30">
+                <h3 className="text-yellow-400 font-bold mb-3">
+                  {language === "am" ? `${translations.am.termsTitle} / ${translations.en.termsTitle}` : translations.en.termsTitle}
+                </h3>
+                {language === "am" ? (
+                  <>
+                    <p className="text-white whitespace-pre-line leading-relaxed">{translations.am.termsText}</p>
+                    <hr className="border-yellow-500 border-opacity-30 my-3" />
+                    <p className="text-gray-400 whitespace-pre-line leading-relaxed">{translations.en.termsText}</p>
+                  </>
+                ) : (
+                  <p className="text-white whitespace-pre-line leading-relaxed">{translations.en.termsText}</p>
+                )}
               </div>
             )}
 
@@ -1951,12 +2053,12 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                 className="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition text-lg transform hover:scale-105"
                 aria-label="Accept terms and conditions"
               >
-                {getBilingualText("acceptTerms")}
+                {language === "am" ? `${translations.am.acceptTerms} / ${translations.en.acceptTerms}` : translations.en.acceptTerms}
               </button>
             ) : (
               <>
                 <div className="text-green-400 text-sm font-semibold bg-green-900 bg-opacity-30 p-3 rounded-lg border border-green-500">
-                  ✅ {getBilingualText("termsAccepted")}
+                  ✅ {t("termsAccepted")}
                 </div>
 
                 {/* PAYMENT METHOD SELECTION */}
@@ -2090,18 +2192,19 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                   className="w-full px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition text-lg transform hover:scale-105"
                   aria-label="Proceed to booking confirmation"
                 >
-                  {getBilingualText("proceedBooking")}
+                  {t("proceedBooking")}
                 </button>
               </>
             )}
           </div>
         );
+      }
 
-      case 18:
+      case 20: {
         const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
         return (
           <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-yellow-500 rounded-xl p-6 space-y-4 shadow-2xl">
-            <h2 className="text-3xl font-bold text-yellow-400 text-center mb-6">✨ {getBilingualText("viewBooking")}</h2>
+            <h2 className="text-3xl font-bold text-yellow-400 text-center mb-6">✨ {t("viewBooking")}</h2>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
@@ -2176,7 +2279,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
               disabled={loading}
               aria-label="Download booking contract PDF"
             >
-              {loading ? <Spinner /> : getBilingualText("downloadPdf")}
+              {loading ? <Spinner /> : t("downloadPdf")}
             </button>
 
             <button
@@ -2184,7 +2287,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
               className="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg font-bold hover:from-green-700 hover:to-green-800 transition transform hover:scale-105"
               aria-label="Contact us via WhatsApp"
             >
-              {getBilingualText("contactUs")}
+              {t("contactUs")}
             </button>
 
             <button
@@ -2195,8 +2298,16 @@ Your signature/acceptance serves as binding agreement to this contract.`;
               {t("startOver")}
             </button>
 
-            <div className="bg-slate-900 p-4 rounded-lg text-white text-xs whitespace-pre-line border-l-4 border-yellow-500">
-              {getBilingualText("sendInstructions")}
+            <div className="bg-slate-900 p-4 rounded-lg text-xs whitespace-pre-line border-l-4 border-yellow-500">
+              {language === "am" ? (
+                <>
+                  <p className="text-white">{translations.am.sendInstructions}</p>
+                  <hr className="border-yellow-500 border-opacity-30 my-2" />
+                  <p className="text-gray-400">{translations.en.sendInstructions}</p>
+                </>
+              ) : (
+                <p className="text-white">{translations.en.sendInstructions}</p>
+              )}
             </div>
 
             <button
@@ -2208,16 +2319,17 @@ Your signature/acceptance serves as binding agreement to this contract.`;
             </button>
           </div>
         );
+      }
 
       default:
         return (
           <div className="w-full max-w-full sm:max-w-md space-y-3">
             <div>
               <label className="block text-yellow-400 text-xs sm:text-sm font-semibold mb-2">
-                {step < 17 && <span className="text-red-400">*</span>} {t("required")}
+                {step < 19 && <span className="text-red-400">*</span>} {t("required")}
               </label>
               <input
-                type={step === 7 ? "password" : step === 14 ? "date" : step === 15 ? "time" : "text"}
+                type={step === 8 ? "password" : step === 15 ? "date" : step === 16 ? "time" : "text"}
                 value={inputValue}
                 onChange={(e) => {
                   setInputValue(e.target.value);
@@ -2229,7 +2341,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                     setInputValue("");
                   }
                 }}
-                placeholder={step === 14 ? "YYYY-MM-DD" : step === 15 ? "HH:MM" : ""}
+                placeholder={step === 15 ? "YYYY-MM-DD" : step === 16 ? "HH:MM" : ""}
                 className="w-full px-3 sm:px-4 py-3 sm:py-3 bg-white text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-lg text-base"
                 autoFocus
                 aria-label={`Input for step ${step}`}
@@ -2237,7 +2349,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
             </div>
             {error && <div className="text-red-400 text-xs sm:text-sm font-semibold bg-red-900 bg-opacity-20 p-2 rounded">{error}</div>}
             <div className="flex gap-2 sm:gap-3">
-              {step > 0 && step < 17 && (
+              {step > 0 && step < 19 && (
                 <button
                   onClick={goBack}
                   className="flex-1 px-3 sm:px-4 py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-bold transition text-sm sm:text-base"
@@ -2309,10 +2421,10 @@ Your signature/acceptance serves as binding agreement to this contract.`;
             </a>
           </div>
 
-          {step > 0 && language && step < 17 && (
+          {step > 0 && language && step < 19 && (
             <div className="space-y-2 animate-fadeIn">
               <div className="flex justify-between items-center text-xs text-yellow-400 mb-2 font-semibold">
-                <span>{t("stepOf")} {step}/16</span>
+                <span>{t("stepOf")} {step}/18</span>
                 <span>Language: {language === "en" ? "🇬🇧 English" : "🇪🇹 አማርኛ"}</span>
                 <span>{Math.round(getProgressPercentage())}%</span>
               </div>
@@ -2339,9 +2451,17 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                   msg.type === "agent"
                     ? "bg-gradient-to-br from-slate-700 to-slate-800 border-l-4 border-yellow-500 text-white shadow-lg"
                     : "bg-gradient-to-br from-yellow-500 to-yellow-600 text-slate-900 font-semibold shadow-lg"
-                } whitespace-pre-line text-xs sm:text-sm leading-relaxed`}
+                } text-xs sm:text-sm leading-relaxed`}
               >
-                {msg.text}
+                {msg.type === "agent" && msg.secondary ? (
+                  <>
+                    <p className="whitespace-pre-line font-semibold text-white">{msg.text}</p>
+                    <hr className="border-yellow-500 border-opacity-30 my-2" />
+                    <p className="whitespace-pre-line text-gray-400 text-xs">{msg.secondary}</p>
+                  </>
+                ) : (
+                  <p className="whitespace-pre-line">{msg.text}</p>
+                )}
               </div>
             </div>
           ))}
