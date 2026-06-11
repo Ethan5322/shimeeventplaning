@@ -2395,7 +2395,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900" style={{ backgroundImage: "radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%)" }}>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;700&display=swap');
         * { font-family: 'Lato', sans-serif; }
@@ -2408,6 +2408,35 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         .animate-spin { animation: spin 0.6s linear infinite; }
       `}</style>
 
+      {/* Logo watermark background */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          inset: 0,
+          backgroundImage: "url('/shime-logo.jpeg')",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center center",
+          backgroundSize: "55%",
+          opacity: 0.04,
+          pointerEvents: "none",
+          zIndex: 0,
+          filter: "grayscale(30%)",
+        }}
+      />
+      {/* Subtle radial gold accent */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(212,175,55,0.04) 0%, transparent 70%)",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
+
+      <div style={{ position: "relative", zIndex: 1 }}>
       <Toast {...toast} />
 
       <header className="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 py-6 sm:py-8 border-b-2 border-yellow-500 sticky top-0 z-10 shadow-2xl">
@@ -2558,6 +2587,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
           </div>
         )}
       </main>
+      </div>
     </div>
   );
 }
