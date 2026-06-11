@@ -16,13 +16,13 @@ const translations = {
     ethiopianCalendar: "🇪🇹 Ethiopian Calendar",
     askNationality: "Great! 😊 What is your nationality?",
     askResidency: "Perfect! Which country are you currently residing in?",
-    askPhone: "Thank you! 🙏 Please provide your local phone number (Example: 0911234567 - starts with 0)",
-    invalidPhone: "❌ The phone number you entered is invalid. Please use local format starting with 0 (Example: 0911234567)",
+    askPhone: "Thank you! 🙏 Please provide your local phone number (Example: 0911234567 or +44 7911 123456)",
+    invalidPhone: "❌ The phone number you entered is invalid. Please enter a valid local phone number (5–15 digits).",
     phoneCountryMismatch: "⚠️ Please note: Your phone number country code differs from your country of residence.",
     askEmail: "Excellent! 📧 What is your email address?",
     invalidEmail: "❌ Hmm, that email doesn't look quite right. Could you please try again?",
     askIdType: "Great! 📋 Please provide your ID number or Passport number:",
-    invalidId: "❌ That ID/Passport number doesn't look right. Could you double-check and try again?",
+    invalidId: "❌ Please enter a valid ID or Passport number (at least 4 characters, letters and numbers only).",
     askFullName: "Perfect! 👤 What is your full name (First and Last name)?",
     invalidName: "❌ We need both your first and last name. Could you please try again?",
     askPassword: "Wonderful! 🔐 Let's create a secure PIN for your account (6 or more digits):",
@@ -90,13 +90,13 @@ By accepting this agreement, you confirm that you have reviewed and accepted all
     selectLanguage: "የትኛውን ቋንቋ ለመጠቀም ይፈልጋሉ?",
     askNationality: "እባክዎን ዜግነትዎን ይግለጹልን።",
     askResidency: "በአሁኑ ጊዜ ነዋሪነትዎ በየትኛው ሀገር ነው?",
-    askPhone: "እባክዎን የስልክ ቁጥርዎን ያስገቡ (ምሳሌ፡ 0911234567 — ቁጥሩ በ0 መጀመር አለበት)።",
-    invalidPhone: "❌ ያስገቡት ስልክ ቁጥር ትክክል አይደለም። እባክዎን በ0 የሚጀምር ቁጥር ያስገቡ (ምሳሌ፡ 0911234567)።",
+    askPhone: "እባክዎን የስልክ ቁጥርዎን ያስገቡ (ምሳሌ፡ 0911234567 ወይም +44 7911 123456)።",
+    invalidPhone: "❌ ያስገቡት ስልክ ቁጥር ትክክል አይደለም። እባክዎን ትክክለኛ ስልክ ቁጥር ያስገቡ (5 ወይም ከዚያ በላይ አሃዝ)።",
     phoneCountryMismatch: "⚠️ ማሳሰቢያ፡ የስልክ ቁጥርዎ ከመኖሪያ ሀገርዎ ጋር አይዛመድም።",
     askEmail: "እባክዎን የኢሜይል አድራሻዎን ያስገቡ።",
     invalidEmail: "❌ ያስገቡት ኢሜይል ትክክል አይደለም። እባክዎን ትክክለኛ ኢሜይል አድራሻ ያስገቡ።",
     askIdType: "እባክዎን የመታወቂያ ወይም የፓስፖርት ቁጥርዎን ያስገቡ።",
-    invalidId: "❌ ያስገቡት መታወቂያ/ፓስፖርት ቁጥር ትክክል አይደለም። እባክዎን እንደገና ይሞክሩ።",
+    invalidId: "❌ እባክዎን ትክክለኛ መታወቂያ ወይም ፓስፖርት ቁጥር ያስገቡ (ቢያንስ 4 ፊደላት ወይም ቁጥሮች)።",
     askFullName: "እባክዎን ሙሉ ስምዎን ያስገቡ (የራስዎ ስም እና የአባት ስም)።",
     invalidName: "❌ ሙሉ ስም ያስፈልጋል (የራስዎ ስም እና የአባት ስም)።",
     askPassword: "እባክዎን የጥበቃ PIN ቁጥርዎን ይፍጠሩ (ቢያንስ 6 አሃዝ)።",
@@ -836,12 +836,12 @@ export default function ShimeAssistant() {
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   const validatePhone = (phone) => {
-    const digits = phone.replace(/\D/g, ""); // Remove all non-digits
-    // Accept: 0XXXXXXXXX (10 digits), 251XXXXXXXXX (12 digits), or +251XXXXXXXXX
-    return /^0[0-9]{9}$/.test(digits) || /^251[0-9]{9}$/.test(digits);
+    const digits = phone.replace(/\D/g, "");
+    // Accept any local phone number: 5 to 15 digits (covers all countries)
+    return digits.length >= 5 && digits.length <= 15;
   };
 
-  const validateId = (id) => /^[A-Z]{0,2}[0-9]{6,12}$/i.test(id);
+  const validateId = (id) => id.trim().length >= 4 && /^[A-Z0-9\-\s]+$/i.test(id.trim());
   const validateName = (name) => name.trim().split(" ").length >= 2 && name.length >= 5;
 
   const isDateBooked = (date, time = null) => {
@@ -1355,14 +1355,8 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         }
 
         if (isValid) {
-          // Normalize to local format (0910...)
-          let normalizedPhone = value.replace(/\D/g, "");
-          if (normalizedPhone.startsWith("251")) {
-            normalizedPhone = "0" + normalizedPhone.slice(3); // Convert 251xxx to 0xxx
-          }
-
           addUserMessage(value);
-          setBookingData({ ...bookingData, phoneNumber: normalizedPhone });
+          setBookingData({ ...bookingData, phoneNumber: value.trim() });
           setStep(5);
           addAgentMessage(getBilingualText("askEmail"));
           showToast(t("success"), "success", 2000);
@@ -1770,10 +1764,10 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                     setInputValue("");
                   }
                 }}
-                placeholder="Type your country name..."
+                placeholder={language === "am" ? "ምሳሌ፡ ኢትዮጵያዊ፣ አሜሪካዊ..." : "e.g. Ethiopian, American, British..."}
                 className="w-full px-4 py-3 bg-white text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-lg"
                 autoFocus
-                aria-label="Enter country of residence"
+                aria-label="Enter your nationality"
               />
             </div>
             {error && <div className="text-red-400 text-sm font-semibold bg-red-900 bg-opacity-20 p-2 rounded">{error}</div>}
