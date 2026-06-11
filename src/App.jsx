@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { jsPDF } from "jspdf";
 import QRCode from "qrcode";
 import QRLanding from "./QRLanding";
-import AdminPanel from "./AdminPanel";
+
 import { gregorianToEthiopian, formatDateForDisplay } from "./EthiopianCalendar";
 import { generateCompanyQRCode, downloadCompanyQRPDF } from "./CompanyQRPDF";
 import { supabase } from "./supabaseClient";
@@ -550,20 +550,6 @@ const QRCodeDownloadPage = ({ bookingQRCode, loading, onDownloadImage, onDownloa
 };
 
 export default function ShimeAssistant() {
-  // Check for page parameter to show QR Landing or Admin Panel
-  const params = new URLSearchParams(window.location.search);
-  const page = params.get("page");
-
-  // Show QR Landing if requested
-  if (page === "qr" || page === "marketing" || page === "landing") {
-    return <QRLanding />;
-  }
-
-  // Show Admin Panel if requested
-  if (page === "admin") {
-    return <AdminPanel onLogout={() => window.history.pushState({}, "", "/")} />;
-  }
-
   const [step, setStep] = useState(0);
   const [language, setLanguage] = useState(null);
   const [messages, setMessages] = useState([
