@@ -2408,29 +2408,32 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         .animate-spin { animation: spin 0.6s linear infinite; }
       `}</style>
 
-      {/* Logo watermark background */}
+      {/* Logo watermark — sized at 120vmax so white JPEG corners always bleed off-screen */}
       <div
         aria-hidden="true"
         style={{
           position: "fixed",
-          inset: 0,
+          top: "50%",
+          left: "50%",
+          width: "120vmax",
+          height: "120vmax",
+          transform: "translate(-50%, -50%)",
           backgroundImage: "url('/shime-logo.jpeg')",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center center",
-          backgroundSize: "55%",
-          opacity: 0.04,
+          backgroundSize: "contain",
+          opacity: 0.07,
           pointerEvents: "none",
           zIndex: 0,
-          filter: "grayscale(30%)",
         }}
       />
-      {/* Subtle radial gold accent */}
+      {/* Dark vignette so edges stay deep and readable */}
       <div
         aria-hidden="true"
         style={{
           position: "fixed",
           inset: 0,
-          background: "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(212,175,55,0.04) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 35%, rgba(15,23,42,0.75) 100%)",
           pointerEvents: "none",
           zIndex: 0,
         }}
