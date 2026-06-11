@@ -781,7 +781,6 @@ export default function ShimeAssistant() {
         5: "Great email! We'll use this for all important updates. ✉️",
         6: "Wonderful! Your full name is important for your booking. 👤",
         7: "Perfect! Your ID helps us verify your booking. 🔐",
-        8: "Excellent! Your PIN is now secure. 🔒",
         9: "Nice! We'll contact you through your preferred method. 💬",
         10: "Exciting! What a wonderful event type! 🎊",
         11: "Perfect package choice! You're going to have an amazing event! 🎉",
@@ -801,7 +800,6 @@ export default function ShimeAssistant() {
         5: "ድንቅ ኢሜይል! ለሁሉም ወሳኝ ዝመናዎች ተጠቀምነው። ✉️",
         6: "ድንቅ! ሙሉ ስምህ ለዝግጅትህ አስፈላጊ ነው። 👤",
         7: "ፍጹም! ለ ID ዝግጅትህ ማረጋገጥ ያስችለናል። 🔐",
-        8: "ድንቅ! PIN ሚስጢራዊ ነው። 🔒",
         9: "ጥሩ! እንደ ምርጫዎ ለመገናኘት እንዲችሉ። 💬",
         10: "ራሳቸዎ! ምን ሚስጥር ዝግጅት ዓይነት! 🎊",
         11: "ፍጹም ፓኬጅ ምርጫ! አስገራሚ ዝግጅት ይኖርብህ! 🎉",
@@ -1418,23 +1416,6 @@ Your signature/acceptance serves as binding agreement to this contract.`;
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, idNumber: value });
-          setStep(8);
-          addAgentMessage(getBilingualText("askPassword"));
-          showToast(t("success"), "success", 2000);
-        } else {
-          showToast(errorMsg, "error");
-          setError(errorMsg);
-        }
-        return;
-
-      case 8:
-        if (value.length < 6) {
-          isValid = false;
-          errorMsg = "PIN must be at least 6 digits";
-        }
-        if (isValid) {
-          addUserMessage("••••••");
-          setBookingData({ ...bookingData, verificationPin: value, contactPhone: value });
           setStep(9);
           addAgentMessage(getBilingualText("askContactMethod"));
           showToast(t("success"), "success", 2000);
@@ -2349,7 +2330,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                 {step < 19 && <span className="text-red-400">*</span>} {t("required")}
               </label>
               <input
-                type={step === 8 ? "password" : step === 15 ? "date" : step === 16 ? "time" : "text"}
+                type={step === 15 ? "date" : step === 16 ? "time" : "text"}
                 value={inputValue}
                 onChange={(e) => {
                   setInputValue(e.target.value);
@@ -2469,7 +2450,7 @@ Your signature/acceptance serves as binding agreement to this contract.`;
           {step > 0 && language && step < 19 && (
             <div className="space-y-2 animate-fadeIn">
               <div className="flex justify-between items-center text-xs text-yellow-400 mb-2 font-semibold">
-                <span>{t("stepOf")} {step}/18</span>
+                <span>{t("stepOf")} {step > 8 ? step - 1 : step}/17</span>
                 <span>Language: {language === "en" ? "🇬🇧 English" : "🇪🇹 አማርኛ"}</span>
                 <span>{Math.round(getProgressPercentage())}%</span>
               </div>
