@@ -1039,7 +1039,7 @@ export default function ShimeAssistant() {
     ctx.fillStyle = "#d4af37";
     ctx.textAlign = "center";
 
-    const nameParts = bookingData.fullName.split(" ");
+    const nameParts = (bookingData.fullName || "Guest").split(" ");
     const signature = nameParts.length >= 2
       ? `${nameParts[0].charAt(0)}${nameParts[nameParts.length - 1].charAt(0)}`
       : nameParts[0];
@@ -1588,7 +1588,9 @@ Your signature/acceptance serves as binding agreement to this contract.`;
 
   const goBack = () => {
     if (step > 0 && step < 20) {
-      setStep(step - 1);
+      // Skip removed step 8 (PIN step): 9 → 7
+      const prevStep = step === 9 ? 7 : step - 1;
+      setStep(prevStep);
       setError("");
       showToast("Going back...", "info", 1000);
     }
