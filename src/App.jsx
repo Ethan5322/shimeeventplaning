@@ -2194,6 +2194,14 @@ Your signature/acceptance serves as binding agreement to this contract.`;
                 >
                   {t("proceedBooking")}
                 </button>
+
+                <button
+                  onClick={resetBooking}
+                  className="w-full px-4 py-3 bg-gradient-to-r from-red-700 to-red-800 text-white rounded-lg font-bold hover:from-red-800 hover:to-red-900 transition text-lg transform hover:scale-105 border border-red-500"
+                  aria-label="Finish and close booking"
+                >
+                  {language === "am" ? "✕ ጨርስ እና ዝጋ / Finish & Close" : "✕ Finish & Close"}
+                </button>
               </>
             )}
           </div>
