@@ -143,6 +143,12 @@ const AdminPanel = ({ onLogout }) => {
   const [bookingStep, setBookingStep] = useState(1);
   const [savedBooking, setSavedBooking] = useState(null);
 
+  // Block dates
+  const [blockedDates, setBlockedDates] = useState([]);
+  const [blockedLoading, setBlockedLoading] = useState(false);
+  const [newBlockDate, setNewBlockDate] = useState("");
+  const [newBlockReason, setNewBlockReason] = useState("");
+
   const showMsg = (msg, type = "info") => {
     if (type === "success") { setSuccess(msg); setTimeout(() => setSuccess(""), 6000); }
     else { setError(msg); } // errors stay visible until next action
@@ -207,6 +213,9 @@ const AdminPanel = ({ onLogout }) => {
     if (isAuthenticated && currentScreen === "today") {
       loadTodayBookings();
     }
+    if (isAuthenticated && currentScreen === "blockdates") {
+      loadBlockedDates();
+    }
   }, [isAuthenticated, currentScreen]);
 
   // ── Verify Booking ─────────────────────────────────────────────────────────
@@ -247,6 +256,68 @@ const AdminPanel = ({ onLogout }) => {
       showMsg(`Error: ${err.message}`, "error");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // ── Block Dates ────────────────────────────────────────────────────────────
+  const loadBlockedDates = async () => {
+    if (!supabase) { showMsg("Database not configured", "error"); return; }
+    setBlockedLoading(true);
+    try {
+      const { data, error: qErr } = await supabase
+        .from("shime_blocked_dates")
+        .select("*")
+        .order("blocked_date", { ascending: true });
+      if (qErr) showMsg(`Error: ${qErr.message}`, "error");
+      else setBlockedDates(data || []);
+    } catch (err) {
+      showMsg(`Error: ${err.message}`, "error");
+    } finally {
+      setBlockedLoading(false);
+    }
+  };
+
+  const handleAddBlockedDate = async () => {
+    if (!newBlockDate) { showMsg("Please pick a date to block", "error"); return; }
+    if (!supabase) { showMsg("Database not configured", "error"); return; }
+    if (blockedDates.some((b) => b.blocked_date === newBlockDate)) {
+      showMsg("That date is already blocked", "error");
+      return;
+    }
+    setBlockedLoading(true);
+    try {
+      const { error: insErr } = await supabase
+        .from("shime_blocked_dates")
+        .insert([{ blocked_date: newBlockDate, reason: newBlockReason.trim() || null, created_at: new Date().toISOString() }]);
+      if (insErr) {
+        setError(`❌ Could not block date: ${insErr.message} (code: ${insErr.code})`);
+      } else {
+        showMsg(`✅ ${newBlockDate} blocked — clients can no longer book it`, "success");
+        setNewBlockDate("");
+        setNewBlockReason("");
+        await loadBlockedDates();
+      }
+    } catch (err) {
+      setError(`❌ Unexpected error: ${err.message}`);
+    } finally {
+      setBlockedLoading(false);
+    }
+  };
+
+  const handleRemoveBlockedDate = async (id) => {
+    if (!supabase) { showMsg("Database not configured", "error"); return; }
+    setBlockedLoading(true);
+    try {
+      const { error: delErr } = await supabase
+        .from("shime_blocked_dates")
+        .delete()
+        .eq("id", id);
+      if (delErr) showMsg(`Error: ${delErr.message}`, "error");
+      else { showMsg("✅ Date unblocked", "success"); await loadBlockedDates(); }
+    } catch (err) {
+      showMsg(`Error: ${err.message}`, "error");
+    } finally {
+      setBlockedLoading(false);
     }
   };
 
@@ -536,6 +607,19 @@ const AdminPanel = ({ onLogout }) => {
                 Enter PIN • View client details • Download PDF
               </div>
             </button>
+
+            {/* Section 3 */}
+            <button
+              onClick={() => setCurrentScreen("blockdates")}
+              className="group bg-gradient-to-br from-slate-800 to-slate-700 border-2 border-red-500 hover:border-red-400 rounded-xl p-8 shadow-2xl transition transform hover:scale-105 text-left md:col-span-2"
+            >
+              <div className="text-5xl mb-4">🚫</div>
+              <h3 className="text-2xl font-bold text-red-400 mb-2">Block / Unblock Dates</h3>
+              <p className="text-gray-300 text-sm mb-4">Mark dates as unavailable so clients can't book them. Booked and blocked dates are hidden from the public booking calendar automatically.</p>
+              <div className="text-red-300 text-xs bg-red-900 bg-opacity-30 p-2 rounded">
+                Block a date • View blocked dates • Unblock anytime
+              </div>
+            </button>
           </div>
         </div>
       </div>
@@ -692,6 +776,99 @@ const AdminPanel = ({ onLogout }) => {
               <p className="text-gray-400 text-sm mt-2">Check the verification code and try again</p>
             </div>
           )}
+        </div>
+      </div>
+    );
+  }
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // BLOCK / UNBLOCK DATES SCREEN
+  // ══════════════════════════════════════════════════════════════════════════
+  if (currentScreen === "blockdates") {
+    const today = new Date().toISOString().split("T")[0];
+    const fmt = (d) => {
+      try { return new Date(d).toLocaleDateString("en-GB", { weekday: "long", year: "numeric", month: "long", day: "numeric" }); }
+      catch { return d; }
+    };
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-800 p-4 sm:p-8">
+        <div className="w-full max-w-3xl mx-auto">
+          <HeaderBar title="🚫 BLOCK / UNBLOCK DATES" subtitle="Manage which dates clients can book" />
+          <Alerts />
+
+          {/* Add a blocked date */}
+          <div className="bg-slate-800 border-2 border-red-500 rounded-xl p-6 shadow-2xl mb-6">
+            <h2 className="text-xl font-bold text-red-400 mb-4">Block a New Date</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-white font-semibold mb-2 text-sm">Date to block *</label>
+                <input
+                  type="date"
+                  min={today}
+                  value={newBlockDate}
+                  onChange={(e) => setNewBlockDate(e.target.value)}
+                  className="w-full px-4 py-3 bg-slate-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:border-red-400 focus:ring-2 focus:ring-red-400 focus:ring-opacity-20"
+                />
+              </div>
+              <div>
+                <label className="block text-white font-semibold mb-2 text-sm">Reason (optional)</label>
+                <input
+                  type="text"
+                  value={newBlockReason}
+                  onChange={(e) => setNewBlockReason(e.target.value)}
+                  placeholder="e.g. Fully booked, holiday"
+                  className="w-full px-4 py-3 bg-slate-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-red-400 focus:ring-2 focus:ring-red-400 focus:ring-opacity-20"
+                />
+              </div>
+            </div>
+            <button
+              onClick={handleAddBlockedDate}
+              disabled={blockedLoading || !newBlockDate}
+              className="mt-4 w-full px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg font-bold hover:from-red-700 hover:to-red-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {blockedLoading ? "🔄 Working..." : "🚫 Block This Date"}
+            </button>
+          </div>
+
+          {/* List of blocked dates */}
+          <div className="bg-slate-800 border-2 border-slate-600 rounded-xl p-6 shadow-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold text-white">Currently Blocked Dates</h2>
+              <button
+                onClick={loadBlockedDates}
+                className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-gray-300 rounded-lg text-sm transition"
+              >
+                🔄 Refresh
+              </button>
+            </div>
+
+            {blockedLoading && blockedDates.length === 0 ? (
+              <p className="text-gray-400 text-center py-6">Loading...</p>
+            ) : blockedDates.length === 0 ? (
+              <div className="text-center py-8">
+                <div className="text-4xl mb-3">📅</div>
+                <p className="text-gray-400">No dates are blocked. All future dates are available for booking.</p>
+              </div>
+            ) : (
+              <div className="space-y-3">
+                {blockedDates.map((b) => (
+                  <div key={b.id} className="flex items-center justify-between bg-slate-900 border border-red-500 border-opacity-40 rounded-lg p-4">
+                    <div>
+                      <p className="text-white font-semibold">{fmt(b.blocked_date)}</p>
+                      {b.reason && <p className="text-gray-400 text-sm mt-1">📝 {b.reason}</p>}
+                    </div>
+                    <button
+                      onClick={() => handleRemoveBlockedDate(b.id)}
+                      disabled={blockedLoading}
+                      className="px-4 py-2 bg-green-700 hover:bg-green-800 text-white rounded-lg text-sm font-bold transition disabled:opacity-50"
+                    >
+                      ✓ Unblock
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );

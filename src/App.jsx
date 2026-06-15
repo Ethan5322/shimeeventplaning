@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { jsPDF } from "jspdf";
 import QRCode from "qrcode";
+import emailjs from "@emailjs/browser";
 
 import { gregorianToEthiopian, formatDateForDisplay } from "./EthiopianCalendar";
 import { generateCompanyQRCode, downloadCompanyQRPDF } from "./CompanyQRPDF";
@@ -564,6 +565,10 @@ export default function ShimeAssistant() {
   const [bookingVerifyPin, setBookingVerifyPin] = useState(null);
   const [calendarType, setCalendarType] = useState(null);
 
+  // Unavailable slots loaded from the database (admin-blocked dates + confirmed bookings),
+  // merged with the hardcoded fallback list.
+  const [unavailableSlots, setUnavailableSlots] = useState(BOOKED_SLOTS);
+
   // Toast state
   const [toast, setToast] = useState({ message: "", type: "info", visible: false });
   const [loading, setLoading] = useState(false);
@@ -617,7 +622,6 @@ export default function ShimeAssistant() {
   const saveBookingToDatabase = async () => {
     try {
       if (!supabase) {
-        console.log("Supabase not configured - booking saved locally only");
         return true; // Continue even if database not configured
       }
 
@@ -655,39 +659,100 @@ export default function ShimeAssistant() {
         .insert([bookingRecord]);
 
       if (error) {
-        console.warn("Database save warning:", error.message);
         // Don't block booking if database fails
         return true;
       }
 
-      console.log("✅ Booking saved to database:", bookingRefNum);
       return true;
     } catch (err) {
-      console.warn("Database error:", err);
       return true; // Continue even if error
     }
   };
 
-  // Database: Update Payment Status
-  const updatePaymentStatus = async () => {
+  // Send a booking confirmation email to the client via EmailJS.
+  // Silently no-ops if EmailJS env vars are not configured.
+  const sendConfirmationEmail = async () => {
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey || !bookingData.email) return;
+
+    const pkgInfo = PACKAGES.find((p) => p.name === bookingData.plan);
+    const depositAmount = Math.round((pkgInfo?.price || 0) / 2);
+
     try {
-      if (!supabase || !bookingRefNum) return;
-
-      const { error } = await supabase
-        .from("shime_bookings")
-        .update({
-          payment_status: "completed",
-          booking_status: "deposit_paid",
-          updated_at: new Date().toISOString()
-        })
-        .eq("booking_ref", bookingRefNum);
-
-      if (!error) {
-        console.log("✅ Payment status updated in database");
-      }
-    } catch (err) {
-      console.warn("Payment update error:", err);
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          to_email: bookingData.email,
+          to_name: bookingData.fullName || "Guest",
+          booking_ref: bookingRefNum || "",
+          verification_code: bookingVerifyPin || "",
+          event_type: bookingData.eventType || "",
+          event_date: bookingData.eventDate || "",
+          event_time: bookingData.eventTime || "",
+          event_location: `${bookingData.eventCity || ""}, ${bookingData.eventCountry || ""}`,
+          package_name: bookingData.plan || "",
+          deposit_amount: `ETB ${depositAmount.toLocaleString()}`,
+        },
+        { publicKey }
+      );
+    } catch {
+      // Email failure must never block the booking flow
     }
+  };
+
+  // Database: Update Payment Status — reliable with retry + verification.
+  // Returns true once the row is confirmed "completed"; false if it could not be confirmed.
+  const confirmPaymentInDatabase = async (ref, maxAttempts = 3) => {
+    if (!supabase || !ref) return false;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        const { error: updateError } = await supabase
+          .from("shime_bookings")
+          .update({
+            payment_status: "completed",
+            booking_status: "deposit_paid",
+            updated_at: new Date().toISOString(),
+          })
+          .eq("booking_ref", ref);
+
+        if (!updateError) {
+          // Verify the update actually landed
+          const { data: row } = await supabase
+            .from("shime_bookings")
+            .select("payment_status")
+            .eq("booking_ref", ref)
+            .maybeSingle();
+
+          if (row && row.payment_status === "completed") {
+            return true;
+          }
+        }
+      } catch {
+        // fall through to retry
+      }
+
+      // Backoff before next attempt (0.5s, 1s, 1.5s...)
+      if (attempt < maxAttempts) {
+        await new Promise((r) => setTimeout(r, 500 * attempt));
+      }
+    }
+
+    // Could not confirm — queue for a later retry on next page load
+    try {
+      const pending = JSON.parse(localStorage.getItem("shime_pending_payment") || "[]");
+      if (!pending.includes(ref)) {
+        pending.push(ref);
+        localStorage.setItem("shime_pending_payment", JSON.stringify(pending));
+      }
+    } catch {
+      // ignore storage errors
+    }
+    return false;
   };
 
   // Chapa Hosted Checkout (Form Submission - no CORS issues)
@@ -720,13 +785,6 @@ export default function ShimeAssistant() {
         phoneNumber = "+251" + digitsOnly;
       }
 
-      console.log("=== CHAPA DEBUG ===");
-      console.log("phone raw:", bookingData.phoneNumber);
-      console.log("phone formatted:", phoneNumber);
-      console.log("amount:", amount);
-      console.log("email:", bookingData.email);
-      console.log("fullName:", bookingData.fullName);
-
       // Create form
       const form = document.createElement('form');
       form.method = 'POST';
@@ -748,8 +806,6 @@ export default function ShimeAssistant() {
         'customization[description]': `${bookingData.plan} - Deposit Payment`
       };
 
-      console.log("full Chapa payload:", JSON.stringify(fields, null, 2));
-
       // Add fields to form
       Object.keys(fields).forEach(key => {
         const input = document.createElement('input');
@@ -761,57 +817,12 @@ export default function ShimeAssistant() {
 
       document.body.appendChild(form);
       showToast("🔄 Redirecting to Chapa...", "info");
-      console.log("📨 Submitting to:", form.action);
       form.submit();
       document.body.removeChild(form);
     } catch (error) {
       console.error("❌ Chapa error:", error);
       showToast("Payment error: " + error.message, "error");
     }
-  };
-
-  const getSmartResponse = (step, input) => {
-    const responses = {
-      en: {
-        0: "Great choice! Let's get your booking started! 🚀",
-        1: "Perfect calendar selection! Now let's get to know you better.",
-        2: "Awesome! Your nationality helps us understand your background. ✨",
-        3: "Excellent! Knowing where you live helps us provide better service. 🌍",
-        4: "Perfect! Your phone number is secure with us. 📱",
-        5: "Great email! We'll use this for all important updates. ✉️",
-        6: "Wonderful! Your full name is important for your booking. 👤",
-        7: "Perfect! Your ID helps us verify your booking. 🔐",
-        9: "Nice! We'll contact you through your preferred method. 💬",
-        10: "Exciting! What a wonderful event type! 🎊",
-        11: "Perfect package choice! You're going to have an amazing event! 🎉",
-        12: "Wonderful! That's going to be a beautiful location! 🌟",
-        13: "Great city choice! Perfect for your event! 🏙️",
-        14: "Excellent date selection! Mark it on the calendar! 📅",
-        15: "Perfect time! Your event will be unforgettable! ⏰",
-        16: "Wonderful venue! Everything looks perfect! 🎊",
-        17: "Thank you for reviewing your booking details!",
-      },
-      am: {
-        0: "ጥሩ ምርጫ! ዝግጅትዎ እንጀምር! 🚀",
-        1: "ፍጹም የካሌንደር ምርጫ! አሁን እራስህን ሪፖርት ።",
-        2: "ድንቅ! ተወላጅነት ምንጫወት ለምክንያት ያስጨንቀናል። ✨",
-        3: "ፍጹም! የመኖሪያ ሀገር ምንጫወት ታገዝናል። 🌍",
-        4: "ፍጹም! ስልክ ቁጥርህ ከኛ ጋር ደህንነቱ ነው። 📱",
-        5: "ድንቅ ኢሜይል! ለሁሉም ወሳኝ ዝመናዎች ተጠቀምነው። ✉️",
-        6: "ድንቅ! ሙሉ ስምህ ለዝግጅትህ አስፈላጊ ነው። 👤",
-        7: "ፍጹም! ለ ID ዝግጅትህ ማረጋገጥ ያስችለናል። 🔐",
-        9: "ጥሩ! እንደ ምርጫዎ ለመገናኘት እንዲችሉ። 💬",
-        10: "ራሳቸዎ! ምን ሚስጥር ዝግጅት ዓይነት! 🎊",
-        11: "ፍጹም ፓኬጅ ምርጫ! አስገራሚ ዝግጅት ይኖርብህ! 🎉",
-        12: "ድንቅ! ሌሎች ውብ ቦታ ይኖር! 🌟",
-        13: "ጥሩ ከተማ ምርጫ! ለዝግጅትህ ፍጹም! 🏙️",
-        14: "ድንቅ ቀን ምርጫ! ያቀሙ! 📅",
-        15: "ፍጹም ጊዜ! ዝግጅትህ ታስረዋለች! ⏰",
-        16: "ድንቅ ቤተ! ሁሉም ፍጹም ነዋ! 🎊",
-        17: "ዝግጅት ዝርዝራቸው ገምግመዋቸው ምስጋና!",
-      },
-    };
-    return responses[language]?.[step] || "Great! Moving forward! ✨";
   };
 
   const fixGrammar = (text, fieldType) => {
@@ -845,11 +856,43 @@ export default function ShimeAssistant() {
   const validateName = (name) => name.trim().split(" ").length >= 2 && name.length >= 5;
 
   const isDateBooked = (date, time = null) => {
-    return BOOKED_SLOTS.some(slot => slot.date === date && (slot.time === null || slot.time === time));
+    return unavailableSlots.some(slot => slot.date === date && (slot.time === null || slot.time === time));
   };
 
   const isDateInFuture = (date) => {
     return new Date(date) > new Date();
+  };
+
+  // Load unavailable dates from the database: admin-blocked dates + confirmed bookings.
+  // Falls back to the hardcoded BOOKED_SLOTS if the DB is unreachable.
+  const loadUnavailableSlots = async () => {
+    if (!supabase) return;
+    try {
+      const merged = [...BOOKED_SLOTS];
+
+      // Admin-blocked dates
+      const { data: blocked } = await supabase
+        .from("shime_blocked_dates")
+        .select("blocked_date");
+      if (blocked) {
+        blocked.forEach((b) => merged.push({ date: b.blocked_date, time: null }));
+      }
+
+      // Dates already taken by confirmed/paid bookings
+      const { data: booked } = await supabase
+        .from("shime_bookings")
+        .select("event_date, event_time")
+        .in("booking_status", ["deposit_paid", "confirmed"]);
+      if (booked) {
+        booked.forEach((b) => {
+          if (b.event_date) merged.push({ date: b.event_date, time: b.event_time || null });
+        });
+      }
+
+      setUnavailableSlots(merged);
+    } catch {
+      // keep the fallback list on any error
+    }
   };
 
   const generateQRCode = async (bookingRef) => {
@@ -1613,8 +1656,9 @@ Your signature/acceptance serves as binding agreement to this contract.`;
     addAgentMessage(getBilingualText("termsAccepted"));
     showToast(t("termsAccepted"), "success");
 
-    // Save booking to database
+    // Save booking to database, then email the client their confirmation
     await saveBookingToDatabase();
+    sendConfirmationEmail();
   };
 
   const resetBooking = () => {
@@ -1663,23 +1707,35 @@ Your signature/acceptance serves as binding agreement to this contract.`;
     if (params.get('payment_status') === 'completed') {
       const bookingRef = params.get('booking');
       if (bookingRef) {
-        showToast("✅ Payment successful! Your booking is confirmed.", "success", 5000);
-        setBookingRefNum(bookingRef); // Set the booking ref for database update
+        showToast("✅ Payment received! Confirming your booking...", "success", 5000);
+        setBookingRefNum(bookingRef);
 
-        // Update payment status in Supabase (non-blocking)
-        if (supabase) {
-          supabase
-            .from('shime_bookings')
-            .update({ payment_status: 'completed', booking_status: 'deposit_paid' })
-            .eq('booking_ref', bookingRef)
-            .then(({ error }) => {
-              if (error) console.warn("Payment update error:", error);
-              else console.log("✅ Payment status updated in database");
-            });
-        }
+        // Reliable, verified status update with retry
+        confirmPaymentInDatabase(bookingRef).then((ok) => {
+          if (ok) {
+            showToast("✅ Booking confirmed and recorded.", "success", 4000);
+          } else {
+            showToast("⚠️ Payment received. We'll confirm your booking shortly.", "info", 6000);
+          }
+        });
 
         // Clean URL (remove payment params)
         window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+
+    // Retry any payments that couldn't be confirmed on a previous visit
+    if (supabase) {
+      try {
+        const pending = JSON.parse(localStorage.getItem("shime_pending_payment") || "[]");
+        if (pending.length > 0) {
+          Promise.all(pending.map((ref) => confirmPaymentInDatabase(ref))).then((results) => {
+            const stillPending = pending.filter((_, i) => !results[i]);
+            localStorage.setItem("shime_pending_payment", JSON.stringify(stillPending));
+          });
+        }
+      } catch {
+        // ignore
       }
     }
 
@@ -1698,6 +1754,8 @@ Your signature/acceptance serves as binding agreement to this contract.`;
     if (!bookingQRCode) {
       generateBookingQRCode();
     }
+    // Load admin-blocked dates and already-booked slots from the database
+    loadUnavailableSlots();
   }, []);
 
   const getProgressPercentage = () => {

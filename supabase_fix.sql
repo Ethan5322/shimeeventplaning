@@ -32,3 +32,31 @@ SELECT column_name, data_type
 FROM information_schema.columns
 WHERE table_name = 'shime_bookings'
 ORDER BY ordinal_position;
+
+-- ============================================================
+-- 6. BLOCKED DATES TABLE (for admin "Block / Unblock Dates" feature)
+-- ============================================================
+CREATE TABLE IF NOT EXISTS shime_blocked_dates (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  blocked_date date NOT NULL UNIQUE,
+  reason text,
+  created_at timestamptz DEFAULT now()
+);
+
+ALTER TABLE shime_blocked_dates ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "blocked_anon_select" ON shime_blocked_dates;
+DROP POLICY IF EXISTS "blocked_anon_insert" ON shime_blocked_dates;
+DROP POLICY IF EXISTS "blocked_anon_delete" ON shime_blocked_dates;
+
+-- Public can READ blocked dates (so the booking calendar can hide them)
+CREATE POLICY "blocked_anon_select" ON shime_blocked_dates
+  FOR SELECT TO anon USING (true);
+
+-- Admin panel uses the anon key, so allow insert/delete from anon.
+-- (For tighter security later, move these behind an authenticated role.)
+CREATE POLICY "blocked_anon_insert" ON shime_blocked_dates
+  FOR INSERT TO anon WITH CHECK (true);
+
+CREATE POLICY "blocked_anon_delete" ON shime_blocked_dates
+  FOR DELETE TO anon USING (true);
