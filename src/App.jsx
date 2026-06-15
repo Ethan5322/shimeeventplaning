@@ -1113,131 +1113,207 @@ export default function ShimeAssistant() {
       const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
       const deposit = Math.round((pkgInfo?.price || 0) / 2); // 50% deposit
 
-      // PAGE 1 - BOOKING CONFIRMATION
-      doc.setFillColor(26, 26, 46);
+      // ── Professional document palette ──
+      const navy = [26, 26, 46];
+      const gold = [193, 154, 47];
+      const fieldDark = [45, 45, 55];
+      const midGray = [120, 120, 130];
+      const hairline = [225, 225, 230];
+      const M = 18; // page margin
+      const fullPrice = pkgInfo?.price || 0;
+      const cap = (s) => (s ? String(s).charAt(0).toUpperCase() + String(s).slice(1) : "—");
+
+      // White, printer-friendly background
+      doc.setFillColor(255, 255, 255);
       doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-      // Header
-      doc.setTextColor(...goldColor);
-      doc.setFontSize(32);
-      doc.text("SHIME EVENTS", pageWidth / 2, 20, { align: "center" });
-      doc.setFontSize(12);
-      doc.text("& PLANNING", pageWidth / 2, 28, { align: "center" });
-
+      // ── Header band ──
+      doc.setFillColor(...navy);
+      doc.rect(0, 0, pageWidth, 32, "F");
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...gold);
+      doc.setFontSize(22);
+      doc.text("SHIME EVENTS", pageWidth / 2, 14, { align: "center" });
       doc.setFontSize(9);
-      doc.setTextColor(...textColor);
-      doc.text("Professional Event Planning & Coordination", pageWidth / 2, 35, { align: "center" });
+      doc.setTextColor(255, 255, 255);
+      doc.text("& PLANNING", pageWidth / 2, 20, { align: "center" });
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(205, 205, 215);
+      doc.text("Professional Event Planning & Coordination", pageWidth / 2, 26, { align: "center" });
 
-      doc.setLineWidth(0.5);
-      doc.setDrawColor(...goldColor);
-      doc.line(20, 38, pageWidth - 20, 38);
+      // ── Title + reference ──
+      let yPos = 44;
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(15);
+      doc.setTextColor(...navy);
+      doc.text("BOOKING CONFIRMATION", M, yPos);
+      doc.setDrawColor(...gold);
+      doc.setLineWidth(0.8);
+      doc.line(M, yPos + 2.5, M + 76, yPos + 2.5);
 
-      // Booking Reference
-      doc.setFontSize(11);
-      doc.setTextColor(...goldColor);
-      doc.text("BOOKING CONFIRMATION", pageWidth / 2, 48, { align: "center" });
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8.5);
+      doc.setTextColor(...midGray);
+      doc.text(`Reference:  ${refNum}`, pageWidth - M, yPos - 3, { align: "right" });
+      doc.text(`Issued:  ${today}`, pageWidth - M, yPos + 2, { align: "right" });
 
-      doc.setFontSize(9);
-      doc.setTextColor(...textColor);
-      doc.text(`Reference: ${refNum}`, pageWidth / 2, 55, { align: "center" });
-      doc.text(`Date: ${today}`, pageWidth / 2, 61, { align: "center" });
+      // ── Verification code box + QR ──
+      yPos += 9;
+      doc.setFillColor(249, 245, 233);
+      doc.setDrawColor(...gold);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(M, yPos, 108, 26, 2, 2, "FD");
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...midGray);
+      doc.text("VERIFICATION CODE", M + 6, yPos + 8);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(20);
+      doc.setTextColor(...navy);
+      doc.text(bookingVerifyPin || "—", M + 6, yPos + 19);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(6.5);
+      doc.setTextColor(...midGray);
+      doc.text("Present this code to confirm your booking", M + 6, yPos + 23.5);
 
-      // QR Code
       if (qrCode) {
         try {
-          doc.addImage(qrCode, "PNG", pageWidth / 2 - 25, 68, 50, 50);
+          doc.addImage(qrCode, "PNG", pageWidth - M - 26, yPos, 26, 26);
         } catch (qrError) {
           console.warn("Could not add QR code to PDF:", qrError);
-          doc.setFontSize(9);
-          doc.setTextColor(...goldColor);
-          doc.text("[QR Code]", pageWidth / 2, 93, { align: "center" });
         }
       }
 
-      // Event Summary
-      let yPos = 125;
-      doc.setTextColor(...goldColor);
-      doc.setFontSize(10);
-      doc.text("EVENT DETAILS", 20, yPos);
-      doc.line(20, yPos + 2, pageWidth - 20, yPos + 2);
+      // ── Section helpers ──
+      const sectionHeader = (title, y) => {
+        doc.setFillColor(...navy);
+        doc.rect(M, y, pageWidth - M * 2, 7, "F");
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9);
+        doc.setTextColor(...gold);
+        doc.text(title, M + 4, y + 4.8);
+        doc.setFont("helvetica", "normal");
+        return y + 7;
+      };
 
-      yPos += 10;
-      doc.setTextColor(...textColor);
-      doc.setFontSize(9);
+      const drawGrid = (fields, startY) => {
+        const colW = (pageWidth - M * 2) / 2;
+        let y = startY + 7;
+        for (let i = 0; i < fields.length; i += 2) {
+          for (let c = 0; c < 2; c++) {
+            const f = fields[i + c];
+            if (!f) break;
+            const x = M + c * colW + 3;
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(7);
+            doc.setTextColor(...midGray);
+            doc.text(String(f[0]).toUpperCase(), x, y);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(9.5);
+            doc.setTextColor(...fieldDark);
+            const val = doc.splitTextToSize(String(f[1] ?? "—"), colW - 8);
+            doc.text(val[0], x, y + 5);
+          }
+          y += 13;
+          doc.setDrawColor(...hairline);
+          doc.setLineWidth(0.2);
+          doc.line(M, y - 4.5, pageWidth - M, y - 4.5);
+        }
+        return y;
+      };
 
-      const eventSummary = [
-        [`Event Type: ${bookingData.eventType || "N/A"}`],
-        [`Date & Time: ${bookingData.eventDate || "N/A"} at ${bookingData.eventTime || "N/A"}`],
-        [`Location: ${bookingData.eventCity || "N/A"}, ${bookingData.eventCountry || "N/A"}`],
-        [`Venue: ${bookingData.eventLocation || "N/A"}`],
-        [`Package: ${bookingData.plan || "N/A"}`],
-      ];
+      const fullWidthField = (label, value, startY) => {
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(7);
+        doc.setTextColor(...midGray);
+        doc.text(String(label).toUpperCase(), M + 3, startY + 7);
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(9.5);
+        doc.setTextColor(...fieldDark);
+        const lines = doc.splitTextToSize(String(value || "—"), pageWidth - M * 2 - 6);
+        doc.text(lines[0], M + 3, startY + 12);
+        return startY + 16;
+      };
 
-      eventSummary.forEach(([text]) => {
-        doc.text(text, 25, yPos);
-        yPos += 6;
-      });
+      // ── Client Information ──
+      yPos += 33;
+      yPos = sectionHeader("CLIENT INFORMATION", yPos);
+      yPos = drawGrid([
+        ["Full Name", bookingData.fullName],
+        ["Preferred Contact", cap(bookingData.contactMethod)],
+        ["Phone Number", bookingData.phoneNumber],
+        ["Email Address", bookingData.email],
+        ["ID / Passport No.", bookingData.idNumber],
+        ["Nationality", bookingData.nationality],
+        ["Country of Residence", bookingData.residency],
+      ], yPos);
 
-      // Payment Section
-      yPos += 5;
-      doc.setTextColor(...goldColor);
-      doc.setFontSize(10);
-      doc.text("BOOKING FEE (NON-REFUNDABLE)", 20, yPos);
-      doc.line(20, yPos + 2, pageWidth - 20, yPos + 2);
+      // ── Event Details ──
+      yPos += 3;
+      yPos = sectionHeader("EVENT DETAILS", yPos);
+      yPos = drawGrid([
+        ["Event Type", cap(bookingData.eventType)],
+        ["Package", bookingData.plan],
+        ["Expected Guests", bookingData.guestCount],
+        ["Date", bookingData.eventDate],
+        ["Time", bookingData.eventTime],
+        ["City / Country", `${bookingData.eventCity || "—"}, ${bookingData.eventCountry || "—"}`],
+      ], yPos);
+      yPos = fullWidthField("Venue / Address", bookingData.eventLocation, yPos);
+      if (bookingData.specialTheme && bookingData.specialTheme !== "No specific theme") {
+        yPos = fullWidthField("Theme / Design", bookingData.specialTheme, yPos);
+      }
 
-      yPos += 12;
-      doc.setFontSize(18);
-      doc.setTextColor(255, 215, 0); // Bright gold for amount
-      doc.text(`ETB ${deposit.toLocaleString()}`, 20, yPos);
+      // ── Payment ──
+      yPos += 3;
+      yPos = sectionHeader("PAYMENT SUMMARY", yPos);
+      yPos += 4;
+      // Deposit highlight box
+      doc.setFillColor(249, 245, 233);
+      doc.setDrawColor(...gold);
+      doc.setLineWidth(0.4);
+      doc.roundedRect(M, yPos, pageWidth - M * 2, 22, 2, 2, "FD");
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...midGray);
+      doc.text("BOOKING FEE DUE NOW (NON-REFUNDABLE)", M + 6, yPos + 7);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(17);
+      doc.setTextColor(...navy);
+      doc.text(`ETB ${deposit.toLocaleString()}`, M + 6, yPos + 17);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...midGray);
+      doc.text(`Package total: ETB ${fullPrice.toLocaleString()}`, pageWidth - M - 6, yPos + 9, { align: "right" });
+      doc.text("Method: CBE WALLET", pageWidth - M - 6, yPos + 15, { align: "right" });
+      doc.text("Account: 1000XXXXXXXX", pageWidth - M - 6, yPos + 20, { align: "right" });
 
-      doc.setFontSize(8);
-      doc.setTextColor(...textColor);
-      doc.text("(Booking fee - non-refundable - required to secure your booking)", 20, yPos + 8);
+      // ── Footer band ──
+      doc.setFillColor(...navy);
+      doc.rect(0, pageHeight - 18, pageWidth, 18, "F");
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...gold);
+      doc.text("Shime Events & Planning", pageWidth / 2, pageHeight - 11, { align: "center" });
+      doc.setTextColor(200, 200, 210);
+      doc.text("WhatsApp: +251 91 234 5678   |   Email: contact@shimeeventplaning.com", pageWidth / 2, pageHeight - 6, { align: "center" });
 
-      // Payment Instructions
-      yPos += 18;
-      doc.setTextColor(...goldColor);
-      doc.setFontSize(10);
-      doc.text("PAYMENT INSTRUCTIONS", 20, yPos);
-      doc.line(20, yPos + 2, pageWidth - 20, yPos + 2);
-
-      yPos += 10;
-      doc.setFontSize(9);
-      doc.setTextColor(...textColor);
-      const paymentInfo = [
-        `Payment Method: CBE WALLET`,
-        `Account Number: 1000XXXXXXXX`,
-        `Account Name: Shime Events & Planning`,
-        `Amount: ETB ${deposit.toLocaleString()}`,
-      ];
-
-      paymentInfo.forEach((info) => {
-        doc.text(info, 25, yPos);
-        yPos += 6;
-      });
-
-      // Contact
-      yPos += 5;
-      doc.setTextColor(...goldColor);
-      doc.setFontSize(9);
-      doc.text("After payment, send proof to:", 20, yPos);
-      yPos += 5;
-      doc.setTextColor(...textColor);
-      doc.setFontSize(8);
-      doc.text("WhatsApp: +251 91 234 5678 | Email: contact@shimeeventplaning.com", 25, yPos);
-
-      // PAGE 2 - TERMS & CONDITIONS
+      // ── PAGE 2 — TERMS & CONDITIONS ──
       doc.addPage();
-      doc.setFillColor(26, 26, 46);
+      doc.setFillColor(255, 255, 255);
       doc.rect(0, 0, pageWidth, pageHeight, "F");
 
-      doc.setTextColor(...goldColor);
-      doc.setFontSize(14);
-      doc.text("TERMS & CONDITIONS", 20, 15);
-      doc.line(20, 17, pageWidth - 20, 17);
+      doc.setFillColor(...navy);
+      doc.rect(0, 0, pageWidth, 20, "F");
+      doc.setFont("helvetica", "bold");
+      doc.setTextColor(...gold);
+      doc.setFontSize(13);
+      doc.text("TERMS & CONDITIONS", M, 13);
 
-      doc.setTextColor(...textColor);
-      doc.setFontSize(8);
+      doc.setFont("helvetica", "normal");
+      doc.setTextColor(...fieldDark);
+      doc.setFontSize(9);
       const termsText = `1. A non-refundable booking fee is required to secure your event booking.
 2. Full payment is due 14 days before your scheduled event date.
 3. Cancellations made within 7 days of the event will result in forfeiture of the booking fee.
@@ -1247,40 +1323,48 @@ export default function ShimeAssistant() {
 7. Force majeure clauses apply to events affected by circumstances beyond our control.
 8. All disputes arising from this agreement shall be subject to Ethiopian jurisdiction.
 
-By accepting this booking, you confirm that you have reviewed and accepted all terms and conditions.
-Your signature/acceptance serves as binding agreement to this contract.`;
+By accepting this booking, you confirm that you have reviewed and accepted all terms and conditions. Your acceptance serves as a binding agreement to this contract.`;
 
-      const termsLines = doc.splitTextToSize(termsText, pageWidth - 40);
-      let termsY = 25;
+      const termsLines = doc.splitTextToSize(termsText, pageWidth - M * 2);
+      let termsY = 32;
       termsLines.forEach((line) => {
-        doc.text(line, 20, termsY);
-        termsY += 4;
+        doc.text(line, M, termsY);
+        termsY += 5.5;
       });
 
-      // Acceptance line
-      doc.setTextColor(...goldColor);
+      // Acceptance / signature block
+      const agreementY = pageHeight - 50;
+      doc.setDrawColor(...hairline);
+      doc.setLineWidth(0.3);
+      doc.line(M, agreementY - 6, pageWidth - M, agreementY - 6);
+
+      doc.setFont("helvetica", "bold");
       doc.setFontSize(9);
-      doc.text("Client Acceptance", 20, pageHeight - 15);
-      doc.line(20, pageHeight - 12, 70, pageHeight - 12);
+      doc.setTextColor(...navy);
+      doc.text("CLIENT ACCEPTANCE", M, agreementY);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8);
+      doc.setTextColor(...fieldDark);
+      doc.text(`Name: ${bookingData.fullName || "—"}`, M, agreementY + 7);
+      doc.text(`Signed on: ${today}  (Automated Electronic Signature)`, M, agreementY + 13);
+      doc.text(`Booking Reference: ${refNum}`, M, agreementY + 19);
 
-      doc.setTextColor(...textColor);
+      doc.setDrawColor(...navy);
+      doc.setLineWidth(0.4);
+      doc.line(pageWidth - M - 60, agreementY + 13, pageWidth - M, agreementY + 13);
       doc.setFontSize(7);
-      doc.text("Signature / Date", 25, pageHeight - 8);
+      doc.setTextColor(...midGray);
+      doc.text("Authorised Signature", pageWidth - M - 60, agreementY + 18);
 
-      doc.setTextColor(...goldColor);
-      doc.setFontSize(8);
-      const agreementY = pageHeight - 40;
-      doc.text(`Signed on: ${today}`, 20, agreementY);
-      doc.text(`Generated: Automated Electronic Signature`, 20, agreementY + 5);
-      doc.text(`Booking Reference: ${refNum}`, 20, agreementY + 10);
-
-      // Footer
-      doc.setFillColor(40, 40, 70);
-      doc.rect(0, pageHeight - 25, pageWidth, 25);
-
-      doc.setTextColor(...goldColor);
-      doc.setFontSize(8);
-      doc.text("www.shimeeventplaning.com | contact@shimeeventplaning.com", pageWidth / 2, pageHeight - 8, { align: "center" });
+      // Footer band
+      doc.setFillColor(...navy);
+      doc.rect(0, pageHeight - 18, pageWidth, 18, "F");
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(...gold);
+      doc.text("Shime Events & Planning", pageWidth / 2, pageHeight - 11, { align: "center" });
+      doc.setTextColor(200, 200, 210);
+      doc.text("www.shimeeventplaning.com   |   contact@shimeeventplaning.com", pageWidth / 2, pageHeight - 6, { align: "center" });
 
       // Save PDF
       try {
