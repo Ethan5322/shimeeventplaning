@@ -8,6 +8,7 @@ ALTER TABLE shime_bookings ADD COLUMN IF NOT EXISTS verification_pin text;
 ALTER TABLE shime_bookings ADD COLUMN IF NOT EXISTS deposit_amount numeric DEFAULT 0;
 ALTER TABLE shime_bookings ADD COLUMN IF NOT EXISTS calendar_type text DEFAULT 'gregorian';
 ALTER TABLE shime_bookings ADD COLUMN IF NOT EXISTS terms_accepted boolean DEFAULT false;
+ALTER TABLE shime_bookings ADD COLUMN IF NOT EXISTS reminder_sent boolean DEFAULT false;
 
 -- 2. Drop old RLS policies that may block inserts (ignore errors if they don't exist)
 DROP POLICY IF EXISTS "shime: public can insert booking" ON shime_bookings;

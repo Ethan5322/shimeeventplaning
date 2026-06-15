@@ -1659,6 +1659,33 @@ Your signature/acceptance serves as binding agreement to this contract.`;
     // Save booking to database, then email the client their confirmation
     await saveBookingToDatabase();
     sendConfirmationEmail();
+    notifyOwnerOfBooking();
+  };
+
+  // Notify the business owner of a new booking via WhatsApp (serverless + CallMeBot).
+  // No-ops on local dev (no /api functions) and never blocks the booking flow.
+  const notifyOwnerOfBooking = () => {
+    try {
+      fetch("/api/notify-booking", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: bookingData.fullName,
+          phoneNumber: bookingData.phoneNumber,
+          email: bookingData.email,
+          eventType: bookingData.eventType,
+          plan: bookingData.plan,
+          eventDate: bookingData.eventDate,
+          eventTime: bookingData.eventTime,
+          eventCity: bookingData.eventCity,
+          eventCountry: bookingData.eventCountry,
+          bookingRef: bookingRefNum,
+          verificationPin: bookingVerifyPin,
+        }),
+      }).catch(() => {});
+    } catch {
+      // ignore — owner notification must never break booking
+    }
   };
 
   const resetBooking = () => {
