@@ -1758,6 +1758,14 @@ Your signature/acceptance serves as binding agreement to this contract.`;
     loadUnavailableSlots();
   }, []);
 
+  // Re-fetch unavailable dates right before the client picks a date/time,
+  // so a date blocked by the admin mid-session is always respected.
+  useEffect(() => {
+    if (step === 14 || step === 15) {
+      loadUnavailableSlots();
+    }
+  }, [step]);
+
   const getProgressPercentage = () => {
     return Math.min((step / 20) * 100, 100);
   };
