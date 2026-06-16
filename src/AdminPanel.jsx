@@ -2,11 +2,12 @@ import { useState, useEffect } from "react";
 import { jsPDF } from "jspdf";
 import { supabase } from "./supabaseClient";
 
+// bookingFee = non-refundable fee to reserve the plan (separate from service price).
 const PACKAGES = [
-  { name: "Signature", price: 5000, description: "Basic event planning" },
-  { name: "Elegance", price: 10000, description: "Premium event planning" },
-  { name: "Premium", price: 20000, description: "Exclusive event planning" },
-  { name: "Exclusive", price: 40000, description: "Ultimate event planning" },
+  { name: "Signature", price: 5000, bookingFee: 1500, description: "Basic event planning" },
+  { name: "Elegance", price: 10000, bookingFee: 3000, description: "Premium event planning" },
+  { name: "Premium", price: 20000, bookingFee: 5000, description: "Exclusive event planning" },
+  { name: "Exclusive", price: 40000, bookingFee: 8000, description: "Ultimate event planning" },
 ];
 
 // ─── PDF Generator ────────────────────────────────────────────────────────────
@@ -19,7 +20,7 @@ const generateBookingPDF = (booking) => {
   const darkBg = [26, 26, 46];
 
   const pkgInfo = PACKAGES.find(p => p.name === booking.plan);
-  const deposit = booking.deposit_amount || Math.round((pkgInfo?.price || 0) / 2);
+  const bookingFee = booking.deposit_amount || pkgInfo?.bookingFee || 0;
   const today = new Date().toLocaleDateString("en-GB", { year: "numeric", month: "long", day: "numeric" });
 
   // Background
@@ -75,8 +76,6 @@ const generateBookingPDF = (booking) => {
   row("Full Name", booking.full_name);
   row("Email", booking.email);
   row("Phone", booking.phone_number);
-  row("ID Number", booking.id_number);
-  row("Nationality", booking.nationality);
   row("Residency", booking.residency);
   y += 4;
 
@@ -93,9 +92,9 @@ const generateBookingPDF = (booking) => {
 
   // Payment
   sectionTitle("PAYMENT INFORMATION");
-  row("Deposit Amount", `ETB ${deposit.toLocaleString()}`);
+  row("Booking Fee (Non-Refundable)", `ETB ${bookingFee.toLocaleString()}`);
   row("Payment Status", booking.payment_status === "completed" || booking.payment_status === "manual" ? "PAID" : "PENDING");
-  row("Booking Status", booking.booking_status === "deposit_paid" ? "DEPOSIT PAID" : "AWAITING");
+  row("Booking Status", booking.booking_status === "deposit_paid" ? "BOOKING FEE PAID" : "AWAITING");
   row("Verification PIN", booking.verification_pin);
   y += 4;
 
@@ -134,8 +133,8 @@ const AdminPanel = ({ onLogout }) => {
 
   // Manual booking
   const [bookingForm, setBookingForm] = useState({
-    fullName: "", email: "", phoneNumber: "", nationality: "",
-    residency: "", idNumber: "", contactMethod: "phone",
+    fullName: "", email: "", phoneNumber: "",
+    residency: "", contactMethod: "phone",
     eventType: "", plan: "", guestCount: "", specialTheme: "",
     eventCountry: "", eventCity: "", eventLocation: "",
     eventDate: "", eventTime: "", paymentType: "manual",
@@ -336,7 +335,7 @@ const AdminPanel = ({ onLogout }) => {
     try {
       const verificationPin = `ADM${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
       const pkgInfo = PACKAGES.find(p => p.name === bookingForm.plan);
-      const depositAmount = Math.round((pkgInfo?.price || 0) / 2);
+      const depositAmount = pkgInfo?.bookingFee || 0; // non-refundable booking fee
       const bookingRef = `SE-${Date.now()}`;
 
       // Only include columns that exist in the shime_bookings table
@@ -346,9 +345,7 @@ const AdminPanel = ({ onLogout }) => {
         full_name: bookingForm.fullName.trim(),
         email: bookingForm.email.trim().toLowerCase(),
         phone_number: bookingForm.phoneNumber.trim(),
-        nationality: bookingForm.nationality || null,
         residency: bookingForm.residency || null,
-        id_number: bookingForm.idNumber || null,
         contact_method: bookingForm.contactMethod || "phone",
         event_type: bookingForm.eventType || null,
         plan: bookingForm.plan,
@@ -378,8 +375,8 @@ const AdminPanel = ({ onLogout }) => {
         });
         setSuccess(`✅ Booking saved! Reference: ${bookingRef} | PIN: ${verificationPin}`);
         setBookingForm({
-          fullName: "", email: "", phoneNumber: "", nationality: "",
-          residency: "", idNumber: "", contactMethod: "phone",
+          fullName: "", email: "", phoneNumber: "",
+          residency: "", contactMethod: "phone",
           eventType: "", plan: "", guestCount: "", specialTheme: "",
           eventCountry: "", eventCity: "", eventLocation: "",
           eventDate: "", eventTime: "", paymentType: "manual",
@@ -438,7 +435,7 @@ const AdminPanel = ({ onLogout }) => {
   // ── Detail Card (reused in both sections) ─────────────────────────────────
   const BookingDetailCard = ({ b, accentColor = "yellow" }) => {
     const pkgInfo = PACKAGES.find(p => p.name === b.plan);
-    const deposit = b.deposit_amount || Math.round((pkgInfo?.price || 0) / 2);
+    const bookingFee = b.deposit_amount || pkgInfo?.bookingFee || 0;
     const isPaid = b.payment_status === "completed" || b.payment_status === "manual";
 
     const colorMap = {
@@ -457,8 +454,6 @@ const AdminPanel = ({ onLogout }) => {
               ["Full Name", b.full_name],
               ["Email", b.email],
               ["Phone", b.phone_number],
-              ["ID Number", b.id_number],
-              ["Nationality", b.nationality],
               ["Residency", b.residency],
             ].map(([label, val]) => (
               <div key={label} className="bg-slate-800 p-3 rounded-lg">
@@ -497,8 +492,8 @@ const AdminPanel = ({ onLogout }) => {
           <h4 className="text-purple-400 font-bold mb-3 text-sm uppercase tracking-wide">💳 Payment Information</h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="bg-slate-800 p-3 rounded-lg">
-              <p className="text-gray-400 text-xs font-semibold mb-1">DEPOSIT AMOUNT</p>
-              <p className="text-yellow-300 font-bold text-lg">ETB {deposit.toLocaleString()}</p>
+              <p className="text-gray-400 text-xs font-semibold mb-1">BOOKING FEE (NON-REFUNDABLE)</p>
+              <p className="text-yellow-300 font-bold text-lg">ETB {bookingFee.toLocaleString()}</p>
             </div>
             <div className="bg-slate-800 p-3 rounded-lg">
               <p className="text-gray-400 text-xs font-semibold mb-1">PAYMENT STATUS</p>
@@ -914,14 +909,8 @@ const AdminPanel = ({ onLogout }) => {
                   <input type="email" value={bookingForm.email} onChange={e => setBookingForm({...bookingForm, email: e.target.value})} placeholder="john@example.com" className={inputCls} /></div>
                 <div><label className={labelCls}>Phone Number *</label>
                   <input type="tel" value={bookingForm.phoneNumber} onChange={e => setBookingForm({...bookingForm, phoneNumber: e.target.value})} placeholder="+251911234567" className={inputCls} /></div>
-                <div><label className={labelCls}>ID Number</label>
-                  <input type="text" value={bookingForm.idNumber} onChange={e => setBookingForm({...bookingForm, idNumber: e.target.value})} placeholder="CA123456" className={inputCls} /></div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div><label className={labelCls}>Nationality</label>
-                    <input type="text" value={bookingForm.nationality} onChange={e => setBookingForm({...bookingForm, nationality: e.target.value})} placeholder="Ethiopian" className={inputCls} /></div>
-                  <div><label className={labelCls}>Residency</label>
-                    <input type="text" value={bookingForm.residency} onChange={e => setBookingForm({...bookingForm, residency: e.target.value})} placeholder="Addis Ababa" className={inputCls} /></div>
-                </div>
+                <div><label className={labelCls}>Residency</label>
+                  <input type="text" value={bookingForm.residency} onChange={e => setBookingForm({...bookingForm, residency: e.target.value})} placeholder="Addis Ababa" className={inputCls} /></div>
               </div>
               <div className="mt-6">
                 <button onClick={() => {
@@ -947,7 +936,7 @@ const AdminPanel = ({ onLogout }) => {
                   <select value={bookingForm.plan} onChange={e => setBookingForm({...bookingForm, plan: e.target.value})} className={inputCls}>
                     <option value="">Select a package...</option>
                     {PACKAGES.map(pkg => (
-                      <option key={pkg.name} value={pkg.name}>{pkg.name} — ETB {pkg.price.toLocaleString()} (Deposit: ETB {Math.round(pkg.price / 2).toLocaleString()})</option>
+                      <option key={pkg.name} value={pkg.name}>{pkg.name} — Booking Fee: ETB {pkg.bookingFee.toLocaleString()}</option>
                     ))}
                   </select>
                 </div>
@@ -1008,11 +997,11 @@ const AdminPanel = ({ onLogout }) => {
                   </button>
                 ))}
                 <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30 mt-4">
-                  <p className="text-gray-400 text-xs">Deposit Amount</p>
+                  <p className="text-gray-400 text-xs">Booking Fee (Non-Refundable)</p>
                   <p className="text-yellow-300 font-bold text-2xl">
-                    ETB {Math.round((PACKAGES.find(p => p.name === bookingForm.plan)?.price || 0) / 2).toLocaleString()}
+                    ETB {(PACKAGES.find(p => p.name === bookingForm.plan)?.bookingFee || 0).toLocaleString()}
                   </p>
-                  <p className="text-gray-500 text-xs mt-1">{bookingForm.plan} plan — 50% deposit</p>
+                  <p className="text-gray-500 text-xs mt-1">{bookingForm.plan} plan — reserves the spot; full price quoted later</p>
                 </div>
               </div>
               <div className="flex gap-3 mt-6">
@@ -1028,9 +1017,9 @@ const AdminPanel = ({ onLogout }) => {
               <h2 className="text-2xl font-bold text-yellow-400 mb-6">✅ Confirm Booking</h2>
               <div className="space-y-4">
                 {[
-                  { title: "👤 Customer", fields: [["Name", bookingForm.fullName], ["Email", bookingForm.email], ["Phone", bookingForm.phoneNumber], ["ID", bookingForm.idNumber || "N/A"]] },
+                  { title: "👤 Customer", fields: [["Name", bookingForm.fullName], ["Email", bookingForm.email], ["Phone", bookingForm.phoneNumber], ["Residency", bookingForm.residency || "N/A"]] },
                   { title: "🎊 Event", fields: [["Type", bookingForm.eventType], ["Package", bookingForm.plan], ["Date", bookingForm.eventDate], ["Time", bookingForm.eventTime], ["Location", `${bookingForm.eventCity}, ${bookingForm.eventCountry}`]] },
-                  { title: "💳 Payment", fields: [["Deposit", `ETB ${Math.round((PACKAGES.find(p => p.name === bookingForm.plan)?.price || 0) / 2).toLocaleString()}`], ["Type", bookingForm.paymentType === "manual" ? "Cash (Manual)" : "Chapa (Online)"]] },
+                  { title: "💳 Payment", fields: [["Booking Fee", `ETB ${(PACKAGES.find(p => p.name === bookingForm.plan)?.bookingFee || 0).toLocaleString()}`], ["Type", bookingForm.paymentType === "manual" ? "Cash (Manual)" : "Chapa (Online)"]] },
                 ].map(section => (
                   <div key={section.title} className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
                     <p className="text-yellow-400 font-bold mb-3 text-sm">{section.title}</p>

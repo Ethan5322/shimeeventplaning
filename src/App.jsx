@@ -2534,6 +2534,54 @@ export default function ShimeAssistant() {
             </div>
           );
         }
+
+        // Event time: explicit 24-hour Hour:Minute selector (00–23 : 00–55).
+        if (step === 16) {
+          const [curH = "", curM = ""] = (inputValue || "").split(":");
+          const selectCls = "px-3 py-3 bg-slate-100 text-slate-900 rounded-lg font-bold text-lg focus:outline-none focus:ring-2 focus:ring-yellow-500";
+          return (
+            <div className="w-full max-w-full sm:max-w-md space-y-3">
+              <div className="bg-white rounded-lg p-4 shadow-lg">
+                <p className="text-slate-600 text-xs font-semibold mb-3 text-center">{language === 'am' ? 'የ24 ሰዓት አቆጣጠር (00–23)' : '24-hour format (00–23)'}</p>
+                <div className="flex items-center justify-center gap-2">
+                  <select value={curH} onChange={(e) => setInputValue(`${e.target.value}:${curM || "00"}`)} className={selectCls} aria-label="Hour (00-23)">
+                    <option value="">{language === 'am' ? 'ሰዓት' : 'HH'}</option>
+                    {Array.from({ length: 24 }, (_, i) => String(i).padStart(2, "0")).map(h => <option key={h} value={h}>{h}</option>)}
+                  </select>
+                  <span className="text-slate-900 font-bold text-2xl">:</span>
+                  <select value={curM} onChange={(e) => setInputValue(`${curH || "00"}:${e.target.value}`)} className={selectCls} aria-label="Minute">
+                    <option value="">{language === 'am' ? 'ደቂቃ' : 'MM'}</option>
+                    {Array.from({ length: 12 }, (_, i) => String(i * 5).padStart(2, "0")).map(m => <option key={m} value={m}>{m}</option>)}
+                  </select>
+                </div>
+              </div>
+              {error && <div className="text-red-400 text-xs sm:text-sm font-semibold bg-red-900 bg-opacity-20 p-2 rounded">{error}</div>}
+              <div className="flex gap-2 sm:gap-3">
+                <button
+                  onClick={goBack}
+                  className="flex-1 px-3 sm:px-4 py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-bold transition text-sm sm:text-base"
+                  aria-label="Go to previous step"
+                >
+                  {t("back")}
+                </button>
+                <button
+                  onClick={() => {
+                    if (/^([01]\d|2[0-3]):[0-5]\d$/.test(inputValue)) {
+                      handleNext(inputValue);
+                      setInputValue("");
+                    } else {
+                      setError(language === 'am' ? 'እባክዎን ሰዓትና ደቂቃ ይምረጡ።' : 'Please select hour and minute.');
+                    }
+                  }}
+                  className="flex-1 px-3 sm:px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition transform hover:scale-105 shadow-lg text-sm sm:text-base"
+                  aria-label="Submit time and continue"
+                >
+                  {t("next")}
+                </button>
+              </div>
+            </div>
+          );
+        }
         return (
           <div className="w-full max-w-full sm:max-w-md space-y-3">
             <div>
