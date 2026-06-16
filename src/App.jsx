@@ -1348,6 +1348,11 @@ export default function ShimeAssistant() {
       doc.setFontSize(15);
       doc.setTextColor(...navy);
       doc.text(`ETB ${bookingFee.toLocaleString()}`, M + 6, yPos + 15);
+      // Status badge — always PENDING (PDF is produced before payment is confirmed)
+      doc.setFont(FONT, "bold");
+      doc.setFontSize(8);
+      doc.setTextColor(176, 122, 0);
+      doc.text(L("STATUS: PENDING — AWAITING PAYMENT", "ሁኔታ፦ በመጠባበቅ ላይ — ክፍያ አልተፈጸመም"), pageWidth - M - 6, yPos + 8, { align: "right" });
       doc.setFont(FONT, "normal");
       doc.setFontSize(8);
       doc.setTextColor(...fieldDark);
@@ -1365,7 +1370,26 @@ export default function ShimeAssistant() {
       payTerms.forEach((line, i) => {
         doc.text(line, M + 6, yPos + 20 + i * 4.5);
       });
-      yPos += 31;
+      yPos += 35;
+
+      // ── 6-hour payment notice (warning) ──
+      doc.setFillColor(253, 242, 242);
+      doc.setDrawColor(200, 50, 50);
+      doc.setLineWidth(0.5);
+      doc.roundedRect(M, yPos, pageWidth - M * 2, 18, 2, 2, "FD");
+      doc.setFont(FONT, "bold");
+      doc.setFontSize(8.5);
+      doc.setTextColor(170, 30, 30);
+      doc.text(L("IMPORTANT — PAY WITHIN 6 HOURS", "አስፈላጊ ማሳሰቢያ — በ6 ሰዓት ውስጥ ይክፈሉ"), M + 5, yPos + 6);
+      doc.setFont(FONT, "normal");
+      doc.setFontSize(7.5);
+      doc.setTextColor(90, 30, 30);
+      const noticeLines = isAm
+        ? "ቦታዎን ለማረጋገጥ የማስያዣ ክፍያውን በ6 ሰዓት ውስጥ ይክፈሉና የክፍያ ማስረጃ በ WhatsApp ይላኩ። ካልሆነ ይህ ምዝገባ በራስ-ሰር ይሰረዛል።"
+        : "Pay the booking fee within 6 hours and send proof of payment via WhatsApp to confirm your spot. Otherwise this booking will be automatically cancelled.";
+      doc.splitTextToSize(noticeLines, pageWidth - M * 2 - 10).slice(0, 2).forEach((line, i) => {
+        doc.text(line, M + 5, yPos + 11 + i * 4);
+      });
 
       // ── Footer band ──
       doc.setFillColor(...navy);

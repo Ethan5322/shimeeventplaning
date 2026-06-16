@@ -93,8 +93,8 @@ const generateBookingPDF = (booking) => {
   // Payment
   sectionTitle("PAYMENT INFORMATION");
   row("Booking Fee (Non-Refundable)", `ETB ${bookingFee.toLocaleString()}`);
-  row("Payment Status", booking.payment_status === "completed" || booking.payment_status === "manual" ? "PAID" : "PENDING");
-  row("Booking Status", booking.booking_status === "deposit_paid" ? "BOOKING FEE PAID" : "AWAITING");
+  row("Payment Status", booking.payment_status === "completed" ? "PAID" : "PENDING");
+  row("Booking Status", booking.booking_status === "deposit_paid" ? "BOOKING FEE PAID" : "AWAITING BOOKING FEE");
   row("Verification PIN", booking.verification_pin);
   y += 4;
 
@@ -355,8 +355,8 @@ const AdminPanel = ({ onLogout }) => {
         event_city: bookingForm.eventCity || null,
         event_location: bookingForm.eventLocation || null,
         deposit_amount: depositAmount,
-        payment_status: bookingForm.paymentType === "manual" ? "manual" : "pending",
-        booking_status: bookingForm.paymentType === "manual" ? "deposit_paid" : "awaiting_payment",
+        payment_status: "pending", // booking fee not yet confirmed at creation
+        booking_status: "awaiting_payment",
         calendar_type: "gregorian",
         created_at: new Date().toISOString(),
       };
@@ -436,7 +436,7 @@ const AdminPanel = ({ onLogout }) => {
   const BookingDetailCard = ({ b, accentColor = "yellow" }) => {
     const pkgInfo = PACKAGES.find(p => p.name === b.plan);
     const bookingFee = b.deposit_amount || pkgInfo?.bookingFee || 0;
-    const isPaid = b.payment_status === "completed" || b.payment_status === "manual";
+    const isPaid = b.payment_status === "completed";
 
     const colorMap = {
       yellow: "border-yellow-500",
@@ -669,7 +669,7 @@ const AdminPanel = ({ onLogout }) => {
             <div className="space-y-4">
               <p className="text-gray-400 text-sm">{todayBookings.length} booking{todayBookings.length !== 1 ? "s" : ""} found</p>
               {todayBookings.map((b) => {
-                const isPaid = b.payment_status === "completed" || b.payment_status === "manual";
+                const isPaid = b.payment_status === "completed";
                 const isExpanded = expandedId === b.id;
                 return (
                   <div key={b.id} className="bg-slate-800 border-2 border-green-500 border-opacity-50 rounded-xl overflow-hidden shadow-lg">
