@@ -19,8 +19,6 @@ export default async (req, res) => {
     }
 
     const dash = (v) => (v === 0 || v ? String(v) : "—");
-    const money = (v) =>
-      v === 0 || v ? `ETB ${Number(v).toLocaleString("en-US")}` : "—";
 
     const location =
       [b.eventLocation, b.eventCity, b.eventCountry].filter(Boolean).join(", ") ||
@@ -44,10 +42,9 @@ export default async (req, res) => {
       `• Date: ${dateTime}\n` +
       `• Location: ${location}\n` +
       `• Theme: ${dash(b.specialTheme)}\n\n` +
-      `💰 *PAYMENT*\n` +
-      `• Total: ${money(b.fullPrice)}\n` +
-      `• Deposit (50%): ${money(b.depositAmount)}\n` +
-      `• Status: Awaiting payment\n\n` +
+      `💰 *ACTION REQUIRED*\n` +
+      `• Contact the client with the full price for their selected package/services.\n` +
+      `• Payment: 50% at least 15 days before the event, remaining 50% on the event day.\n\n` +
       `🔖 *REFERENCE*\n` +
       `• Booking Ref: ${dash(b.bookingRef)}\n` +
       `• Verification PIN: ${dash(b.verificationPin)}\n\n` +

@@ -40,18 +40,19 @@ const translations = {
     askLocation: "Wonderful! 📍 Where exactly will your event be held? (Please provide the venue or address):",
     askGuests: "Excellent! 👥 How many guests are you expecting at your event?",
     askTheme: "Perfect! 🎨 Would you like any special theme or specific design for your event?",
-    depositNotice: "A 50% deposit is required to secure your booking.",
-    noticeTitle: "Booking Confirmation & Payment Instructions",
-    noticeBody: "To secure your booking, please submit the required 50% deposit payment:\n\n🏦 Payment Method: CBE WALLET\nAccount Number: 1000XXXXXXXX\nAccount Name: Shime Events & Planning",
+    depositNotice: "Your booking request has been received. Our team will contact you with the full price.",
+    noticeTitle: "Booking Received — What Happens Next",
+    noticeBody: "Thank you! Your booking request has been received.\n\nOur team will contact you shortly with the full price for your selected package and services.\n\n💳 Payment Schedule:\n• 50% at least 15 days before your event\n• Remaining 50% on the event day, before the event begins",
     termsTitle: "TERMS & CONDITIONS",
-    termsText: `1. A 50% non-refundable deposit is required to secure your event booking.
-2. Full payment is due 14 days before your scheduled event date.
-3. Cancellations made within 7 days of the event will result in forfeiture of 50% of total payment.
-4. Shime Events & Planning reserves the right to substitute vendors of equal or superior quality.
-5. The client is fully responsible for providing accurate and complete information during the booking process.
-6. Any requested changes to event date, venue, or guest count must be submitted in writing.
-7. Force majeure clauses apply to events affected by circumstances beyond our control.
-8. All disputes arising from this agreement shall be subject to Ethiopian jurisdiction.
+    termsText: `1. After your booking is received, Shime Events & Planning will contact you with the full price based on your selected package and services.
+2. 50% of the total price is required to secure your booking and must be paid no later than 15 days before your event date.
+3. The remaining 50% is due on the event day, before the event begins.
+4. All payments made are non-refundable.
+5. Shime Events & Planning reserves the right to substitute vendors of equal or superior quality.
+6. The client is fully responsible for providing accurate and complete information during the booking process.
+7. Any requested changes to event date, venue, or guest count must be submitted in writing.
+8. Force majeure clauses apply to events affected by circumstances beyond our control.
+9. All disputes arising from this agreement shall be subject to Ethiopian jurisdiction.
 
 By accepting this agreement, you confirm that you have reviewed and accepted all terms and conditions.`,
     acceptTerms: "✅ I Accept the Terms & Conditions",
@@ -126,18 +127,19 @@ By accepting this agreement, you confirm that you have reviewed and accepted all
     askLocation: "እባክዎን ዝግጅትዎ የሚካሄድበትን ሥፍራ ወይም ሙሉ አድራሻ ያስገቡ።",
     askGuests: "በዝግጅትዎ ላይ ምን ያህል እንግዶች ይጠበቃሉ? (ቁጥር ያስገቡ)።",
     askTheme: "ለዝግጅትዎ የተለየ ጭብጥ (ገጽታ) ወይም ዲዛይን ይፈልጋሉ?",
-    depositNotice: "ዝግጅትዎን ለማረጋገጥ የ50% ቅድሚያ ክፍያ መፈጸም ያስፈልጋል።",
-    noticeTitle: "የዝግጅት ማረጋገጫ እና የክፍያ መመሪያ",
-    noticeBody: "ዝግጅትዎን ለማረጋገጥ እባክዎን የ50% ቅድሚያ ክፍያ ይፈጽሙ፦\n\n🏦 የክፍያ ዘዴ፦ CBE WALLET\nየሂሳብ ቁጥር፦ 1000XXXXXXXX\nየሂሳብ ስም፦ Shime Events & Planning",
+    depositNotice: "የዝግጅት ጥያቄዎ ደርሶናል። ቡድናችን ሙሉ ዋጋውን ለማሳወቅ ያገኝዎታል።",
+    noticeTitle: "ዝግጅትዎ ተመዝግቧል — ቀጣዩ ምን እንደሆነ",
+    noticeBody: "እናመሰግናለን! የዝግጅት ጥያቄዎ ደርሶናል።\n\nቡድናችን በመረጡት ጥቅልና አገልግሎት መሠረት ሙሉ ዋጋውን ለማሳወቅ በቅርቡ ያገኝዎታል።\n\n💳 የክፍያ መርሐ ግብር፦\n• 50% ቢያንስ ዝግጅቱ ከመካሄዱ 15 ቀናት በፊት\n• ቀሪው 50% በዝግጅቱ ቀን፣ ዝግጅቱ ከመጀመሩ በፊት",
     termsTitle: "ውሎችና ደንቦች",
-    termsText: `1. ዝግጅትዎን ለማረጋገጥ ተመላሽ የማይደረግ የ50% ቅድሚያ ክፍያ ያስፈልጋል።
-2. ሙሉ ክፍያ ዝግጅቱ ከመካሄዱ 14 ቀናት በፊት መጠናቀቅ አለበት።
-3. ዝግጅቱ ከመካሄዱ በ7 ቀናት ውስጥ የሚደረግ ስረዛ የጠቅላላ ክፍያውን 50% ያስቀራል።
-4. Shime Events & Planning አቅራቢዎችን በእኩል ወይም በተሻለ ጥራት የመተካት መብት አለው።
-5. ደንበኛው በምዝገባ ሂደት ትክክለኛና ሙሉ መረጃ የመስጠት ኃላፊነት አለበት።
-6. የዝግጅት ቀን፣ ሥፍራ ወይም የእንግዶች ብዛት ለውጥ ጥያቄ በጽሑፍ መቅረብ አለበት።
-7. ከአቅም በላይ በሆኑ ሁኔታዎች ለሚፈጠሩ ችግሮች የፎርስ ማጁር (Force Majeure) ድንጋጌ ተፈጻሚ ይሆናል።
-8. ከዚህ ስምምነት የሚነሱ አለመግባባቶች በኢትዮጵያ ሕግ መሠረት ይዳኛሉ።
+    termsText: `1. ዝግጅትዎ ከተመዘገበ በኋላ Shime Events & Planning በመረጡት ጥቅልና አገልግሎት መሠረት ሙሉ ዋጋውን ያሳውቅዎታል።
+2. ዝግጅትዎን ለማረጋገጥ ከጠቅላላ ዋጋው 50% ቢያንስ ዝግጅቱ ከመካሄዱ 15 ቀናት በፊት መከፈል አለበት።
+3. ቀሪው 50% በዝግጅቱ ቀን፣ ዝግጅቱ ከመጀመሩ በፊት መከፈል አለበት።
+4. የተከፈሉ ክፍያዎች ተመላሽ አይደረጉም።
+5. Shime Events & Planning አቅራቢዎችን በእኩል ወይም በተሻለ ጥራት የመተካት መብት አለው።
+6. ደንበኛው በምዝገባ ሂደት ትክክለኛና ሙሉ መረጃ የመስጠት ኃላፊነት አለበት።
+7. የዝግጅት ቀን፣ ሥፍራ ወይም የእንግዶች ብዛት ለውጥ ጥያቄ በጽሑፍ መቅረብ አለበት።
+8. ከአቅም በላይ በሆኑ ሁኔታዎች ለሚፈጠሩ ችግሮች የፎርስ ማጁር (Force Majeure) ድንጋጌ ተፈጻሚ ይሆናል።
+9. ከዚህ ስምምነት የሚነሱ አለመግባባቶች በኢትዮጵያ ሕግ መሠረት ይዳኛሉ።
 
 ይህን ስምምነት በመቀበል ሁሉንም ውሎችና ደንቦች ማንበብዎንና መቀበልዎን ያረጋግጣሉ።`,
     acceptTerms: "✅ ውሎችና ደንቦቹን ተቀብዬ እስማማለሁ",
@@ -174,7 +176,7 @@ By accepting this agreement, you confirm that you have reviewed and accepted all
     labelClient: "ደንበኛ",
     labelEmail: "ኢሜይል",
     labelPackage: "ጥቅል (ፓኬጅ)",
-    labelBookingFee: "የቅድሚያ ክፍያ (ተመላሽ የማይደረግ)",
+    labelBookingFee: "የማስያዣ ክፍያ (ተመላሽ የማይደረግ)",
     labelReference: "ማመሳከሪያ",
     labelEventDate: "የዝግጅት ቀን",
     labelLocation: "ሥፍራ",
@@ -1143,8 +1145,6 @@ export default function ShimeAssistant() {
       const textColor = [255, 255, 255];
       const refNum = bookingRefNum || `SE-${Date.now()}`;
       const today = new Date().toLocaleDateString();
-      const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
-      const deposit = Math.round((pkgInfo?.price || 0) / 2); // 50% deposit
 
       // Amharic PDFs need an embedded Ethiopic font (jsPDF's built-ins can't
       // render Ge'ez script). The font is lazy-loaded only when needed.
@@ -1176,7 +1176,6 @@ export default function ShimeAssistant() {
       const midGray = [120, 120, 130];
       const hairline = [225, 225, 230];
       const M = 18; // page margin
-      const fullPrice = pkgInfo?.price || 0;
       const cap = (s) => (s ? String(s).charAt(0).toUpperCase() + String(s).slice(1) : "—");
 
       // White, printer-friendly background
@@ -1321,29 +1320,31 @@ export default function ShimeAssistant() {
         yPos = fullWidthField(L("Theme / Design", "ጭብጥ / ዲዛይን"), bookingData.specialTheme, yPos);
       }
 
-      // ── Payment ──
+      // ── Payment terms (no amount — team confirms full price after booking) ──
       yPos += 3;
-      yPos = sectionHeader(L("PAYMENT SUMMARY", "የክፍያ ማጠቃለያ"), yPos);
+      yPos = sectionHeader(L("PAYMENT TERMS", "የክፍያ ውል"), yPos);
       yPos += 4;
-      // Deposit highlight box
       doc.setFillColor(249, 245, 233);
       doc.setDrawColor(...gold);
       doc.setLineWidth(0.4);
-      doc.roundedRect(M, yPos, pageWidth - M * 2, 22, 2, 2, "FD");
+      doc.roundedRect(M, yPos, pageWidth - M * 2, 24, 2, 2, "FD");
       doc.setFont(FONT, "normal");
-      doc.setFontSize(7.5);
-      doc.setTextColor(...midGray);
-      doc.text(L("BOOKING FEE DUE NOW (NON-REFUNDABLE)", "አሁን የሚከፈል ክፍያ (ተመላሽ የማይደረግ)"), M + 6, yPos + 7);
-      doc.setFont(FONT, "bold");
-      doc.setFontSize(17);
-      doc.setTextColor(...navy);
-      doc.text(`ETB ${deposit.toLocaleString()}`, M + 6, yPos + 17);
-      doc.setFont(FONT, "normal");
-      doc.setFontSize(7.5);
-      doc.setTextColor(...midGray);
-      doc.text(`${L("Package total", "የጥቅሉ ጠቅላላ")}: ETB ${fullPrice.toLocaleString()}`, pageWidth - M - 6, yPos + 9, { align: "right" });
-      doc.text(`${L("Method", "የክፍያ ዘዴ")}: CBE WALLET`, pageWidth - M - 6, yPos + 15, { align: "right" });
-      doc.text(`${L("Account", "ሂሳብ ቁጥር")}: 1000XXXXXXXX`, pageWidth - M - 6, yPos + 20, { align: "right" });
+      doc.setFontSize(8);
+      doc.setTextColor(...fieldDark);
+      const payTerms = isAm
+        ? [
+            "ቡድናችን በመረጡት ጥቅልና አገልግሎት መሠረት ሙሉ ዋጋውን ያሳውቅዎታል።",
+            "• 50% ቢያንስ ዝግጅቱ ከመካሄዱ 15 ቀናት በፊት ይከፈላል።",
+            "• ቀሪው 50% በዝግጅቱ ቀን፣ ዝግጅቱ ከመጀመሩ በፊት ይከፈላል።",
+          ]
+        : [
+            "Our team will contact you with the full price for your selected package and services.",
+            "• 50% is due at least 15 days before your event date.",
+            "• The remaining 50% is due on the event day, before the event begins.",
+          ];
+      payTerms.forEach((line, i) => {
+        doc.text(line, M + 6, yPos + 8 + i * 5.5);
+      });
 
       // ── Footer band ──
       doc.setFillColor(...navy);
@@ -1773,10 +1774,6 @@ export default function ShimeAssistant() {
   // Sends the COMPLETE booking profile so the owner message is fully detailed.
   const notifyOwnerOfBooking = () => {
     try {
-      const pkgInfo = PACKAGES.find((p) => p.name === bookingData.plan);
-      const fullPrice = pkgInfo?.price || 0;
-      const depositAmount = Math.round(fullPrice / 2);
-
       fetch("/api/notify-booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -1797,9 +1794,6 @@ export default function ShimeAssistant() {
           eventCountry: bookingData.eventCountry,
           eventLocation: bookingData.eventLocation,
           specialTheme: bookingData.specialTheme,
-          // Payment
-          fullPrice,
-          depositAmount,
           // References
           bookingRef: bookingRefNum,
           verificationPin: bookingVerifyPin,
@@ -2038,7 +2032,6 @@ export default function ShimeAssistant() {
           <div className="space-y-3">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {PACKAGES.map((pkg) => {
-                const depositAmount = Math.round(pkg.price / 2); // 50% deposit
                 return (
                   <button
                     key={pkg.id}
@@ -2050,8 +2043,7 @@ export default function ShimeAssistant() {
                     <div className="font-bold text-lg text-white">{pkg.name}</div>
                     <div className="text-gray-300 text-sm mt-1">{pkg.description}</div>
                     <div className="mt-3 pt-3 border-t border-yellow-500 border-opacity-30">
-                      <div className="text-xs text-gray-400 mb-1">{language === 'en' ? 'Booking Fee (Non-Refundable)' : 'ብጃ ክፍያ (ይመላሰ ያልሚችል)'}</div>
-                      <div className="text-2xl font-bold text-yellow-300">ETB {depositAmount.toLocaleString()}</div>
+                      <div className="text-xs text-yellow-300 font-semibold">{language === 'am' ? 'ዋጋ ከምዝገባ በኋላ በቡድናችን ይነገርዎታል' : 'Price provided by our team after booking'}</div>
                     </div>
                   </button>
                 );
@@ -2135,17 +2127,13 @@ export default function ShimeAssistant() {
         );
 
       case 19: {
-        const pkgInfoDeposit = PACKAGES.find(p => p.name === bookingData.plan);
-        const depositAmount = Math.round((pkgInfoDeposit?.price || 0) / 2);
-        const chapaKey = import.meta.env.VITE_CHAPA_PUBLIC_KEY;
-
         return (
           <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-yellow-500 rounded-xl p-6 space-y-4 shadow-2xl">
-            {/* Deposit Amount Display */}
+            {/* Booking received banner — no price shown; team contacts client with full price */}
             <div className="bg-gradient-to-r from-yellow-900 to-yellow-800 border-2 border-yellow-500 p-6 rounded-lg text-center">
-              <div className="text-yellow-300 text-sm font-semibold mb-2">{language === 'en' ? 'Booking Fee (Non-Refundable)' : 'የቅድሚያ ክፍያ (ተመላሽ የማይደረግ)'}</div>
-              <div className="text-4xl font-bold text-yellow-100 mb-2">ETB {depositAmount.toLocaleString()}</div>
-              <div className="text-xs text-yellow-200">{language === 'en' ? 'Required to secure your ' + bookingData.plan + ' package booking' : 'የ' + bookingData.plan + ' ጥቅል ዝግጅትዎን ለማረጋገጥ ያስፈልጋል'}</div>
+              <div className="text-3xl mb-2">✅</div>
+              <div className="text-yellow-100 font-bold text-lg mb-1">{language === 'am' ? 'የዝግጅት ጥያቄዎ ተቀብለናል' : 'Booking Request Received'}</div>
+              <div className="text-xs text-yellow-200">{language === 'am' ? 'በመረጡት ' + bookingData.plan + ' ጥቅል መሠረት ሙሉ ዋጋውን ለማሳወቅ በቅርቡ እናገኝዎታለን' : 'We will contact you shortly with the full price for your ' + bookingData.plan + ' package'}</div>
             </div>
 
             <div className="bg-slate-900 p-4 rounded-lg text-sm mb-4 border-l-4 border-yellow-500">
@@ -2201,95 +2189,16 @@ export default function ShimeAssistant() {
                   ✅ {t("termsAccepted")}
                 </div>
 
-                {/* PAYMENT METHOD SELECTION */}
-                <div className="space-y-3">
-                  <h3 className="text-white font-bold text-center mb-4">💳 {language === 'en' ? 'SELECT PAYMENT METHOD' : 'የክፍያ ዘዴ ይምረጡ'}</h3>
-
-                  {/* Option 1: Chapa */}
-                  {chapaKey && (
-                    <button
-                      onClick={submitChapaHostedPayment}
-                      className="w-full p-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg font-bold transition transform hover:scale-105 border-2 border-purple-400 shadow-lg"
-                      aria-label="Pay with Chapa"
-                    >
-                      <div className="text-2xl mb-2">🏦</div>
-                      <div className="font-bold">{language === 'en' ? 'Pay Online with Chapa' : 'በቻፓ በመስመር ላይ ይክፈሉ'}</div>
-                      <div className="text-xs opacity-90">
-                        {language === 'en'
-                          ? 'Credit Card, Telebirr, or CBE Wallet - Instant payment'
-                          : 'ክሬዲት ካርድ፣ ቴሌብር ወይም የሲቢኢ ዋሌት — ፈጣን ክፍያ'}
-                      </div>
-                    </button>
-                  )}
-
-                  {/* Option 2: Manual Bank Transfer */}
-                  <button
-                    onClick={() => setShowManualPayment(!showManualPayment)}
-                    className="w-full p-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-bold transition transform hover:scale-105 border-2 border-blue-400 shadow-lg"
-                    aria-label="Pay via bank transfer"
-                  >
-                    <div className="text-2xl mb-2">🏛️</div>
-                    <div className="font-bold">{language === 'en' ? 'Pay via Bank Transfer (CBE)' : 'በባንክ ዝውውር ይክፈሉ (CBE)'}</div>
-                    <div className="text-xs opacity-90">
-                      {language === 'en'
-                        ? 'Direct bank transfer - Manual verification'
-                        : 'ቀጥተኛ የባንክ ዝውውር — በእጅ የሚረጋገጥ'}
-                    </div>
-                  </button>
-
-                  {/* Option 3: Manual Cash Pickup */}
-                  <button
-                    onClick={() => {
-                      showToast(language === 'en'
-                        ? "Please contact us at +251912345678 for cash payment pickup"
-                        : "ለጥሬ ገንዘብ ክፍያ እባክዎን +251912345678 ይደውሉ", "info", 5000);
-                    }}
-                    className="w-full p-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg font-bold transition transform hover:scale-105 border-2 border-green-400 shadow-lg"
-                    aria-label="Pay via cash"
-                  >
-                    <div className="text-2xl mb-2">💵</div>
-                    <div className="font-bold">{language === 'en' ? 'Pay Cash in Person' : 'በአካል ጥሬ ገንዘብ ይክፈሉ'}</div>
-                    <div className="text-xs opacity-90">
-                      {language === 'en'
-                        ? 'Visit our office or call for arrangement'
-                        : 'ቢሮአችንን ይጎብኙ ወይም ለቀጠሮ ይደውሉ'}
-                    </div>
-                  </button>
+                {/* Next steps — our team contacts the client with the full price */}
+                <div className="bg-slate-900 p-4 rounded-lg border-l-4 border-yellow-500 text-sm text-white space-y-2">
+                  <p className="font-bold text-yellow-400">{language === 'am' ? '📞 ቀጣዩ ምን ይሆናል?' : '📞 What happens next?'}</p>
+                  <p>{language === 'am'
+                    ? 'ቡድናችን በመረጡት ጥቅልና አገልግሎት መሠረት ሙሉ ዋጋውን ለማሳወቅ በቅርቡ ያገኝዎታል።'
+                    : 'Our team will contact you shortly with the full price for your selected package and services.'}</p>
+                  <p className="text-gray-300 text-xs whitespace-pre-line">{language === 'am'
+                    ? '💳 የክፍያ መርሐ ግብር፦\n• 50% ቢያንስ ዝግጅቱ ከመካሄዱ 15 ቀናት በፊት\n• ቀሪው 50% በዝግጅቱ ቀን፣ ዝግጅቱ ከመጀመሩ በፊት'
+                    : '💳 Payment schedule:\n• 50% at least 15 days before your event\n• Remaining 50% on the event day, before it begins'}</p>
                 </div>
-
-                {/* Bank Transfer Details (if selected) */}
-                {showManualPayment && (
-                  <div className="bg-slate-900 p-4 rounded-lg border border-blue-500 border-opacity-50 animate-slideDown">
-                    <p className="text-blue-400 font-bold mb-4 text-center text-lg">🏛️ {language === 'en' ? 'BANK TRANSFER DETAILS' : 'የባንክ ዝውውር ዝርዝሮች'}</p>
-                    <div className="space-y-3 text-sm text-white">
-                      <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
-                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Account Holder' : 'የሂሳብ ባለቤት'}</p>
-                        <p className="font-mono font-bold">Shime Events & Planning</p>
-                      </div>
-                      <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
-                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Account Number' : 'የሂሳብ ቁጥር'}</p>
-                        <p className="font-mono font-bold">1000XXXXXXXX</p>
-                      </div>
-                      <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
-                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Bank Name' : 'የባንክ ስም'}</p>
-                        <p className="font-mono font-bold">Commercial Bank of Ethiopia (CBE)</p>
-                      </div>
-                      <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
-                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Amount to Transfer' : 'የሚተላለፍ መጠን'}</p>
-                        <p className="font-mono font-bold text-yellow-300">ETB {depositAmount.toLocaleString()}</p>
-                      </div>
-                      <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
-                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Reference/Description' : 'ማመሳከሪያ'}</p>
-                        <p className="font-mono font-bold">{bookingRefNum || "Booking Reference"}</p>
-                      </div>
-                      <p className="text-blue-300 text-xs mt-3 bg-blue-900 bg-opacity-30 p-2 rounded">
-                        {language === 'en'
-                          ? '✅ After transfer, send screenshot/proof to WhatsApp along with your booking reference to confirm payment'
-                          : '✅ ከዝውውሩ በኋላ የክፍያ ማስረጃ (ስክሪንሾት) ከማመሳከሪያ ቁጥርዎ ጋር በ WhatsApp ይላኩ።'}
-                      </p>
-                    </div>
-                  </div>
-                )}
 
                 {/* Download PDF Button */}
                 <button
@@ -2304,7 +2213,7 @@ export default function ShimeAssistant() {
                 {/* Share with WhatsApp */}
                 <button
                   onClick={() => {
-                    const message = `Hello Shime Events Team,\n\nI have completed my event booking with the following details:\n\nBooking Reference: ${bookingRefNum}\nVerification Code: ${bookingVerifyPin}\nClient: ${bookingData.fullName}\nEmail: ${bookingData.email}\nEvent Type: ${bookingData.eventType}\nEvent Date: ${bookingData.eventDate} at ${bookingData.eventTime}\nLocation: ${bookingData.eventCity}, ${bookingData.eventCountry}\nPackage: ${bookingData.plan}\nDeposit Amount: ETB ${depositAmount.toLocaleString()}\n\nI have selected a payment method. Please confirm receipt of my booking.\n\nThank you!`;
+                    const message = `Hello Shime Events Team,\n\nI have completed my event booking with the following details:\n\nBooking Reference: ${bookingRefNum}\nVerification Code: ${bookingVerifyPin}\nClient: ${bookingData.fullName}\nEmail: ${bookingData.email}\nEvent Type: ${bookingData.eventType}\nEvent Date: ${bookingData.eventDate} at ${bookingData.eventTime}\nLocation: ${bookingData.eventCity}, ${bookingData.eventCountry}\nPackage: ${bookingData.plan}\n\nPlease contact me with the full price to proceed. Thank you!`;
                     const whatsappUrl = `https://wa.me/251912345678?text=${encodeURIComponent(message)}`;
                     window.open(whatsappUrl, '_blank');
                   }}
@@ -2317,7 +2226,7 @@ export default function ShimeAssistant() {
                 {/* Share with Telegram */}
                 <button
                   onClick={() => {
-                    const message = `Hello Shime Events Team%0A%0AI have completed my event booking:%0A%0ABooking Reference: ${bookingRefNum}%0AClient: ${bookingData.fullName}%0AEmail: ${bookingData.email}%0AEvent Type: ${bookingData.eventType}%0AEvent Date: ${bookingData.eventDate} at ${bookingData.eventTime}%0ALocation: ${bookingData.eventCity}, ${bookingData.eventCountry}%0APackage: ${bookingData.plan}%0ADeposit: ETB ${depositAmount.toLocaleString()}%0A%0APlease confirm receipt of my booking.%0A%0AThank you!`;
+                    const message = `Hello Shime Events Team%0A%0AI have completed my event booking:%0A%0ABooking Reference: ${bookingRefNum}%0AClient: ${bookingData.fullName}%0AEmail: ${bookingData.email}%0AEvent Type: ${bookingData.eventType}%0AEvent Date: ${bookingData.eventDate} at ${bookingData.eventTime}%0ALocation: ${bookingData.eventCity}, ${bookingData.eventCountry}%0APackage: ${bookingData.plan}%0A%0APlease contact me with the full price to proceed.%0A%0AThank you!`;
                     const telegramUrl = `https://t.me/ShimeEvents?text=${message}`;
                     window.open(telegramUrl, '_blank');
                   }}
@@ -2349,7 +2258,6 @@ export default function ShimeAssistant() {
       }
 
       case 20: {
-        const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
         return (
           <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-yellow-500 rounded-xl p-6 space-y-4 shadow-2xl">
             <h2 className="text-3xl font-bold text-yellow-400 text-center mb-6">✨ {t("viewBooking")}</h2>
@@ -2368,8 +2276,8 @@ export default function ShimeAssistant() {
                 <div className="text-white font-bold text-sm">{bookingData.plan}</div>
               </div>
               <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
-                <div className="text-yellow-400 text-xs font-semibold mb-1">{t("labelBookingFee")}</div>
-                <div className="text-yellow-300 font-bold text-lg">ETB {Math.round((pkgInfo?.price || 0) / 2).toLocaleString()}</div>
+                <div className="text-yellow-400 text-xs font-semibold mb-1">{language === 'am' ? 'ሙሉ ዋጋ' : 'Full Price'}</div>
+                <div className="text-white font-bold text-sm">{language === 'am' ? 'በቡድናችን ይነገርዎታል' : 'To be confirmed by our team'}</div>
               </div>
             </div>
 
@@ -2378,6 +2286,14 @@ export default function ShimeAssistant() {
               <div><strong className="text-yellow-400">{t("labelEventDate")}:</strong> {calendarType === "ethiopian" ? formatDateForDisplay(bookingData.eventDate, "ethiopian", language) : bookingData.eventDate} {t("labelAt")} {bookingData.eventTime}</div>
               <div><strong className="text-yellow-400">{t("labelLocation")}:</strong> {bookingData.eventCity}, {bookingData.eventCountry}</div>
               <div><strong className="text-yellow-400">{t("labelContact")}:</strong> {bookingData.contactMethod}</div>
+            </div>
+
+            {/* Payment schedule note — full price confirmed by team after booking */}
+            <div className="bg-slate-900 p-4 rounded-lg border-l-4 border-yellow-500 text-sm text-white">
+              <p className="font-bold text-yellow-400 mb-1">{language === 'am' ? '💳 የክፍያ መርሐ ግብር' : '💳 Payment Schedule'}</p>
+              <p className="text-gray-300 text-xs whitespace-pre-line">{language === 'am'
+                ? 'ቡድናችን በመረጡት ጥቅል መሠረት ሙሉ ዋጋውን ያሳውቅዎታል።\n• 50% ቢያንስ ዝግጅቱ ከመካሄዱ 15 ቀናት በፊት\n• ቀሪው 50% በዝግጅቱ ቀን፣ ዝግጅቱ ከመጀመሩ በፊት'
+                : 'Our team will contact you with the full price for your package.\n• 50% at least 15 days before your event\n• Remaining 50% on the event day, before it begins'}</p>
             </div>
 
             {/* Verification PIN — prominent, client must share this with admin */}
@@ -2449,9 +2365,7 @@ export default function ShimeAssistant() {
 
             <button
               onClick={() => {
-                const pkgForShare = PACKAGES.find(p => p.name === bookingData.plan);
-                const depositForShare = Math.round((pkgForShare?.price || 0) / 2);
-                const message = `Hello Shime Events Team! 🎉\n\nMy booking is confirmed. Here are the details:\n\n📋 Reference: ${bookingRefNum}\n👤 Name: ${bookingData.fullName}\n📧 Email: ${bookingData.email}\n📞 Phone: ${bookingData.phone}\n🎪 Event: ${bookingData.eventType}\n📦 Package: ${bookingData.plan}\n📅 Date: ${bookingData.eventDate} at ${bookingData.eventTime}\n📍 Location: ${bookingData.eventCity}, ${bookingData.eventCountry}\n💰 Deposit: ETB ${depositForShare.toLocaleString()}\n\nPlease confirm my booking. Thank you!`;
+                const message = `Hello Shime Events Team! 🎉\n\nMy booking is confirmed. Here are the details:\n\n📋 Reference: ${bookingRefNum}\n👤 Name: ${bookingData.fullName}\n📧 Email: ${bookingData.email}\n📞 Phone: ${bookingData.phoneNumber}\n🎪 Event: ${bookingData.eventType}\n📦 Package: ${bookingData.plan}\n📅 Date: ${bookingData.eventDate} at ${bookingData.eventTime}\n📍 Location: ${bookingData.eventCity}, ${bookingData.eventCountry}\n\nPlease contact me with the full price to proceed. Thank you!`;
                 window.open(`https://wa.me/251912345678?text=${encodeURIComponent(message)}`, "_blank");
               }}
               className="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-bold hover:from-green-600 hover:to-green-700 transition transform hover:scale-105 text-lg"
