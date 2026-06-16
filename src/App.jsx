@@ -832,11 +832,16 @@ export default function ShimeAssistant() {
       form.action = 'https://api.chapa.co/v1/hosted/pay';
       form.style.display = 'none';
 
-      const email = (bookingData.email || 'customer@shimeevents.com').trim().toLowerCase();
+      // Chapa strictly validates the email format — sanitize and fall back if needed.
+      let email = (bookingData.email || "").trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        email = "customer@shimeeventplaning.com";
+      }
+      // Chapa caps customization[title] at 16 chars.
       const fields = {
         public_key: publicKey,
         tx_ref: refNum,
-        amount: amount,
+        amount: String(amount),
         currency: 'ETB',
         email: email,
         first_name: firstName,
@@ -844,7 +849,7 @@ export default function ShimeAssistant() {
         phone_number: phoneNumber,
         return_url: `${window.location.origin}/?booking=${refNum}&payment_status=completed`,
         'customization[title]': 'Shime Events',
-        'customization[description]': `${bookingData.plan} - Booking Fee`
+        'customization[description]': `${bookingData.plan} Booking Fee`
       };
 
       // Add fields to form
