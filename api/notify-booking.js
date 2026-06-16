@@ -35,9 +35,7 @@ export default async (req, res) => {
       `• Name: ${dash(b.fullName)}\n` +
       `• Phone: ${dash(b.phoneNumber)}\n` +
       `• Email: ${dash(b.email)}\n` +
-      `• Nationality: ${dash(b.nationality)}\n` +
       `• Residence: ${dash(b.residency)}\n` +
-      `• ID / Passport: ${dash(b.idNumber)}\n` +
       `• Preferred contact: ${dash(b.contactMethod)}\n\n` +
       `🎊 *EVENT*\n` +
       `• Type: ${dash(b.eventType)}\n` +

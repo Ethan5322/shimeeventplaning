@@ -4,6 +4,7 @@ import QRCode from "qrcode";
 import emailjs from "@emailjs/browser";
 
 import { gregorianToEthiopian, formatDateForDisplay } from "./EthiopianCalendar";
+import EthiopianDatePicker from "./EthiopianDatePicker";
 import { generateCompanyQRCode, downloadCompanyQRPDF } from "./CompanyQRPDF";
 import { supabase } from "./supabaseClient";
 
@@ -86,66 +87,75 @@ By accepting this agreement, you confirm that you have reviewed and accepted all
     bookingComplete: "Thank you for choosing Shime Events! Your booking is complete. 🎉",
   },
   am: {
-    welcome: "ወደ Shime Events & Planning እንኳን ደህና መጡ",
-    welcomeSubtitle: "ለማይረሳ ዝግጅትዎ ምርጥ አጋርዎ",
-    selectLanguage: "የትኛውን ቋንቋ ለመጠቀም ይፈልጋሉ?",
-    askNationality: "እባክዎን ዜግነትዎን ይግለጹልን።",
-    askResidency: "በአሁኑ ጊዜ ነዋሪነትዎ በየትኛው ሀገር ነው?",
-    askPhone: "እባክዎን የስልክ ቁጥርዎን ያስገቡ (ምሳሌ፡ 0911234567 ወይም +44 7911 123456)።",
-    invalidPhone: "❌ ያስገቡት ስልክ ቁጥር ትክክል አይደለም። እባክዎን ትክክለኛ ስልክ ቁጥር ያስገቡ (5 ወይም ከዚያ በላይ አሃዝ)።",
-    phoneCountryMismatch: "⚠️ ማሳሰቢያ፡ የስልክ ቁጥርዎ ከመኖሪያ ሀገርዎ ጋር አይዛመድም።",
+    welcome: "እንኳን ወደ Shime Events & Planning በደህና መጡ",
+    welcomeSubtitle: "ለማይረሳ ዝግጅትዎ የላቀ አጋርዎ",
+    selectLanguage: "እንኳን ወደ Shime Events & Planning በደህና መጡ! 🌟 የማይረሳ ዝግጅት እንዲኖርዎ ለማገዝ ዝግጁ ነን። ለመጀመር እባክዎን የሚመርጡትን ቋንቋ ይምረጡ።",
+    selectCalendar: "ለዝግጅትዎ ቀን የትኛውን የቀን አቆጣጠር ሥርዓት መጠቀም ይፈልጋሉ?",
+    gregorianCalendar: "📅 የግሪጎሪያን ቀን አቆጣጠር (ዓለም አቀፍ)",
+    ethiopianCalendar: "🇪🇹 የኢትዮጵያ ቀን አቆጣጠር",
+    askResidency: "በአሁኑ ጊዜ በየትኛው ሀገር ይኖራሉ?",
+    askPhone: "እባክዎን የስልክ ቁጥርዎን ያስገቡ (ምሳሌ፦ 0911234567 ወይም +44 7911 123456)።",
+    invalidPhone: "❌ ያስገቡት ስልክ ቁጥር ትክክል አይደለም። እባክዎን ከ5 እስከ 15 አሃዝ ያለው ትክክለኛ ስልክ ቁጥር ያስገቡ።",
+    phoneCountryMismatch: "⚠️ ማሳሰቢያ፦ የስልክ ቁጥርዎ የሀገር መለያ ኮድ ከሚኖሩበት ሀገር ጋር አይዛመድም።",
     askEmail: "እባክዎን የኢሜይል አድራሻዎን ያስገቡ።",
-    invalidEmail: "❌ ያስገቡት ኢሜይል ትክክል አይደለም። እባክዎን ትክክለኛ ኢሜይል አድራሻ ያስገቡ።",
-    askIdType: "እባክዎን የመታወቂያ ወይም የፓስፖርት ቁጥርዎን ያስገቡ።",
-    invalidId: "❌ እባክዎን ትክክለኛ መታወቂያ ወይም ፓስፖርት ቁጥር ያስገቡ (ቢያንስ 4 ፊደላት ወይም ቁጥሮች)።",
-    askFullName: "እባክዎን ሙሉ ስምዎን ያስገቡ (የራስዎ ስም እና የአባት ስም)።",
-    invalidName: "❌ ሙሉ ስም ያስፈልጋል (የራስዎ ስም እና የአባት ስም)።",
-    askPassword: "እባክዎን የጥበቃ PIN ቁጥርዎን ይፍጠሩ (ቢያንስ 6 አሃዝ)።",
-    askContactMethod: "እባክዎን ለቀጠሮ ምቹ የሆነ የመገናኛ ዘዴ ይምረጡ።",
+    invalidEmail: "❌ ያስገቡት ኢሜይል ትክክል አይመስልም። እባክዎን ትክክለኛ የኢሜይል አድራሻ ያስገቡ።",
+    askFullName: "እባክዎን ሙሉ ስምዎን ያስገቡ (የራስዎ ስም እና የአባትዎ ስም)።",
+    invalidName: "❌ እባክዎን ሙሉ ስምዎን ያስገቡ (የራስዎ ስም እና የአባትዎ ስም)።",
+    askContactMethod: "በምን መንገድ እንድናገኝዎ ይመርጣሉ?",
     askEventType: "ምን ዓይነት ዝግጅት ማዘጋጀት ይፈልጋሉ?",
-    askEventCountry: "ዝግጅቱ የሚካሄደው በየትኛው ሀገር ነው?",
-    eventCountryMismatch: "ℹ️ ማሳሰቢያ፡ ዝግጅቱ ከመኖሪያ ሀገርዎ ውጭ ነው የሚካሄደው።",
-    askEventCity: "ዝግጅቱ የሚካሄደው በየትኛው ከተማ ነው?",
-    askDate: "እባክዎን ለዝግጅቱ የሚስማማ ቀን ይምረጡ።",
-    dateBooked: "⚠️ የመረጡት ቀን ቀድሞ ተይዟል። እባክዎን ሌላ ቀን ይምረጡ።",
-    askTime: "ዝግጅቱ በምን ሰዓት ይጀምራል? (ቅርጸት፡ ሰዓት:ደቂቃ፣ ምሳሌ፡ 14:00)።",
-    timeBooked: "⚠️ የመረጡት ሰዓት ቀድሞ ተይዟል። እባክዎን ሌላ ሰዓት ይምረጡ።",
-    askLocation: "እባክዎን ዝግጅቱ የሚካሄድበት ሥፍራ ወይም ሙሉ አድራሻ ያስገቡ።",
-    askGuests: "ለዝግጅቱ ምን ያህል እንግዶች ይጠበቃሉ? (ቁጥር ይጻፉ)።",
-    askTheme: "ለዝግጅቱ የተለየ ጭብጥ ወይም ዲዛይን አለዎት?",
-    depositNotice: "ዝግጅቱን ለማረጋገጥ 50% ቅድሚያ ክፍያ ማስፈጸም ያስፈልጋል።",
+    askEventCountry: "ዝግጅትዎ በየትኛው ሀገር ይካሄዳል?",
+    eventCountryMismatch: "ℹ️ ማሳሰቢያ፦ ዝግጅትዎ ከሚኖሩበት ሀገር ውጭ ይካሄዳል።",
+    askEventCity: "ዝግጅትዎ በየትኛው ከተማ ይካሄዳል?",
+    askDate: "እባክዎን ዝግጅትዎ የሚካሄድበትን ቀን ይምረጡ።",
+    dateBooked: "⚠️ የመረጡት ቀን ሙሉ በሙሉ ተይዟል። እባክዎን ሌላ ቀን ይምረጡ።",
+    askTime: "ዝግጅትዎ በስንት ሰዓት ይጀምራል? (ቅርጸት፦ ሰዓት:ደቂቃ፣ ምሳሌ፦ 14:00)።",
+    timeBooked: "⚠️ የመረጡት ሰዓት ተይዟል። እባክዎን ሌላ ሰዓት ይምረጡ።",
+    askLocation: "እባክዎን ዝግጅትዎ የሚካሄድበትን ሥፍራ ወይም ሙሉ አድራሻ ያስገቡ።",
+    askGuests: "በዝግጅትዎ ላይ ምን ያህል እንግዶች ይጠበቃሉ? (ቁጥር ያስገቡ)።",
+    askTheme: "ለዝግጅትዎ የተለየ ጭብጥ (ገጽታ) ወይም ዲዛይን ይፈልጋሉ?",
+    depositNotice: "ዝግጅትዎን ለማረጋገጥ የ50% ቅድሚያ ክፍያ መፈጸም ያስፈልጋል።",
     noticeTitle: "የዝግጅት ማረጋገጫ እና የክፍያ መመሪያ",
-    noticeBody: "ዝግጅቱን ለማረጋገጥ፣ እባክዎን 50% ቅድሚያ ክፍያ ያስፈጽሙ:\n\n🏦 የክፍያ ዘዴ: CBE WALLET\nሂሳብ ቁጥር: 1000XXXXXXXX\nሂሳብ ስም: Shime Events & Planning",
+    noticeBody: "ዝግጅትዎን ለማረጋገጥ እባክዎን የ50% ቅድሚያ ክፍያ ይፈጽሙ፦\n\n🏦 የክፍያ ዘዴ፦ CBE WALLET\nየሂሳብ ቁጥር፦ 1000XXXXXXXX\nየሂሳብ ስም፦ Shime Events & Planning",
     termsTitle: "ውሎችና ደንቦች",
+    termsText: `1. ዝግጅትዎን ለማረጋገጥ ተመላሽ የማይደረግ የ50% ቅድሚያ ክፍያ ያስፈልጋል።
+2. ሙሉ ክፍያ ዝግጅቱ ከመካሄዱ 14 ቀናት በፊት መጠናቀቅ አለበት።
+3. ዝግጅቱ ከመካሄዱ በ7 ቀናት ውስጥ የሚደረግ ስረዛ የጠቅላላ ክፍያውን 50% ያስቀራል።
+4. Shime Events & Planning አቅራቢዎችን በእኩል ወይም በተሻለ ጥራት የመተካት መብት አለው።
+5. ደንበኛው በምዝገባ ሂደት ትክክለኛና ሙሉ መረጃ የመስጠት ኃላፊነት አለበት።
+6. የዝግጅት ቀን፣ ሥፍራ ወይም የእንግዶች ብዛት ለውጥ ጥያቄ በጽሑፍ መቅረብ አለበት።
+7. ከአቅም በላይ በሆኑ ሁኔታዎች ለሚፈጠሩ ችግሮች የፎርስ ማጁር (Force Majeure) ድንጋጌ ተፈጻሚ ይሆናል።
+8. ከዚህ ስምምነት የሚነሱ አለመግባባቶች በኢትዮጵያ ሕግ መሠረት ይዳኛሉ።
+
+ይህን ስምምነት በመቀበል ሁሉንም ውሎችና ደንቦች ማንበብዎንና መቀበልዎን ያረጋግጣሉ።`,
     acceptTerms: "✅ ውሎችና ደንቦቹን ተቀብዬ እስማማለሁ",
     shareWhatsapp: "📲 በ WhatsApp ያጋሩ",
     viewBooking: "📋 የዝግጅት ዝርዝር ይመልከቱ",
     downloadPdf: "⬇️ ሰነዱን ያውርዱ",
-    downloadQr: "⬇️ QR ኮድ ያውርዱ",
-    sendInstructions: "ዝግጅቱን ለማጠናቀቅ ቀጣይ እርምጃዎች:\n\n1. የክፍያ ማስረጃ ይላኩ\n2. የተፈረመ ውል ይላኩ\n\nእባክዎን ለሚከተለው አድራሻ ይላኩ:\n📱 WhatsApp: +251 91 234 5678\n✉️ Telegram: @ShimeEvents",
-    bookingConfirmed: "ዝግጅቱ ተረጋግጧል",
+    downloadQr: "⬇️ የQR ኮድ ያውርዱ",
+    sendInstructions: "ዝግጅትዎን ለማጠናቀቅ ቀጣይ እርምጃዎች፦\n\n1. የክፍያ ማስረጃ ይላኩ\n2. የተፈረመ ውል ይላኩ\n\nእባክዎን ወደሚከተለው አድራሻ ይላኩ፦\n📱 WhatsApp: +251 91 234 5678\n✉️ Telegram: @ShimeEvents",
+    bookingConfirmed: "ዝግጅትዎ ተረጋግጧል",
     termsAccepted: "✅ ውሎችና ደንቦቹ በተሳካ ሁኔታ ተቀብለዋል።",
     proceedBooking: "የዝግጅትዎን ዝርዝር ይገምግሙ",
-    contactUs: "📲 ያነጋግሩን",
+    contactUs: "📲 ያግኙን",
     stepOf: "ደረጃ",
     required: "(ያስፈልጋል)",
-    back: "← ወደ ኋላ",
+    back: "← ወደኋላ",
     next: "ቀጥል →",
     success: "✅ ተሳክቷል!",
     loading: "እባክዎን ይጠብቁ...",
-    generatingPdf: "PDF ሰነድ እየተዘጋጀ ነው...",
-    generatingQr: "QR ኮድ እየተዘጋጀ ነው...",
+    generatingPdf: "ሰነድ እየተዘጋጀ ነው...",
+    generatingQr: "የQR ኮድ እየተዘጋጀ ነው...",
     copy: "ቅዳ",
-    copied: "ወደ ቅጅ ሳጥን ተቀድቷል!",
-    startOver: "ከመጀመሪያ ጀምር",
-    selectPackage: "ምን ዓይነት የዝግጅት ፓኬጅ ይምረጣሉ?",
-    scanToBook: "📲 ዝግጅትዎን ለማስያዝ ስካን ያድርጉ",
-    qrCodeTitle: "ይህን QR ኮድ ያጋሩ",
-    qrCodeSubtitle: "ደንበኞች ስካን በማድረግ ዝግጅታቸውን ማስያዝ ይችላሉ",
-    downloadQRCode: "⬇️ QR ኮድ ያውርዱ",
-    printQRCode: "🖨️ QR ኮድ አትሙ",
-    shareQRCode: "📱 QR ሊንኩን ያጋሩ",
-    qrCodeDownloaded: "QR ኮዱ በተሳካ ሁኔታ ወርዷል!",
+    copied: "ወደ ቅንጥብ ሰሌዳ ተቀድቷል!",
+    startOver: "እንደገና ይጀምሩ",
+    selectPackage: "የትኛውን የዝግጅት ጥቅል (ፓኬጅ) ይመርጣሉ?",
+    scanToBook: "📲 ዝግጅትዎን ለማስያዝ ይቃኙ",
+    qrCodeTitle: "ይህን የQR ኮድ ያጋሩ",
+    qrCodeSubtitle: "ደንበኞች በመቃኘት ዝግጅታቸውን ማስያዝ እንዲችሉ ያጋሩ",
+    downloadQRCode: "⬇️ የQR ኮድ ያውርዱ",
+    printQRCode: "🖨️ የQR ኮድ ያትሙ",
+    shareQRCode: "📱 የQR ሊንክ ያጋሩ",
+    qrCodeDownloaded: "የQR ኮዱ በተሳካ ሁኔታ ወርዷል!",
     closeChat: "✕ ዝጋ",
     bookingComplete: "Shime Events ን ስለመረጡ እናመሰግናለን! ዝግጅትዎ ተጠናቅቋል። 🎉",
   }
@@ -634,9 +644,7 @@ export default function ShimeAssistant() {
         full_name: bookingData.fullName,
         email: bookingData.email,
         phone_number: bookingData.phoneNumber,
-        nationality: bookingData.nationality,
         residency: bookingData.residency,
-        id_number: bookingData.idNumber,
         contact_method: bookingData.contactMethod,
         language: language,
         event_type: bookingData.eventType,
@@ -852,7 +860,6 @@ export default function ShimeAssistant() {
     return digits.length >= 5 && digits.length <= 15;
   };
 
-  const validateId = (id) => id.trim().length >= 4 && /^[A-Z0-9\-\s]+$/i.test(id.trim());
   const validateName = (name) => name.trim().split(" ").length >= 2 && name.length >= 5;
 
   const isDateBooked = (date, time = null) => {
@@ -1244,8 +1251,6 @@ export default function ShimeAssistant() {
         ["Preferred Contact", cap(bookingData.contactMethod)],
         ["Phone Number", bookingData.phoneNumber],
         ["Email Address", bookingData.email],
-        ["ID / Passport No.", bookingData.idNumber],
-        ["Nationality", bookingData.nationality],
         ["Country of Residence", bookingData.residency],
       ], yPos);
 
@@ -1256,7 +1261,9 @@ export default function ShimeAssistant() {
         ["Event Type", cap(bookingData.eventType)],
         ["Package", bookingData.plan],
         ["Expected Guests", bookingData.guestCount],
-        ["Date", bookingData.eventDate],
+        ["Date", calendarType === "ethiopian"
+          ? `${formatDateForDisplay(bookingData.eventDate, "ethiopian", "en")} (${bookingData.eventDate})`
+          : bookingData.eventDate],
         ["Time", bookingData.eventTime],
         ["City / Country", `${bookingData.eventCity || "—"}, ${bookingData.eventCountry || "—"}`],
       ], yPos);
@@ -1428,26 +1435,9 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
       case 1:
         setCalendarType(value);
         addUserMessage(value === "gregorian" ? translations[language || "en"].gregorianCalendar || "📅 Gregorian Calendar" : translations[language || "en"].ethiopianCalendar || "🇪🇹 Ethiopian Calendar");
-        setStep(2);
-        addAgentMessage(getBilingualText("askNationality", language));
+        setStep(3);
+        addAgentMessage(getBilingualText("askResidency", language));
         showToast(t("success"), "success", 2000);
-        return;
-
-      case 2:
-        if (!value || value.trim().length < 2) {
-          isValid = false;
-          errorMsg = "Please enter your nationality (at least 2 characters)";
-        }
-        if (isValid) {
-          addUserMessage(value);
-          setBookingData({ ...bookingData, nationality: value });
-          setStep(3);
-          addAgentMessage(getBilingualText("askResidency"));
-          showToast(t("success"), "success", 2000);
-        } else {
-          showToast(errorMsg, "error");
-          setError(errorMsg);
-        }
         return;
 
       case 3:
@@ -1520,23 +1510,6 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
         if (isValid) {
           addUserMessage(value);
           setBookingData({ ...bookingData, fullName: value });
-          setStep(7);
-          addAgentMessage(getBilingualText("askIdType"));
-          showToast(t("success"), "success", 2000);
-        } else {
-          showToast(errorMsg, "error");
-          setError(errorMsg);
-        }
-        return;
-
-      case 7:
-        if (!validateId(value)) {
-          isValid = false;
-          errorMsg = t("invalidId");
-        }
-        if (isValid) {
-          addUserMessage(value);
-          setBookingData({ ...bookingData, idNumber: value });
           setStep(9);
           addAgentMessage(getBilingualText("askContactMethod"));
           showToast(t("success"), "success", 2000);
@@ -1637,7 +1610,11 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
           errorMsg = t("dateBooked");
         }
         if (isValid) {
-          addUserMessage(value);
+          addUserMessage(
+            calendarType === "ethiopian"
+              ? formatDateForDisplay(value, "ethiopian", language)
+              : value
+          );
           setBookingData({ ...bookingData, eventDate: value });
           setStep(16);
           addAgentMessage(getBilingualText("askTime"));
@@ -1715,8 +1692,11 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
 
   const goBack = () => {
     if (step > 0 && step < 20) {
-      // Skip removed step 8 (PIN step): 9 → 7
-      const prevStep = step === 9 ? 7 : step - 1;
+      // Skip removed steps: 2 (nationality), 7 (ID), 8 (PIN).
+      let prevStep;
+      if (step === 3) prevStep = 1;       // residency → calendar
+      else if (step === 9) prevStep = 6;  // contact → full name
+      else prevStep = step - 1;
       setStep(prevStep);
       setError("");
       showToast("Going back...", "info", 1000);
@@ -1763,9 +1743,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
           fullName: bookingData.fullName,
           phoneNumber: bookingData.phoneNumber,
           email: bookingData.email,
-          nationality: bookingData.nationality,
           residency: bookingData.residency,
-          idNumber: bookingData.idNumber,
           contactMethod: bookingData.contactMethod,
           // Event details
           eventType: bookingData.eventType,
@@ -1874,7 +1852,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
       setLanguage('en');
       setStep(1);
       addAgentMessage({ primary: `${translations.en.welcome} — ${translations.en.welcomeSubtitle}`, secondary: null });
-      addAgentMessage({ primary: translations.en.askNationality, secondary: null });
+      addAgentMessage({ primary: translations.en.selectCalendar, secondary: null });
     }
   }, []);
 
@@ -1895,8 +1873,19 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
     }
   }, [step]);
 
+  // Active input steps in order (removed: 2 nationality, 7 ID, 8 PIN).
+  const ACTIVE_STEPS = [1, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
+  const TOTAL_STEPS = ACTIVE_STEPS.length;
+
+  // 1-based position of the current step within the active sequence.
+  const getStepDisplay = () => {
+    const idx = ACTIVE_STEPS.indexOf(step);
+    return idx === -1 ? TOTAL_STEPS : idx + 1;
+  };
+
   const getProgressPercentage = () => {
-    return Math.min((step / 20) * 100, 100);
+    if (step >= 19) return 100;
+    return Math.min((getStepDisplay() / TOTAL_STEPS) * 100, 100);
   };
 
   const renderStep = () => {
@@ -1929,68 +1918,15 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
               className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition transform hover:scale-105 shadow-lg font-semibold text-base sm:text-lg"
               aria-label="Select Gregorian Calendar"
             >
-              📅 Gregorian Calendar
+              {t("gregorianCalendar")}
             </button>
             <button
               onClick={() => handleNext("ethiopian")}
               className="w-full sm:w-auto px-6 sm:px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl hover:from-green-700 hover:to-green-800 transition transform hover:scale-105 shadow-lg font-semibold text-base sm:text-lg"
               aria-label="Select Ethiopian Calendar"
             >
-              🇪🇹 Ethiopian Calendar
+              {t("ethiopianCalendar")}
             </button>
-          </div>
-        );
-
-      case 2:
-        return (
-          <div className="space-y-3">
-            <div>
-              <label className="block text-yellow-400 text-sm font-semibold mb-2">
-                <span className="text-red-400">*</span> {t("required")}
-              </label>
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => {
-                  setInputValue(e.target.value);
-                  setError("");
-                }}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter" && inputValue.trim()) {
-                    handleNext(inputValue);
-                    setInputValue("");
-                  }
-                }}
-                placeholder={language === "am" ? "ምሳሌ፡ ኢትዮጵያዊ፣ አሜሪካዊ..." : "e.g. Ethiopian, American, British..."}
-                className="w-full px-4 py-3 bg-white text-slate-900 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 font-semibold shadow-lg"
-                autoFocus
-                aria-label="Enter your nationality"
-              />
-            </div>
-            {error && <div className="text-red-400 text-sm font-semibold bg-red-900 bg-opacity-20 p-2 rounded">{error}</div>}
-            <div className="flex gap-3">
-              {step > 0 && step < 19 && (
-                <button
-                  onClick={goBack}
-                  className="flex-1 px-4 py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-bold transition"
-                  aria-label="Go to previous step"
-                >
-                  {t("back")}
-                </button>
-              )}
-              <button
-                onClick={() => {
-                  if (inputValue.trim()) {
-                    handleNext(inputValue);
-                    setInputValue("");
-                  }
-                }}
-                className="flex-1 px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 text-slate-900 rounded-lg font-bold hover:from-yellow-600 hover:to-yellow-700 transition text-lg transform hover:scale-105 shadow-lg"
-                aria-label="Submit current answer and continue"
-              >
-                {t("next")}
-              </button>
-            </div>
           </div>
         );
 
@@ -2397,7 +2333,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
 
             <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30 space-y-2 text-sm text-white">
               <div><strong className="text-yellow-400">Reference:</strong> {bookingRefNum}</div>
-              <div><strong className="text-yellow-400">Event Date:</strong> {bookingData.eventDate} at {bookingData.eventTime}</div>
+              <div><strong className="text-yellow-400">Event Date:</strong> {calendarType === "ethiopian" ? formatDateForDisplay(bookingData.eventDate, "ethiopian", language) : bookingData.eventDate} at {bookingData.eventTime}</div>
               <div><strong className="text-yellow-400">Location:</strong> {bookingData.eventCity}, {bookingData.eventCountry}</div>
               <div><strong className="text-yellow-400">Contact:</strong> {bookingData.contactMethod}</div>
             </div>
@@ -2514,6 +2450,28 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
       }
 
       default:
+        // Ethiopian calendar: show the real 13-month Ge'ez picker for the date step.
+        if (step === 15 && calendarType === "ethiopian") {
+          return (
+            <div className="w-full max-w-full sm:max-w-md space-y-3">
+              <EthiopianDatePicker
+                value={bookingData.eventDate || null}
+                language={language || "en"}
+                onSelect={(gregorian) => handleNext(gregorian)}
+              />
+              {error && <div className="text-red-400 text-xs sm:text-sm font-semibold bg-red-900 bg-opacity-20 p-2 rounded">{error}</div>}
+              {step > 0 && step < 19 && (
+                <button
+                  onClick={goBack}
+                  className="w-full px-3 sm:px-4 py-3 bg-slate-600 hover:bg-slate-700 text-white rounded-lg font-bold transition text-sm sm:text-base"
+                  aria-label="Go to previous step"
+                >
+                  {t("back")}
+                </button>
+              )}
+            </div>
+          );
+        }
         return (
           <div className="w-full max-w-full sm:max-w-md space-y-3">
             <div>
@@ -2641,7 +2599,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
           {step > 0 && language && step < 19 && (
             <div className="space-y-2 animate-fadeIn">
               <div className="flex justify-between items-center text-xs text-yellow-400 mb-2 font-semibold">
-                <span>{t("stepOf")} {step > 8 ? step - 1 : step}/17</span>
+                <span>{t("stepOf")} {getStepDisplay()}/{TOTAL_STEPS}</span>
                 <span>Language: {language === "en" ? "🇬🇧 English" : "🇪🇹 አማርኛ"}</span>
                 <span>{Math.round(getProgressPercentage())}%</span>
               </div>
