@@ -1748,21 +1748,39 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
 
   // Notify the business owner of a new booking via WhatsApp (serverless + CallMeBot).
   // No-ops on local dev (no /api functions) and never blocks the booking flow.
+  // Sends the COMPLETE booking profile so the owner message is fully detailed.
   const notifyOwnerOfBooking = () => {
     try {
+      const pkgInfo = PACKAGES.find((p) => p.name === bookingData.plan);
+      const fullPrice = pkgInfo?.price || 0;
+      const depositAmount = Math.round(fullPrice / 2);
+
       fetch("/api/notify-booking", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          // Client identity
           fullName: bookingData.fullName,
           phoneNumber: bookingData.phoneNumber,
           email: bookingData.email,
+          nationality: bookingData.nationality,
+          residency: bookingData.residency,
+          idNumber: bookingData.idNumber,
+          contactMethod: bookingData.contactMethod,
+          // Event details
           eventType: bookingData.eventType,
           plan: bookingData.plan,
+          guestCount: bookingData.guestCount,
           eventDate: bookingData.eventDate,
           eventTime: bookingData.eventTime,
           eventCity: bookingData.eventCity,
           eventCountry: bookingData.eventCountry,
+          eventLocation: bookingData.eventLocation,
+          specialTheme: bookingData.specialTheme,
+          // Payment
+          fullPrice,
+          depositAmount,
+          // References
           bookingRef: bookingRefNum,
           verificationPin: bookingVerifyPin,
         }),

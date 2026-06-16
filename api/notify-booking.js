@@ -18,18 +18,42 @@ export default async (req, res) => {
       return res.status(200).json({ ok: false, reason: "CallMeBot not configured" });
     }
 
-    const location = [b.eventCity, b.eventCountry].filter(Boolean).join(", ") || "—";
+    const dash = (v) => (v === 0 || v ? String(v) : "—");
+    const money = (v) =>
+      v === 0 || v ? `ETB ${Number(v).toLocaleString("en-US")}` : "—";
+
+    const location =
+      [b.eventLocation, b.eventCity, b.eventCountry].filter(Boolean).join(", ") ||
+      "—";
+    const dateTime =
+      [b.eventDate, b.eventTime].filter(Boolean).join(" at ") || "—";
+
     const msg =
-      `🎉 NEW BOOKING — Shime Events\n\n` +
-      `👤 Client: ${b.fullName || "—"}\n` +
-      `📞 Phone: ${b.phoneNumber || "—"}\n` +
-      `✉️ Email: ${b.email || "—"}\n` +
-      `🎊 Event: ${b.eventType || "—"}\n` +
-      `📦 Package: ${b.plan || "—"}\n` +
-      `📅 Date: ${b.eventDate || "—"} at ${b.eventTime || "—"}\n` +
-      `📍 Location: ${location}\n` +
-      `🔖 Ref: ${b.bookingRef || "—"}\n` +
-      `🔐 PIN: ${b.verificationPin || "—"}\n\n` +
+      `🎉 *NEW BOOKING — Shime Events*\n` +
+      `━━━━━━━━━━━━━━━━━━━━\n\n` +
+      `👤 *CLIENT*\n` +
+      `• Name: ${dash(b.fullName)}\n` +
+      `• Phone: ${dash(b.phoneNumber)}\n` +
+      `• Email: ${dash(b.email)}\n` +
+      `• Nationality: ${dash(b.nationality)}\n` +
+      `• Residence: ${dash(b.residency)}\n` +
+      `• ID / Passport: ${dash(b.idNumber)}\n` +
+      `• Preferred contact: ${dash(b.contactMethod)}\n\n` +
+      `🎊 *EVENT*\n` +
+      `• Type: ${dash(b.eventType)}\n` +
+      `• Package: ${dash(b.plan)}\n` +
+      `• Guests: ${dash(b.guestCount)}\n` +
+      `• Date: ${dateTime}\n` +
+      `• Location: ${location}\n` +
+      `• Theme: ${dash(b.specialTheme)}\n\n` +
+      `💰 *PAYMENT*\n` +
+      `• Total: ${money(b.fullPrice)}\n` +
+      `• Deposit (50%): ${money(b.depositAmount)}\n` +
+      `• Status: Awaiting payment\n\n` +
+      `🔖 *REFERENCE*\n` +
+      `• Booking Ref: ${dash(b.bookingRef)}\n` +
+      `• Verification PIN: ${dash(b.verificationPin)}\n\n` +
+      `━━━━━━━━━━━━━━━━━━━━\n` +
       `— Shime Events & Planning`;
 
     const r = await sendWhatsApp(ownerPhone, ownerKey, msg);
