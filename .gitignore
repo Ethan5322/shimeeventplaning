@@ -27,3 +27,6 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Private sales/marketing material (contains personal contact — keep out of public repo)
+SALES_EMAILS.md
