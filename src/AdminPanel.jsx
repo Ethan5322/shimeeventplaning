@@ -940,19 +940,19 @@ const AdminPanel = ({ onLogout }) => {
                     ))}
                   </select>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div><label className={labelCls}>Guest Count</label>
                     <input type="number" value={bookingForm.guestCount} onChange={e => setBookingForm({...bookingForm, guestCount: e.target.value})} placeholder="100" className={inputCls} /></div>
                   <div><label className={labelCls}>Special Theme</label>
                     <input type="text" value={bookingForm.specialTheme} onChange={e => setBookingForm({...bookingForm, specialTheme: e.target.value})} placeholder="Floral, Modern..." className={inputCls} /></div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div><label className={labelCls}>Event Date *</label>
                     <input type="date" value={bookingForm.eventDate} onChange={e => setBookingForm({...bookingForm, eventDate: e.target.value})} className={inputCls} /></div>
                   <div><label className={labelCls}>Event Time *</label>
                     <input type="time" min="00:00" max="23:59" value={bookingForm.eventTime} onChange={e => setBookingForm({...bookingForm, eventTime: e.target.value})} className={inputCls} /></div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div><label className={labelCls}>Country</label>
                     <input type="text" value={bookingForm.eventCountry} onChange={e => setBookingForm({...bookingForm, eventCountry: e.target.value})} placeholder="Ethiopia" className={inputCls} /></div>
                   <div><label className={labelCls}>City</label>

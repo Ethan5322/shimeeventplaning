@@ -2432,7 +2432,7 @@ export default function ShimeAssistant() {
                 <div className="text-green-300 text-xs font-bold uppercase tracking-widest mb-2">
                   {language === "am" ? "✅ የማረጋገጫ ኮድ / Verification Code" : "✅ Your Verification Code"}
                 </div>
-                <div className="text-4xl font-mono font-black text-white tracking-widest my-3 bg-black bg-opacity-30 rounded-lg py-3 px-4">
+                <div className="text-2xl sm:text-3xl md:text-4xl font-mono font-black text-white tracking-wider sm:tracking-widest my-3 bg-black bg-opacity-30 rounded-lg py-3 px-2 sm:px-4 break-all">
                   {bookingVerifyPin}
                 </div>
                 <div className="text-green-200 text-xs leading-relaxed">
