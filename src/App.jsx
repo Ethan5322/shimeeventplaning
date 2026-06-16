@@ -814,16 +814,16 @@ export default function ShimeAssistant() {
       const firstName = nameParts[0] || "Customer";
       const lastName = nameParts.slice(1).join(" ") || "Booking";
 
-      // Phone number - convert local to international
-      let phoneNumber = (bookingData.phoneNumber || "").trim();
-      const digitsOnly = phoneNumber.replace(/\D/g, "");
-
-      if (digitsOnly.startsWith("0")) {
-        phoneNumber = "+251" + digitsOnly.slice(1);
-      } else if (digitsOnly.startsWith("251")) {
-        phoneNumber = "+" + digitsOnly;
-      } else {
-        phoneNumber = "+251" + digitsOnly;
+      // Chapa requires an Ethiopian local-format number: 09XXXXXXXX or 07XXXXXXXX
+      // (no "+" and no country code). Normalize whatever the client entered.
+      let digits = (bookingData.phoneNumber || "").replace(/\D/g, "");
+      if (digits.startsWith("251")) digits = digits.slice(3);   // 251911... -> 911...
+      if (digits.startsWith("0")) digits = digits.slice(1);     // 0911...   -> 911...
+      let phoneNumber = "0" + digits;                            // -> 0911234567
+      // If it isn't a valid Ethiopian mobile, fall back so Chapa still accepts it
+      // (the real contact number is already saved with the booking).
+      if (!/^0(9|7)\d{8}$/.test(phoneNumber)) {
+        phoneNumber = "0911111111";
       }
 
       // Create form
