@@ -85,6 +85,19 @@ By accepting this agreement, you confirm that you have reviewed and accepted all
     qrCodeDownloaded: "QR Code downloaded successfully!",
     closeChat: "✕ Close Chatbot",
     bookingComplete: "Thank you for choosing Shime Events! Your booking is complete. 🎉",
+    labelClient: "Client",
+    labelEmail: "Email",
+    labelPackage: "Package",
+    labelBookingFee: "Booking Fee (Non-Refundable)",
+    labelReference: "Reference",
+    labelEventDate: "Event Date",
+    labelLocation: "Location",
+    labelContact: "Contact",
+    labelQrCode: "Booking QR Code",
+    labelAt: "at",
+    copyRef: "📋 Copy Ref",
+    copiedShort: "✓ Copied",
+    pdfDownloaded: "✅ PDF downloaded successfully!",
   },
   am: {
     welcome: "እንኳን ወደ Shime Events & Planning በደህና መጡ",
@@ -158,6 +171,19 @@ By accepting this agreement, you confirm that you have reviewed and accepted all
     qrCodeDownloaded: "የQR ኮዱ በተሳካ ሁኔታ ወርዷል!",
     closeChat: "✕ ዝጋ",
     bookingComplete: "Shime Events ን ስለመረጡ እናመሰግናለን! ዝግጅትዎ ተጠናቅቋል። 🎉",
+    labelClient: "ደንበኛ",
+    labelEmail: "ኢሜይል",
+    labelPackage: "ጥቅል (ፓኬጅ)",
+    labelBookingFee: "የቅድሚያ ክፍያ (ተመላሽ የማይደረግ)",
+    labelReference: "ማመሳከሪያ",
+    labelEventDate: "የዝግጅት ቀን",
+    labelLocation: "ሥፍራ",
+    labelContact: "የመገናኛ ዘዴ",
+    labelQrCode: "የዝግጅት QR ኮድ",
+    labelAt: "ሰዓት",
+    copyRef: "📋 ማመሳከሪያ ቅዳ",
+    copiedShort: "✓ ተቀድቷል",
+    pdfDownloaded: "✅ ሰነዱ በተሳካ ሁኔታ ወርዷል!",
   }
 };
 
@@ -1120,6 +1146,29 @@ export default function ShimeAssistant() {
       const pkgInfo = PACKAGES.find(p => p.name === bookingData.plan);
       const deposit = Math.round((pkgInfo?.price || 0) / 2); // 50% deposit
 
+      // Amharic PDFs need an embedded Ethiopic font (jsPDF's built-ins can't
+      // render Ge'ez script). The font is lazy-loaded only when needed.
+      const isAm = language === "am";
+      let FONT = "helvetica";
+      if (isAm) {
+        try {
+          const { abyssinicaSILBase64 } = await import("./fonts/abyssinicaSIL.js");
+          doc.addFileToVFS("AbyssinicaSIL.ttf", abyssinicaSILBase64);
+          doc.addFont("AbyssinicaSIL.ttf", "Abyssinica", "normal");
+          doc.addFont("AbyssinicaSIL.ttf", "Abyssinica", "bold");
+          FONT = "Abyssinica";
+        } catch {
+          FONT = "helvetica"; // fall back gracefully if the font fails to load
+        }
+      }
+      // Label helper: pick Amharic or English text.
+      const L = (en, am) => (isAm ? am : en);
+      // Date formatted in the chosen calendar AND language.
+      const eventDateText =
+        calendarType === "ethiopian"
+          ? formatDateForDisplay(bookingData.eventDate, "ethiopian", language)
+          : bookingData.eventDate;
+
       // ── Professional document palette ──
       const navy = [26, 26, 46];
       const gold = [193, 154, 47];
@@ -1137,33 +1186,33 @@ export default function ShimeAssistant() {
       // ── Header band ──
       doc.setFillColor(...navy);
       doc.rect(0, 0, pageWidth, 32, "F");
-      doc.setFont("helvetica", "bold");
+      doc.setFont(FONT, "bold");
       doc.setTextColor(...gold);
       doc.setFontSize(22);
       doc.text("SHIME EVENTS", pageWidth / 2, 14, { align: "center" });
       doc.setFontSize(9);
       doc.setTextColor(255, 255, 255);
       doc.text("& PLANNING", pageWidth / 2, 20, { align: "center" });
-      doc.setFont("helvetica", "normal");
+      doc.setFont(FONT, "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(205, 205, 215);
-      doc.text("Professional Event Planning & Coordination", pageWidth / 2, 26, { align: "center" });
+      doc.text(L("Professional Event Planning & Coordination", "ሙያዊ የዝግጅት እቅድ እና ማስተባበር"), pageWidth / 2, 26, { align: "center" });
 
       // ── Title + reference ──
       let yPos = 44;
-      doc.setFont("helvetica", "bold");
+      doc.setFont(FONT, "bold");
       doc.setFontSize(15);
       doc.setTextColor(...navy);
-      doc.text("BOOKING CONFIRMATION", M, yPos);
+      doc.text(L("BOOKING CONFIRMATION", "የዝግጅት ማረጋገጫ"), M, yPos);
       doc.setDrawColor(...gold);
       doc.setLineWidth(0.8);
       doc.line(M, yPos + 2.5, M + 76, yPos + 2.5);
 
-      doc.setFont("helvetica", "normal");
+      doc.setFont(FONT, "normal");
       doc.setFontSize(8.5);
       doc.setTextColor(...midGray);
-      doc.text(`Reference:  ${refNum}`, pageWidth - M, yPos - 3, { align: "right" });
-      doc.text(`Issued:  ${today}`, pageWidth - M, yPos + 2, { align: "right" });
+      doc.text(`${L("Reference", "ማመሳከሪያ")}:  ${refNum}`, pageWidth - M, yPos - 3, { align: "right" });
+      doc.text(`${L("Issued", "የተሰጠበት ቀን")}:  ${today}`, pageWidth - M, yPos + 2, { align: "right" });
 
       // ── Verification code box + QR ──
       yPos += 9;
@@ -1171,18 +1220,18 @@ export default function ShimeAssistant() {
       doc.setDrawColor(...gold);
       doc.setLineWidth(0.4);
       doc.roundedRect(M, yPos, 108, 26, 2, 2, "FD");
-      doc.setFont("helvetica", "normal");
+      doc.setFont(FONT, "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(...midGray);
-      doc.text("VERIFICATION CODE", M + 6, yPos + 8);
-      doc.setFont("helvetica", "bold");
+      doc.text(L("VERIFICATION CODE", "የማረጋገጫ ኮድ"), M + 6, yPos + 8);
+      doc.setFont(FONT, "bold");
       doc.setFontSize(20);
       doc.setTextColor(...navy);
       doc.text(bookingVerifyPin || "—", M + 6, yPos + 19);
-      doc.setFont("helvetica", "normal");
+      doc.setFont(FONT, "normal");
       doc.setFontSize(6.5);
       doc.setTextColor(...midGray);
-      doc.text("Present this code to confirm your booking", M + 6, yPos + 23.5);
+      doc.text(L("Present this code to confirm your booking", "ዝግጅትዎን ለማረጋገጥ ይህን ኮድ ያቅርቡ"), M + 6, yPos + 23.5);
 
       if (qrCode) {
         try {
@@ -1196,11 +1245,11 @@ export default function ShimeAssistant() {
       const sectionHeader = (title, y) => {
         doc.setFillColor(...navy);
         doc.rect(M, y, pageWidth - M * 2, 7, "F");
-        doc.setFont("helvetica", "bold");
+        doc.setFont(FONT, "bold");
         doc.setFontSize(9);
         doc.setTextColor(...gold);
         doc.text(title, M + 4, y + 4.8);
-        doc.setFont("helvetica", "normal");
+        doc.setFont(FONT, "normal");
         return y + 7;
       };
 
@@ -1212,11 +1261,11 @@ export default function ShimeAssistant() {
             const f = fields[i + c];
             if (!f) break;
             const x = M + c * colW + 3;
-            doc.setFont("helvetica", "normal");
+            doc.setFont(FONT, "normal");
             doc.setFontSize(7);
             doc.setTextColor(...midGray);
             doc.text(String(f[0]).toUpperCase(), x, y);
-            doc.setFont("helvetica", "bold");
+            doc.setFont(FONT, "bold");
             doc.setFontSize(9.5);
             doc.setTextColor(...fieldDark);
             const val = doc.splitTextToSize(String(f[1] ?? "—"), colW - 8);
@@ -1231,11 +1280,11 @@ export default function ShimeAssistant() {
       };
 
       const fullWidthField = (label, value, startY) => {
-        doc.setFont("helvetica", "normal");
+        doc.setFont(FONT, "normal");
         doc.setFontSize(7);
         doc.setTextColor(...midGray);
         doc.text(String(label).toUpperCase(), M + 3, startY + 7);
-        doc.setFont("helvetica", "bold");
+        doc.setFont(FONT, "bold");
         doc.setFontSize(9.5);
         doc.setTextColor(...fieldDark);
         const lines = doc.splitTextToSize(String(value || "—"), pageWidth - M * 2 - 6);
@@ -1245,61 +1294,61 @@ export default function ShimeAssistant() {
 
       // ── Client Information ──
       yPos += 33;
-      yPos = sectionHeader("CLIENT INFORMATION", yPos);
+      yPos = sectionHeader(L("CLIENT INFORMATION", "የደንበኛ መረጃ"), yPos);
       yPos = drawGrid([
-        ["Full Name", bookingData.fullName],
-        ["Preferred Contact", cap(bookingData.contactMethod)],
-        ["Phone Number", bookingData.phoneNumber],
-        ["Email Address", bookingData.email],
-        ["Country of Residence", bookingData.residency],
+        [L("Full Name", "ሙሉ ስም"), bookingData.fullName],
+        [L("Preferred Contact", "የመገናኛ ዘዴ"), cap(bookingData.contactMethod)],
+        [L("Phone Number", "ስልክ ቁጥር"), bookingData.phoneNumber],
+        [L("Email Address", "ኢሜይል አድራሻ"), bookingData.email],
+        [L("Country of Residence", "የመኖሪያ ሀገር"), bookingData.residency],
       ], yPos);
 
       // ── Event Details ──
       yPos += 3;
-      yPos = sectionHeader("EVENT DETAILS", yPos);
+      yPos = sectionHeader(L("EVENT DETAILS", "የዝግጅት ዝርዝር"), yPos);
       yPos = drawGrid([
-        ["Event Type", cap(bookingData.eventType)],
-        ["Package", bookingData.plan],
-        ["Expected Guests", bookingData.guestCount],
-        ["Date", calendarType === "ethiopian"
-          ? `${formatDateForDisplay(bookingData.eventDate, "ethiopian", "en")} (${bookingData.eventDate})`
-          : bookingData.eventDate],
-        ["Time", bookingData.eventTime],
-        ["City / Country", `${bookingData.eventCity || "—"}, ${bookingData.eventCountry || "—"}`],
+        [L("Event Type", "የዝግጅት ዓይነት"), cap(bookingData.eventType)],
+        [L("Package", "ጥቅል (ፓኬጅ)"), bookingData.plan],
+        [L("Expected Guests", "የሚጠበቁ እንግዶች"), bookingData.guestCount],
+        [L("Date", "ቀን"), calendarType === "ethiopian"
+          ? `${eventDateText} (${bookingData.eventDate})`
+          : eventDateText],
+        [L("Time", "ሰዓት"), bookingData.eventTime],
+        [L("City / Country", "ከተማ / ሀገር"), `${bookingData.eventCity || "—"}, ${bookingData.eventCountry || "—"}`],
       ], yPos);
-      yPos = fullWidthField("Venue / Address", bookingData.eventLocation, yPos);
+      yPos = fullWidthField(L("Venue / Address", "ሥፍራ / አድራሻ"), bookingData.eventLocation, yPos);
       if (bookingData.specialTheme && bookingData.specialTheme !== "No specific theme") {
-        yPos = fullWidthField("Theme / Design", bookingData.specialTheme, yPos);
+        yPos = fullWidthField(L("Theme / Design", "ጭብጥ / ዲዛይን"), bookingData.specialTheme, yPos);
       }
 
       // ── Payment ──
       yPos += 3;
-      yPos = sectionHeader("PAYMENT SUMMARY", yPos);
+      yPos = sectionHeader(L("PAYMENT SUMMARY", "የክፍያ ማጠቃለያ"), yPos);
       yPos += 4;
       // Deposit highlight box
       doc.setFillColor(249, 245, 233);
       doc.setDrawColor(...gold);
       doc.setLineWidth(0.4);
       doc.roundedRect(M, yPos, pageWidth - M * 2, 22, 2, 2, "FD");
-      doc.setFont("helvetica", "normal");
+      doc.setFont(FONT, "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(...midGray);
-      doc.text("BOOKING FEE DUE NOW (NON-REFUNDABLE)", M + 6, yPos + 7);
-      doc.setFont("helvetica", "bold");
+      doc.text(L("BOOKING FEE DUE NOW (NON-REFUNDABLE)", "አሁን የሚከፈል ክፍያ (ተመላሽ የማይደረግ)"), M + 6, yPos + 7);
+      doc.setFont(FONT, "bold");
       doc.setFontSize(17);
       doc.setTextColor(...navy);
       doc.text(`ETB ${deposit.toLocaleString()}`, M + 6, yPos + 17);
-      doc.setFont("helvetica", "normal");
+      doc.setFont(FONT, "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(...midGray);
-      doc.text(`Package total: ETB ${fullPrice.toLocaleString()}`, pageWidth - M - 6, yPos + 9, { align: "right" });
-      doc.text("Method: CBE WALLET", pageWidth - M - 6, yPos + 15, { align: "right" });
-      doc.text("Account: 1000XXXXXXXX", pageWidth - M - 6, yPos + 20, { align: "right" });
+      doc.text(`${L("Package total", "የጥቅሉ ጠቅላላ")}: ETB ${fullPrice.toLocaleString()}`, pageWidth - M - 6, yPos + 9, { align: "right" });
+      doc.text(`${L("Method", "የክፍያ ዘዴ")}: CBE WALLET`, pageWidth - M - 6, yPos + 15, { align: "right" });
+      doc.text(`${L("Account", "ሂሳብ ቁጥር")}: 1000XXXXXXXX`, pageWidth - M - 6, yPos + 20, { align: "right" });
 
       // ── Footer band ──
       doc.setFillColor(...navy);
       doc.rect(0, pageHeight - 18, pageWidth, 18, "F");
-      doc.setFont("helvetica", "normal");
+      doc.setFont(FONT, "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(...gold);
       doc.text("Shime Events & Planning", pageWidth / 2, pageHeight - 11, { align: "center" });
@@ -1313,24 +1362,17 @@ export default function ShimeAssistant() {
 
       doc.setFillColor(...navy);
       doc.rect(0, 0, pageWidth, 20, "F");
-      doc.setFont("helvetica", "bold");
+      doc.setFont(FONT, "bold");
       doc.setTextColor(...gold);
       doc.setFontSize(13);
-      doc.text("TERMS & CONDITIONS", M, 13);
+      doc.text(L("TERMS & CONDITIONS", "ውሎችና ደንቦች"), M, 13);
 
-      doc.setFont("helvetica", "normal");
+      doc.setFont(FONT, "normal");
       doc.setTextColor(...fieldDark);
       doc.setFontSize(9);
-      const termsText = `1. A non-refundable booking fee is required to secure your event booking.
-2. Full payment is due 14 days before your scheduled event date.
-3. Cancellations made within 7 days of the event will result in forfeiture of the booking fee.
-4. Shime Events & Planning reserves the right to substitute vendors of equal or superior quality.
-5. The client is fully responsible for providing accurate and complete information during the booking process.
-6. Any requested changes to event date, venue, or guest count must be submitted in writing.
-7. Force majeure clauses apply to events affected by circumstances beyond our control.
-8. All disputes arising from this agreement shall be subject to Ethiopian jurisdiction.
-
-By accepting this booking, you confirm that you have reviewed and accepted all terms and conditions. Your acceptance serves as a binding agreement to this contract.`;
+      const termsText = isAm
+        ? translations.am.termsText
+        : translations.en.termsText;
 
       const termsLines = doc.splitTextToSize(termsText, pageWidth - M * 2);
       let termsY = 32;
@@ -1345,28 +1387,28 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
       doc.setLineWidth(0.3);
       doc.line(M, agreementY - 6, pageWidth - M, agreementY - 6);
 
-      doc.setFont("helvetica", "bold");
+      doc.setFont(FONT, "bold");
       doc.setFontSize(9);
       doc.setTextColor(...navy);
-      doc.text("CLIENT ACCEPTANCE", M, agreementY);
-      doc.setFont("helvetica", "normal");
+      doc.text(L("CLIENT ACCEPTANCE", "የደንበኛ ስምምነት"), M, agreementY);
+      doc.setFont(FONT, "normal");
       doc.setFontSize(8);
       doc.setTextColor(...fieldDark);
-      doc.text(`Name: ${bookingData.fullName || "—"}`, M, agreementY + 7);
-      doc.text(`Signed on: ${today}  (Automated Electronic Signature)`, M, agreementY + 13);
-      doc.text(`Booking Reference: ${refNum}`, M, agreementY + 19);
+      doc.text(`${L("Name", "ስም")}: ${bookingData.fullName || "—"}`, M, agreementY + 7);
+      doc.text(`${L("Signed on", "የተፈረመበት ቀን")}: ${today}  (${L("Automated Electronic Signature", "በራስ-ሰር የኤሌክትሮኒክ ፊርማ")})`, M, agreementY + 13);
+      doc.text(`${L("Booking Reference", "የዝግጅት ማመሳከሪያ")}: ${refNum}`, M, agreementY + 19);
 
       doc.setDrawColor(...navy);
       doc.setLineWidth(0.4);
       doc.line(pageWidth - M - 60, agreementY + 13, pageWidth - M, agreementY + 13);
       doc.setFontSize(7);
       doc.setTextColor(...midGray);
-      doc.text("Authorised Signature", pageWidth - M - 60, agreementY + 18);
+      doc.text(L("Authorised Signature", "የተፈቀደ ፊርማ"), pageWidth - M - 60, agreementY + 18);
 
       // Footer band
       doc.setFillColor(...navy);
       doc.rect(0, pageHeight - 18, pageWidth, 18, "F");
-      doc.setFont("helvetica", "normal");
+      doc.setFont(FONT, "normal");
       doc.setFontSize(7.5);
       doc.setTextColor(...gold);
       doc.text("Shime Events & Planning", pageWidth / 2, pageHeight - 11, { align: "center" });
@@ -1377,7 +1419,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
       try {
         const fileName = `ShimeEvents_Booking_${refNum.replace("SE-", "")}.pdf`;
         doc.save(fileName);
-        showToast("✅ PDF downloaded successfully!", "success", 3000);
+        showToast(t("pdfDownloaded"), "success", 3000);
       } catch (saveError) {
         console.error("PDF save failed:", saveError);
         showToast("⚠️ PDF generated but couldn't download. Check browser settings.", "info", 5000);
@@ -2061,7 +2103,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
         return (
           <div className="space-y-3 w-full max-w-md">
             <textarea
-              placeholder="e.g., Elegant floral theme, modern minimalist, traditional..."
+              placeholder={language === 'am' ? "ምሳሌ፦ ያማረ የአበባ ጭብጥ፣ ዘመናዊ ቀላል ዲዛይን፣ ባህላዊ..." : "e.g., Elegant floral theme, modern minimalist, traditional..."}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={(e) => {
@@ -2072,7 +2114,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
               className="w-full px-4 py-3 bg-slate-700 text-white border-2 border-yellow-500 rounded-lg focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 placeholder-gray-400 h-24 resize-none"
               aria-label="Enter special theme or design preferences"
             />
-            <p className="text-gray-300 text-xs">Leave blank if no preference</p>
+            <p className="text-gray-300 text-xs">{language === 'am' ? 'ምርጫ ከሌለዎት ባዶ ይተዉት' : 'Leave blank if no preference'}</p>
             <div className="flex gap-2">
               <button
                 onClick={goBack}
@@ -2101,9 +2143,9 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
           <div className="w-full max-w-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-yellow-500 rounded-xl p-6 space-y-4 shadow-2xl">
             {/* Deposit Amount Display */}
             <div className="bg-gradient-to-r from-yellow-900 to-yellow-800 border-2 border-yellow-500 p-6 rounded-lg text-center">
-              <div className="text-yellow-300 text-sm font-semibold mb-2">{language === 'en' ? 'Booking Fee (Non-Refundable)' : 'ብጃ ክፍያ (ይመላሰ ያልሚችል)'}</div>
+              <div className="text-yellow-300 text-sm font-semibold mb-2">{language === 'en' ? 'Booking Fee (Non-Refundable)' : 'የቅድሚያ ክፍያ (ተመላሽ የማይደረግ)'}</div>
               <div className="text-4xl font-bold text-yellow-100 mb-2">ETB {depositAmount.toLocaleString()}</div>
-              <div className="text-xs text-yellow-200">{language === 'en' ? 'Required to secure your ' + bookingData.plan + ' package booking' : 'የ' + bookingData.plan + ' ፓኬጅ ዝግጅትዎን ለማረጋገጥ ያስፈልጋል'}</div>
+              <div className="text-xs text-yellow-200">{language === 'en' ? 'Required to secure your ' + bookingData.plan + ' package booking' : 'የ' + bookingData.plan + ' ጥቅል ዝግጅትዎን ለማረጋገጥ ያስፈልጋል'}</div>
             </div>
 
             <div className="bg-slate-900 p-4 rounded-lg text-sm mb-4 border-l-4 border-yellow-500">
@@ -2161,7 +2203,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
 
                 {/* PAYMENT METHOD SELECTION */}
                 <div className="space-y-3">
-                  <h3 className="text-white font-bold text-center mb-4">💳 {language === 'en' ? 'SELECT PAYMENT METHOD' : 'ክፍያ ዘዴ ይምረጡ'}</h3>
+                  <h3 className="text-white font-bold text-center mb-4">💳 {language === 'en' ? 'SELECT PAYMENT METHOD' : 'የክፍያ ዘዴ ይምረጡ'}</h3>
 
                   {/* Option 1: Chapa */}
                   {chapaKey && (
@@ -2171,11 +2213,11 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
                       aria-label="Pay with Chapa"
                     >
                       <div className="text-2xl mb-2">🏦</div>
-                      <div className="font-bold">{language === 'en' ? 'Pay Online with Chapa' : 'ከቻፓ ጋር ምታ ክፍያ'}</div>
+                      <div className="font-bold">{language === 'en' ? 'Pay Online with Chapa' : 'በቻፓ በመስመር ላይ ይክፈሉ'}</div>
                       <div className="text-xs opacity-90">
                         {language === 'en'
                           ? 'Credit Card, Telebirr, or CBE Wallet - Instant payment'
-                          : 'ክሬዲት ካርድ፣ ቴሌቢር ወይም ሲቢኢ ዋሌት - ፈጣን ክፍያ'}
+                          : 'ክሬዲት ካርድ፣ ቴሌብር ወይም የሲቢኢ ዋሌት — ፈጣን ክፍያ'}
                       </div>
                     </button>
                   )}
@@ -2187,11 +2229,11 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
                     aria-label="Pay via bank transfer"
                   >
                     <div className="text-2xl mb-2">🏛️</div>
-                    <div className="font-bold">{language === 'en' ? 'Pay via Bank Transfer (CBE)' : 'ባንክ ብድር አማካይነት ክፍያ'}</div>
+                    <div className="font-bold">{language === 'en' ? 'Pay via Bank Transfer (CBE)' : 'በባንክ ዝውውር ይክፈሉ (CBE)'}</div>
                     <div className="text-xs opacity-90">
                       {language === 'en'
                         ? 'Direct bank transfer - Manual verification'
-                        : 'ቀጥተኛ ባንክ ዝውውር - ማጣራት ማረጋገጫ'}
+                        : 'ቀጥተኛ የባንክ ዝውውር — በእጅ የሚረጋገጥ'}
                     </div>
                   </button>
 
@@ -2200,17 +2242,17 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
                     onClick={() => {
                       showToast(language === 'en'
                         ? "Please contact us at +251912345678 for cash payment pickup"
-                        : "ጥሬ ገንዘብ መላልስ ለ +251912345678 ያ군ኙ", "info", 5000);
+                        : "ለጥሬ ገንዘብ ክፍያ እባክዎን +251912345678 ይደውሉ", "info", 5000);
                     }}
                     className="w-full p-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white rounded-lg font-bold transition transform hover:scale-105 border-2 border-green-400 shadow-lg"
                     aria-label="Pay via cash"
                   >
                     <div className="text-2xl mb-2">💵</div>
-                    <div className="font-bold">{language === 'en' ? 'Pay Cash in Person' : 'ጥሬ ገንዘብ ክፍያ'}</div>
+                    <div className="font-bold">{language === 'en' ? 'Pay Cash in Person' : 'በአካል ጥሬ ገንዘብ ይክፈሉ'}</div>
                     <div className="text-xs opacity-90">
                       {language === 'en'
                         ? 'Visit our office or call for arrangement'
-                        : 'ቢሮአችን ይጎብኙ ወይም ዝግጅት ዘርዝር'}
+                        : 'ቢሮአችንን ይጎብኙ ወይም ለቀጠሮ ይደውሉ'}
                     </div>
                   </button>
                 </div>
@@ -2218,32 +2260,32 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
                 {/* Bank Transfer Details (if selected) */}
                 {showManualPayment && (
                   <div className="bg-slate-900 p-4 rounded-lg border border-blue-500 border-opacity-50 animate-slideDown">
-                    <p className="text-blue-400 font-bold mb-4 text-center text-lg">🏛️ {language === 'en' ? 'BANK TRANSFER DETAILS' : 'ባንክ ዝውውር ዝርዝሮች'}</p>
+                    <p className="text-blue-400 font-bold mb-4 text-center text-lg">🏛️ {language === 'en' ? 'BANK TRANSFER DETAILS' : 'የባንክ ዝውውር ዝርዝሮች'}</p>
                     <div className="space-y-3 text-sm text-white">
                       <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
-                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Account Holder' : 'ሂሳብ ባለቤት'}</p>
+                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Account Holder' : 'የሂሳብ ባለቤት'}</p>
                         <p className="font-mono font-bold">Shime Events & Planning</p>
                       </div>
                       <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
-                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Account Number' : 'ሂሳብ ቁጥር'}</p>
+                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Account Number' : 'የሂሳብ ቁጥር'}</p>
                         <p className="font-mono font-bold">1000XXXXXXXX</p>
                       </div>
                       <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
-                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Bank Name' : 'ባንክ ስም'}</p>
+                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Bank Name' : 'የባንክ ስም'}</p>
                         <p className="font-mono font-bold">Commercial Bank of Ethiopia (CBE)</p>
                       </div>
                       <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
-                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Amount to Transfer' : 'ዝውውር መጠን'}</p>
+                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Amount to Transfer' : 'የሚተላለፍ መጠን'}</p>
                         <p className="font-mono font-bold text-yellow-300">ETB {depositAmount.toLocaleString()}</p>
                       </div>
                       <div className="bg-slate-800 p-3 rounded border border-blue-500 border-opacity-30">
-                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Reference/Description' : 'ማጣቀሻ'}</p>
+                        <p className="text-blue-300 text-xs font-bold mb-1">{language === 'en' ? 'Reference/Description' : 'ማመሳከሪያ'}</p>
                         <p className="font-mono font-bold">{bookingRefNum || "Booking Reference"}</p>
                       </div>
                       <p className="text-blue-300 text-xs mt-3 bg-blue-900 bg-opacity-30 p-2 rounded">
                         {language === 'en'
                           ? '✅ After transfer, send screenshot/proof to WhatsApp along with your booking reference to confirm payment'
-                          : '✅ ስዋይ ከተተላለፉ በኋላ ስክሪንሾት/ማስረጃ ከቅጂ ማጣቀሻ ጋር የWhatsApp ላይ ይላኩ'}
+                          : '✅ ከዝውውሩ በኋላ የክፍያ ማስረጃ (ስክሪንሾት) ከማመሳከሪያ ቁጥርዎ ጋር በ WhatsApp ይላኩ።'}
                       </p>
                     </div>
                   </div>
@@ -2256,7 +2298,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
                   className="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg font-bold hover:from-blue-700 hover:to-blue-800 transition text-lg transform hover:scale-105 disabled:opacity-50"
                   aria-label="Download booking contract as PDF"
                 >
-                  {loading ? "⏳ Generating PDF..." : "📄 Download Contract (PDF)"}
+                  {loading ? (language === 'am' ? "⏳ ሰነድ እየተዘጋጀ ነው..." : "⏳ Generating PDF...") : (language === 'am' ? "📄 ውል ያውርዱ (PDF)" : "📄 Download Contract (PDF)")}
                 </button>
 
                 {/* Share with WhatsApp */}
@@ -2269,7 +2311,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
                   className="w-full px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-bold hover:from-green-600 hover:to-green-700 transition text-lg transform hover:scale-105"
                   aria-label="Share booking via WhatsApp"
                 >
-                  📱 Share via WhatsApp
+                  📱 {language === 'am' ? 'በ WhatsApp ያጋሩ' : 'Share via WhatsApp'}
                 </button>
 
                 {/* Share with Telegram */}
@@ -2282,7 +2324,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
                   className="w-full px-4 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg font-bold hover:from-blue-600 hover:to-blue-700 transition text-lg transform hover:scale-105"
                   aria-label="Share booking via Telegram"
                 >
-                  ✈️ Share via Telegram
+                  ✈️ {language === 'am' ? 'በ Telegram ያጋሩ' : 'Share via Telegram'}
                 </button>
 
                 <button
@@ -2314,28 +2356,28 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
 
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
-                <div className="text-yellow-400 text-xs font-semibold mb-1">Client</div>
+                <div className="text-yellow-400 text-xs font-semibold mb-1">{t("labelClient")}</div>
                 <div className="text-white font-bold text-sm">{bookingData.fullName}</div>
               </div>
               <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
-                <div className="text-yellow-400 text-xs font-semibold mb-1">Email</div>
+                <div className="text-yellow-400 text-xs font-semibold mb-1">{t("labelEmail")}</div>
                 <div className="text-white font-bold text-sm truncate">{bookingData.email}</div>
               </div>
               <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
-                <div className="text-yellow-400 text-xs font-semibold mb-1">Package</div>
+                <div className="text-yellow-400 text-xs font-semibold mb-1">{t("labelPackage")}</div>
                 <div className="text-white font-bold text-sm">{bookingData.plan}</div>
               </div>
               <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30">
-                <div className="text-yellow-400 text-xs font-semibold mb-1">Booking Fee (Non-Refundable)</div>
+                <div className="text-yellow-400 text-xs font-semibold mb-1">{t("labelBookingFee")}</div>
                 <div className="text-yellow-300 font-bold text-lg">ETB {Math.round((pkgInfo?.price || 0) / 2).toLocaleString()}</div>
               </div>
             </div>
 
             <div className="bg-slate-900 p-4 rounded-lg border border-yellow-500 border-opacity-30 space-y-2 text-sm text-white">
-              <div><strong className="text-yellow-400">Reference:</strong> {bookingRefNum}</div>
-              <div><strong className="text-yellow-400">Event Date:</strong> {calendarType === "ethiopian" ? formatDateForDisplay(bookingData.eventDate, "ethiopian", language) : bookingData.eventDate} at {bookingData.eventTime}</div>
-              <div><strong className="text-yellow-400">Location:</strong> {bookingData.eventCity}, {bookingData.eventCountry}</div>
-              <div><strong className="text-yellow-400">Contact:</strong> {bookingData.contactMethod}</div>
+              <div><strong className="text-yellow-400">{t("labelReference")}:</strong> {bookingRefNum}</div>
+              <div><strong className="text-yellow-400">{t("labelEventDate")}:</strong> {calendarType === "ethiopian" ? formatDateForDisplay(bookingData.eventDate, "ethiopian", language) : bookingData.eventDate} {t("labelAt")} {bookingData.eventTime}</div>
+              <div><strong className="text-yellow-400">{t("labelLocation")}:</strong> {bookingData.eventCity}, {bookingData.eventCountry}</div>
+              <div><strong className="text-yellow-400">{t("labelContact")}:</strong> {bookingData.contactMethod}</div>
             </div>
 
             {/* Verification PIN — prominent, client must share this with admin */}
@@ -2357,7 +2399,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
 
             {bookingRefNum && (
               <div className="bg-slate-900 p-4 rounded-lg border-2 border-yellow-500 text-center">
-                <div className="text-yellow-400 font-bold mb-3">📱 Booking QR Code</div>
+                <div className="text-yellow-400 font-bold mb-3">📱 {t("labelQrCode")}</div>
                 <div className="flex justify-center">
                   {qrCode ? (
                     <img
@@ -2371,7 +2413,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
                     </div>
                   )}
                 </div>
-                <div className="text-xs text-gray-300 mt-3">Reference: {bookingRefNum}</div>
+                <div className="text-xs text-gray-300 mt-3">{t("labelReference")}: {bookingRefNum}</div>
                 <div className="flex gap-2 mt-3">
                   {qrCode && (
                     <button
@@ -2389,7 +2431,7 @@ By accepting this booking, you confirm that you have reviewed and accepted all t
                       disabled={copying}
                       aria-label="Copy booking reference"
                     >
-                      {copying ? "✓ Copied" : "📋 Copy Ref"}
+                      {copying ? t("copiedShort") : t("copyRef")}
                     </button>
                   )}
                 </div>
